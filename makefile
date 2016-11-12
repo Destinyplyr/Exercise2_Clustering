@@ -13,8 +13,8 @@ all: $(OBJS)
 # create/compile the individual files
 
 
-PointFunctions.o: PointFunctions.cpp
-	$(CC) $(FLAGS) PointFunctions.cpp			
+mainSample.o: mainSample.cpp
+	$(CC) $(FLAGS) mainSample.cpp			
 
 
 # clean 
