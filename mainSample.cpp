@@ -93,21 +93,27 @@ int main(int argc, char **argv)
 		}
 	}
 
+
+	bitset<64> thanasis;
+	cout << "geia soy thanasis : " << thanasis << endl;
+
 	if (strcmp(myMetric->metric_space.c_str(), "hamming") == 0)
 	{
-		ListData<
+		ListData<string>* hammingList = new ListData<string>();
 	}
 
 	if (strcmp(myMetric->metric_space.c_str(), "vector") == 0)
 	{
 		if (strcmp(myMetric->metric.c_str(), "euclidean") == 0)
 		{
+			ListData<double*>* euclideanList = new ListData<double*>();
+			euclideanList->ListInsertion(inputFile, myMetric);
 
 		}
 		
 		if (strcmp(myMetric->metric.c_str(), "cosine") == 0)
 		{
-
+			ListData<double*>* cosineList = new ListData<double*>();
 		}
 	}
 

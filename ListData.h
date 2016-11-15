@@ -2,7 +2,8 @@
 #define LIST_DATA
 
 #include "Node.h"
-//#include "MathFunctions.h"
+#include "MathFunctions.h"
+#include "Returns.h"
 
 template <typename T>
 class ListData
@@ -21,6 +22,7 @@ class ListData
 		double CosineDistance(double p1[], double p2[], int size);
 		bool HammingDuplicate(T item);
 		bool EuclideanDuplicate(T item, int size);
+		void ListInsertion(std::ifstream& inputFile, Metrics* myMetric);
 		
 	private:
 		Node<T>* header;

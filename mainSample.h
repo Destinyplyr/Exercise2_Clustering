@@ -1,3 +1,7 @@
+#include <bitset>
+#include "NodeFunctions.cpp"
+#include "ListsFunctions.cpp"
+#include "VectorListManagement.cpp"
 #include "Headers.h"
 #include "UtilsH.h"
 #include "ListData.h"

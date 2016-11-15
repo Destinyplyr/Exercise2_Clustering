@@ -56,7 +56,7 @@ void Init_Metrics(Metrics* myMetric, std::ifstream& inputFile)
 		inputFile >> GARBAGE;  				//Read "@metric space"
 		if (strcmp(GARBAGE.c_str(), "@metric") == 0) {
 			inputFile >> myMetric->metric;		//Read etc, "hamming"
-			inputFile >> GARBAGE;
+			inputFile >> GARBAGE;				//read itemno to coordinate with else
 		}
 		else {
 			myMetric->metric = "euclidean";
