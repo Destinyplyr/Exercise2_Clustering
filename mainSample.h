@@ -1,15 +1,6 @@
-#include <iostream>
-#include <fstream>
-#include <string.h>
-#include <cstdlib>
-#include <ctime>
-#include <math.h>
+#include "Headers.h"
+#include "UtilsH.h"
+#include "ListData.h"
 
-using namespace std;
-
-extern "C"
-{
-	#include <stdio.h>
-	#include <stdlib.h>
-	#include <time.h>
-}
+void CLI(ifstream& inputFile, ofstream& outputFile, Conf* myConf, Metrics* myMetric);
+void ReadFiles(ifstream& inputFile, Metrics* myMetric, int* N, double** distanceMatrix);

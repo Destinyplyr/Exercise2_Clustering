@@ -3,20 +3,22 @@
 int main(int argc, char **argv)
 {
 
-	int numOfClusters;
-	int k = 4;
-	int L = 5;
-	int claransFraction;
-	int claransIterations;
+	int number_of_clusters;
+	int number_of_hash_functions = 4;
+	int number_of_hash_tables = 5;
+	int clarans_set_fraction = 0;
+	int clarans_iterations = 2;
+	int initChoice;
+	int assignChoice;
+	int updateChoice;
 	string GARBAGE;
-	string initAlgo;
-	string assignAlgo;
-	string updateAlgo;
 	string choice;
 	string filename;
 	ifstream inputFile;
 	ifstream conFile;
 	ofstream outputFile;
+	Conf* myConf = new Conf();
+	Metrics* myMetric = new Metrics();
 
 	//bool outParameter = false, inParameter = false, confParameter = false;
 
@@ -48,15 +50,7 @@ int main(int argc, char **argv)
 					//inParameter = true;
 				}
 				
-				//inputFile >> metric_space;  //Read "@metric space"
-				//inputFile >> metric_space;	//Read etc, "hamming"
-
-				// if (strcmp(metric_space.c_str(), "euclidean") == 0)
-				// {
-				// 	inputFile >> metric;  	//Read "@metric space"
-				// 	inputFile >> metric;	//Read etc, "hamming"
-				// }
-
+				Init_Metrics(myMetric, inputFile);
 				i++;
 			}
 			else if (strcmp(argv[i], "-c") == 0)
@@ -72,19 +66,7 @@ int main(int argc, char **argv)
 					cout << "File : " << argv[i+1] << " opened successfully!" << endl << endl;
 					//confParameter = true;
 				}
-
-				conFile >> GARBAGE;
-				conFile >> numOfClusters;
-				conFile >> GARBAGE;
-				conFile >> k;
-				conFile >> GARBAGE;
-				conFile >> L;
-				conFile >> GARBAGE;
-				conFile >> claransFraction;
-				conFile >> GARBAGE;
-				conFile >> claransIterations;
-				cout << "Information read from configuration file." << endl;
-
+				Init_Conf(myConf, conFile);
 				i++;
 			}
 			else if (strcmp(argv[i], "-o") == 0)
@@ -111,102 +93,31 @@ int main(int argc, char **argv)
 		}
 	}
 
-
-	cout << "Welcome to Clustering testing simulation." << endl << endl;
-
-
-
-	//INTERFACE FOR CHOOSING FILES (?)
-	/*do
+	if (strcmp(myMetric->metric_space.c_str(), "hamming") == 0)
 	{
-		//If input file is given from command line.
-		if (inParameter) 
-		{
-			inParameter = false;
-		}
-		else 
-		{
-			cout << "Please give an input file: ";
-			cin >> filename;
-			inputFile.open(filename.c_str());
-			if (inputFile == NULL)
-			{
-				cout << "You've given a wrong input file. " << endl;
-				exit(1);
-			}
-			else
-			{
-				cout << "File : " << filename << " opened successfully!" << endl << endl;
-			}
-			inputFile >> metric_space;  //Read "@metric space"
-			inputFile >> metric_space;	//Read etc, "hamming"
+		ListData<
+	}
 
-			if (strcmp(metric_space.c_str(), "euclidean") == 0)
-			{
-				inputFile >> metric;  	//Read "@metric space"
-				inputFile >> metric;	//Read etc, "hamming"
-			}
-		}
-		//If configuration file is given from command line.
-		if (confParameter) 
+	if (strcmp(myMetric->metric_space.c_str(), "vector") == 0)
+	{
+		if (strcmp(myMetric->metric.c_str(), "euclidean") == 0)
 		{
-			confParameter = false;
+
 		}
-		else 
+		
+		if (strcmp(myMetric->metric.c_str(), "cosine") == 0)
 		{
-			cout << "Please give a configuration file: ";
-			cin >> filename;
-			conFile.open(filename.c_str());		
-			if (conFile == NULL)
-			{
-				cout << "You've given a wrong configuration file. " << endl;
-				exit(1);
-			}
-			else
-			{
-				cout << "File : " << filename << " opened successfully!" << endl << endl;
-			}
+
 		}
-		//If output file is given from command line.
-		if (outParameter) 
-		{
-			outParameter = false;
-		}
-		else
-		{
-			cout << "Please give an output file: ";
-			cin >> filename;
-			outputFile.open(filename.c_str());
-			if (outputFile == NULL)
-			{
-				cout << "You've given a wrong input file. " << endl;
-				exit(1);
-			}
-			else
-			{
-				cout << "File : " << filename << " opened successfully!" << endl << endl;
-			}
-		}
+	}
+
+	if (strcmp(myMetric->metric_space.c_str(), "matrix") == 0)
+	{
+		ListData<double*>* DBHList = new ListData<double*>();
+	}
 
 
-	}while...
-*/
-
-	cout << "Please type an algorithm for Initialization : " << endl;
-	cout << "1. K-medoids++" << endl;
-	cout << "2. Concentrate" << endl;
-	cin >> initAlgo;
-	cout << endl;
-	cout << "Please type an algorithm for Assignment : " << endl;
-	cout << "1. PAM" << endl;
-	cout << "2. LSHReverse" << endl;
-	cin >> assignAlgo;
-	cout << endl;
-	cout << "Please select an algorithm for Update : " << endl;
-	cout << "1. Llyod's" << endl;
-	cout << "2. CLARANS" << endl;
-	cin >> updateAlgo;
-	cout << endl;
+	//CLI(inputFile, outputFile, myConf, myMetric);
 
 	return 0;
 }
