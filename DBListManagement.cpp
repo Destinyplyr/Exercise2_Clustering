@@ -30,6 +30,7 @@ void ListData<T>::ListInsertionDB(std::ifstream& inputFile, Metrics* myMetric)
 	inputFile.seekg(0, ios::beg);   //Data file back from start
 }
 
+
 template <typename T>
 void ListData<T>::DistanceMatrixComputationDB(std::ifstream& inputFile, Metrics* myMetric, double** distance_matrix)
 {
@@ -37,10 +38,10 @@ void ListData<T>::DistanceMatrixComputationDB(std::ifstream& inputFile, Metrics*
 	string line;
 	string pointStr;
 
-    distance_matrix = new double*[myMetric->point_number];
-    for (int i= 0; i <myMetric->point_number; i++) {
-        distance_matrix[i] = new double[myMetric->point_number];
-    }
+    // distance_matrix = new double*[myMetric->point_number];
+    // for (int i= 0; i <myMetric->point_number; i++) {
+    //     distance_matrix[i] = new double[myMetric->point_number];
+    // }
 	inputFile >> GARBAGE;       //Read "@metric space"      
     inputFile >> GARBAGE;       //Read "matrix"
     inputFile >> GARBAGE;	    //Read @item

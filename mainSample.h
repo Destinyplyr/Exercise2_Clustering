@@ -2,6 +2,7 @@
 #include "NodeFunctions.cpp"
 #include "ListsFunctions.cpp"
 #include "VectorHammingListManagement.cpp"
+#include "InitializationMedoids.cpp"
 #include "DBListManagement.cpp"
 #include "Headers.h"
 #include "UtilsH.h"

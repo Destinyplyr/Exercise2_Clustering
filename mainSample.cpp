@@ -2,15 +2,10 @@
 
 int main(int argc, char **argv)
 {
-
-	int number_of_clusters;
-	int number_of_hash_functions = 4;
-	int number_of_hash_tables = 5;
-	int clarans_set_fraction = 0;
-	int clarans_iterations = 2;
 	int initChoice;
 	int assignChoice;
 	int updateChoice;
+	int* centroids;
 	double** distance_matrix;
 	string GARBAGE;
 	string choice;
@@ -20,7 +15,7 @@ int main(int argc, char **argv)
 	ofstream outputFile;
 	Conf* myConf = new Conf();
 	Metrics* myMetric = new Metrics();
-
+	bool completeFlag = false;
 	//bool outParameter = false, inParameter = false, confParameter = false;
 
 	std::cout.setf(std::ios_base::fixed, std::ios_base::floatfield);
@@ -86,6 +81,10 @@ int main(int argc, char **argv)
 
 				i++;
 			}
+			else if (strcmp(argv[i], "-complete") == 0)
+			{
+				completeFlag = true;
+			}
 			else
 			{
 				cout << "You've given wrong input" <<endl;
@@ -111,8 +110,14 @@ int main(int argc, char **argv)
 		{
 			ListData<double*>* euclideanList = new ListData<double*>();
 			euclideanList->ListInsertionVector(inputFile, myMetric);
+			distance_matrix = new double*[myMetric->point_number];		//distance matrix creation
+			for (int i = 0; i < myMetric->point_number; i++) {
+				distance_matrix[i] = new double[myMetric->point_number];
+			}
 			euclideanList->DistanceMatrixComputationVector(myMetric, distance_matrix);
 
+			cout << distance_matrix[0][0] <<endl;
+			KMedoidsPP(myConf, myMetric, distance_matrix, euclideanList, centroids);
 		}
 		
 		if (strcmp(myMetric->metric.c_str(), "cosine") == 0)
@@ -120,6 +125,7 @@ int main(int argc, char **argv)
 			ListData<double*>* cosineList = new ListData<double*>();
 			cosineList->ListInsertionVector(inputFile, myMetric);
 			cosineList->DistanceMatrixComputationVector(myMetric, distance_matrix);
+			KMedoidsPP(myConf, myMetric, distance_matrix, cosineList, centroids);
 		}
 	}
 
@@ -128,10 +134,18 @@ int main(int argc, char **argv)
 		ListData<double*>* DBHList = new ListData<double*>();
 		DBHList->ListInsertionDB(inputFile, myMetric);
 		DBHList->DistanceMatrixComputationDB(inputFile, myMetric, distance_matrix);
+		KMedoidsPP(myConf, myMetric, distance_matrix, DBHList, centroids);
 	}
 
-
+	SetClaransFraction(myConf, myMetric);
 	//CLI(inputFile, outputFile, myConf, myMetric);
+
+	/*cout << "for the horde : " << endl;
+	cout << myConf->number_of_clusters << endl;
+	cout << myConf->number_of_hash_functions << endl;
+	cout << myConf->number_of_hash_tables << endl;
+	cout << myConf->clarans_set_fraction << endl;
+	cout << myConf->clarans_iterations << endl ;*/
 
 	return 0;
 }

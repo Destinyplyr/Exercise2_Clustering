@@ -4,6 +4,13 @@
 
 void Init_Conf(Conf* myConf, ifstream& conFile)
 {
+
+ 	myConf->number_of_clusters;
+	myConf->number_of_hash_functions = 4;
+	myConf->number_of_hash_tables = 5;
+	myConf->clarans_set_fraction = 0;
+	myConf->clarans_iterations = 2;
+
 	string GARBAGE;
 	for (int i =0; i < 5; i ++) {
 		if (conFile >> GARBAGE) {
@@ -99,5 +106,31 @@ void Init_Metrics(Metrics* myMetric, std::ifstream& inputFile)
  	//cout << "Pount dum L : " << myMetric->point_dimension << endl;
 }
 
+void SetClaransFraction(Conf* myConf, Metrics* myMetric)
+{
+	if (myConf->clarans_set_fraction == 0)
+	{
+		if ((0.12 * myConf->number_of_clusters * (myMetric->point_number - myConf->number_of_clusters)) >= 250)
+		{
+			myConf->clarans_set_fraction = (0.12 * myConf->number_of_clusters * (myMetric->point_number - myConf->number_of_clusters));
+		}
+		else
+		{
+			myConf->clarans_set_fraction = 250;
+		}
+	}
+}
 
 
+
+bool Exists(int* items, int pos, int newItem)
+{
+	for (int i = 0; i < pos; ++i)
+	{
+		if (items[i] == newItem)
+		{
+			return true;
+		}
+	}
+	return false;
+}

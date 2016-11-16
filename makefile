@@ -13,7 +13,7 @@ all: $(OBJS)
 # create/compile the individual files
 
 
-mainSample.o: mainSample.cpp Node.h ListData.h ListsFunctions.cpp NodeFunctions.cpp VectorHammingListManagement.cpp DBListManagement.cpp
+mainSample.o: mainSample.cpp Node.h ListData.h Algorithms.h ListsFunctions.cpp NodeFunctions.cpp VectorHammingListManagement.cpp DBListManagement.cpp InitializationMedoids.cpp
 	$(CC) $(FLAGS) mainSample.cpp			
 
 Utilities.o: Utilities.cpp

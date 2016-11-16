@@ -57,17 +57,16 @@ template <typename T>
 void ListData<T>::DistanceMatrixComputationVector(Metrics* myMetric, double** distance_matrix) {
 	Node<T>* driver_node;
 	Node<T>* current_node;
-
-	distance_matrix = new double*[myMetric->point_number];		//distance matrix creation
-	for (int i = 0; i < myMetric->point_number; i++) {
-		distance_matrix[i] = new double[myMetric->point_number];
-	}
+	// distance_matrix = new double*[myMetric->point_number];		//distance matrix creation
+	// for (int i = 0; i < myMetric->point_number; i++) {
+	// 	distance_matrix[i] = new double[myMetric->point_number];
+	// }
 
 	driver_node = this->header;
 
 	for (int i = 0; i < myMetric->point_number; i++) {
 		current_node = driver_node->getNext();
-		cout << "item " << i << "\t";
+		//cout << "item " << i << "\t";
 		for (int j = 0; j < myMetric->point_number; j++) {
 			if (j <= i) {
 				distance_matrix[i][j] = 0;
@@ -93,14 +92,13 @@ void ListData<T>::DistanceMatrixComputationVector(Metrics* myMetric, double** di
 					if (strcmp(myMetric->metric.c_str(), "cosine") == 0)
 					{
 						distance_matrix[i][j] = this->CosineDistance(current_node->getKey(), driver_node->getKey(), myMetric->point_dimension);
-						cout << distance_matrix[i][j] << "\t";
+						//cout << distance_matrix[i][j] << "\t";
 						current_node = current_node->getNext();
 					}
 				}
 			}
 		}
 		driver_node = driver_node->getNext();
-		cout <<endl;
+		//cout <<endl;
 	}
-
 }
