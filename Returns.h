@@ -17,7 +17,8 @@ struct Metrics
 {
 	std::string metric_space;
 	std::string metric;
-	int point_dimension;	
+	int point_dimension;
+	int point_number;	
 };
 
 

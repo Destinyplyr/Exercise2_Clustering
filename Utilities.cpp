@@ -46,6 +46,7 @@ void Init_Metrics(Metrics* myMetric, std::ifstream& inputFile)
 	string genericStr;
 	string pointStr;
 	int point_dimension = 0;
+	int point_number = 0;
 	//int point_number = 0;
 
 	inputFile >> GARBAGE;  					//Read "@metric space"
@@ -81,9 +82,22 @@ void Init_Metrics(Metrics* myMetric, std::ifstream& inputFile)
 		myMetric->point_dimension = genericStr.length();
 	}
 
+	if (strcmp(myMetric->metric_space.c_str(), "matrix") == 0) {
+		inputFile >> GARBAGE;		//read itemno
+        getline(inputFile, genericStr);
+        stringstream linestream2(genericStr);
+        while (getline(linestream2, pointStr, ',')) {       //Calculate dimension of points
+            ++point_number;
+        }
+        myMetric->point_number = point_number;
+	}	
+
  	inputFile.clear();      		//Restart
  	inputFile.seekg(0, ios::beg);   //Data file back from start
  	
 
  	//cout << "Pount dum L : " << myMetric->point_dimension << endl;
 }
+
+
+

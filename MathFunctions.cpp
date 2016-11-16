@@ -27,3 +27,23 @@ bool SameArray(double* array1, double* array2, int size) {
     }
     return true;
 }
+
+
+double DistanceEuclid(double item1[], double item2[], int size)
+{
+    double sum = 0.0f, square;
+    double x, y;
+    int i = 0, j = 0;
+
+    while ((i < size) && (j < size))
+    {
+
+        x = item1[i];
+        y = item2[j];
+        square = pow((x - y), 2);
+        sum += square;
+        ++i;
+        ++j;
+    }
+    return sqrt(sum);
+}

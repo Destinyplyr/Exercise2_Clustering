@@ -11,6 +11,7 @@ int main(int argc, char **argv)
 	int initChoice;
 	int assignChoice;
 	int updateChoice;
+	double** distance_matrix;
 	string GARBAGE;
 	string choice;
 	string filename;
@@ -100,6 +101,8 @@ int main(int argc, char **argv)
 	if (strcmp(myMetric->metric_space.c_str(), "hamming") == 0)
 	{
 		ListData<string>* hammingList = new ListData<string>();
+		//hammingList->ListInsertionHamming(inputFile, myMetric);
+		//hammingList->DistanceMatrixComputation(myMetric, distance_matrix);
 	}
 
 	if (strcmp(myMetric->metric_space.c_str(), "vector") == 0)
@@ -107,19 +110,24 @@ int main(int argc, char **argv)
 		if (strcmp(myMetric->metric.c_str(), "euclidean") == 0)
 		{
 			ListData<double*>* euclideanList = new ListData<double*>();
-			euclideanList->ListInsertion(inputFile, myMetric);
+			euclideanList->ListInsertionVector(inputFile, myMetric);
+			euclideanList->DistanceMatrixComputationVector(myMetric, distance_matrix);
 
 		}
 		
 		if (strcmp(myMetric->metric.c_str(), "cosine") == 0)
 		{
 			ListData<double*>* cosineList = new ListData<double*>();
+			cosineList->ListInsertionVector(inputFile, myMetric);
+			cosineList->DistanceMatrixComputationVector(myMetric, distance_matrix);
 		}
 	}
 
 	if (strcmp(myMetric->metric_space.c_str(), "matrix") == 0)
 	{
 		ListData<double*>* DBHList = new ListData<double*>();
+		DBHList->ListInsertionDB(inputFile, myMetric);
+		DBHList->DistanceMatrixComputationDB(inputFile, myMetric, distance_matrix);
 	}
 
 

@@ -22,7 +22,10 @@ class ListData
 		double CosineDistance(double p1[], double p2[], int size);
 		bool HammingDuplicate(T item);
 		bool EuclideanDuplicate(T item, int size);
-		void ListInsertion(std::ifstream& inputFile, Metrics* myMetric);
+		void ListInsertionVector(std::ifstream& inputFile, Metrics* myMetric);
+		void DistanceMatrixComputationVector(Metrics* myMetric, double** distance_matrix);
+		void ListInsertionDB(std::ifstream& inputFile, Metrics* myMetric);
+		void DistanceMatrixComputationDB(std::ifstream& inputFile, Metrics* myMetric, double** distance_matrix);
 		
 	private:
 		Node<T>* header;
