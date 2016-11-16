@@ -97,6 +97,12 @@ int main(int argc, char **argv)
 	bitset<64> thanasis;
 	cout << "geia soy thanasis : " << thanasis << endl;
 
+	distance_matrix = new double*[myMetric->point_number];		//distance matrix creation
+	for (int i = 0; i < myMetric->point_number; i++) {
+		distance_matrix[i] = new double[myMetric->point_number];
+	}
+	centroids = new int[myMetric->point_number];
+
 	if (strcmp(myMetric->metric_space.c_str(), "hamming") == 0)
 	{
 		ListData<string>* hammingList = new ListData<string>();
@@ -110,13 +116,7 @@ int main(int argc, char **argv)
 		{
 			ListData<double*>* euclideanList = new ListData<double*>();
 			euclideanList->ListInsertionVector(inputFile, myMetric);
-			distance_matrix = new double*[myMetric->point_number];		//distance matrix creation
-			for (int i = 0; i < myMetric->point_number; i++) {
-				distance_matrix[i] = new double[myMetric->point_number];
-			}
 			euclideanList->DistanceMatrixComputationVector(myMetric, distance_matrix);
-
-			cout << distance_matrix[0][0] <<endl;
 			KMedoidsPP(myConf, myMetric, distance_matrix, euclideanList, centroids);
 		}
 		

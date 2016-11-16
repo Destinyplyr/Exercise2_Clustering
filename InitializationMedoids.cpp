@@ -14,7 +14,6 @@ void KMedoidsPP(Conf* myConf, Metrics* myMetric, double** distanceMatrix, ListDa
 	int column, row;
 	string GARBAGE;
 
-	centroids = new int[myMetric->point_number];
 
 	//Initialize centroids
 	for (int i = 0; i < myConf->number_of_clusters; ++i)

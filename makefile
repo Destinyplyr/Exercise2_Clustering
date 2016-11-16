@@ -1,8 +1,8 @@
 # In order to execute this "makefile" just type "make"
 
-OBJS 	=  mainSample.o Utilities.o MainFunctions.o MathFunctions.o 
-SOURCE	=  mainSample.cpp Utilities.cpp MainFunctions.cpp MathFunctions.cpp 
-HEADER  = mainSample.h UtilsH.h Headers.h Returns.h MathFunctions.h
+OBJS 	=  mainSample.o Utilities.o MainFunctions.o MathFunctions.o DistanceMatrixFunctions.o
+SOURCE	=  mainSample.cpp Utilities.cpp MainFunctions.cpp MathFunctions.cpp DistanceMatrixFunctions.cpp
+HEADER  = mainSample.h UtilsH.h Headers.h Returns.h MathFunctions.h DistanceMatrixFunctions.h
 OUT  	= medoids
 CC	= g++
 FLAGS   = -g -c 
@@ -24,6 +24,9 @@ MainFunctions.o: MainFunctions.cpp
 
 MathFunctions.o: MathFunctions.cpp
 	$(CC) $(FLAGS) MathFunctions.cpp
+
+DistanceMatrixFunctions.o: DistanceMatrixFunctions.cpp
+	$(CC) $(FLAGS) DistanceMatrixFunctions.cpp
 
 # clean 
 clean:

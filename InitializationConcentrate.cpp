@@ -3,18 +3,34 @@
 #include "Algorithms.h"
 
 template <typename T>
-void KMedoidsPP(Conf* myConf, Metrics* myMetric, double** distanceMatrix, ListData<T>* myList, int* centroids)
+void Concentrate(Conf* myConf, Metrics* myMetric, double** distanceMatrix, ListData<T>* myList, int* centroids)
 {
-	cout << "dist" << distanceMatrix[0][0] <<endl;
 	double Sum = 0;
+	double divisor;
 	double maxProb = 0;
-	double* probabilities = new double[myMetric->point_number];
-	double* minDistances = new double[myMetric->point_number];
+	double* V_s = new double[myMetric->point_number];
+	for (int i = 0; i < myMetric->point_number; ++i)		//init
+	{
+		V_s[i] = 0;
+	}
+	//double* minDistances = new double[myMetric->point_number];
 	int chosenCentroid;
 	int column, row;
 	string GARBAGE;
 
-	centroids = new int[myMetric->point_number];
+	for (int i =0; i <myMetric->point_number; ++i ) {
+		for (int j = 0; j < myMetric->point_number; ++j)
+		{
+			divisor = 0;
+			for (int t = 0; t < myMetric->point_number; ++t)
+			{
+				divisor += DistanceMatrixDistance(distanceMatrix, j, t)
+			}
+			V_s[i] += DistanceMatrixDistance(distanceMatrix, i, j) / divisor;
+		} 
+	}
+	
+	/*
 
 	//Initialize centroids
 	for (int i = 0; i < myConf->number_of_clusters; ++i)
@@ -112,5 +128,5 @@ cin >> GARBAGE;
 		}
 		cout << "Next chosen : " << chosenCentroid << endl;
 		cin >> GARBAGE;
-	}
+	}*/
 }
