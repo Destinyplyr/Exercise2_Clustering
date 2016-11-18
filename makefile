@@ -6,6 +6,8 @@ HEADER  = mainSample.h UtilsH.h Headers.h Returns.h MathFunctions.h DistanceMatr
 OUT  	= medoids
 CC	= g++
 FLAGS   = -g -c 
+#INC = -I/googletest-master/googletest/include/gtest -I/googletest-master/googletest/include/gtest/internal
+# $(INC)
 
 all: $(OBJS)
 	$(CC) -g $(OBJS) -o $(OUT)
@@ -13,7 +15,7 @@ all: $(OBJS)
 # create/compile the individual files
 
 
-mainSample.o: mainSample.cpp Node.h ListData.h Algorithms.h ListsFunctions.cpp NodeFunctions.cpp VectorHammingListManagement.cpp DBListManagement.cpp InitializationMedoids.cpp
+mainSample.o: mainSample.cpp Node.h ListData.h Algorithms.h ListsFunctions.cpp NodeFunctions.cpp VectorHammingListManagement.cpp DBListManagement.cpp InitializationMedoids.cpp AssignmentPAM.cpp
 	$(CC) $(FLAGS) mainSample.cpp			
 
 Utilities.o: Utilities.cpp

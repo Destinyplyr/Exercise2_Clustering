@@ -94,18 +94,21 @@ int main(int argc, char **argv)
 	}
 
 
-	bitset<64> thanasis;
-	cout << "geia soy thanasis : " << thanasis << endl;
+	//bitset<64> thanasis;
+	//cout << "geia soy thanasis : " << thanasis << endl;
 
+	cout << "paw gia to distance" << endl;
 	distance_matrix = new double*[myMetric->point_number];		//distance matrix creation
 	for (int i = 0; i < myMetric->point_number; i++) {
 		distance_matrix[i] = new double[myMetric->point_number];
 	}
+	cout << "ekana to distance" << endl;
 	centroids = new int[myMetric->point_number];
+	cout << "ekana to centroids" << endl;
 
 	if (strcmp(myMetric->metric_space.c_str(), "hamming") == 0)
 	{
-		ListData<string>* hammingList = new ListData<string>();
+		//ListData<bitset<64> >* hamming = new ListData<bitset<64> >();
 		//hammingList->ListInsertionHamming(inputFile, myMetric);
 		//hammingList->DistanceMatrixComputation(myMetric, distance_matrix);
 	}
@@ -116,8 +119,11 @@ int main(int argc, char **argv)
 		{
 			ListData<double*>* euclideanList = new ListData<double*>();
 			euclideanList->ListInsertionVector(inputFile, myMetric);
+			cout << "ekana to insertion" << endl;
 			euclideanList->DistanceMatrixComputationVector(myMetric, distance_matrix);
-			KMedoidsPP(myConf, myMetric, distance_matrix, euclideanList, centroids);
+			cout << "ekana kai to DistanceMatrixComputation" << endl;
+			//KMedoidsPP(myConf, myMetric, distance_matrix, euclideanList, centroids);
+			//PAM(myConf, myMetric, distance_matrix, euclideanList, centroids);
 		}
 		
 		if (strcmp(myMetric->metric.c_str(), "cosine") == 0)
