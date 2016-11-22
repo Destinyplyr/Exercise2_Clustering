@@ -46,116 +46,31 @@ void Concentrate(Conf* myConf, Metrics* myMetric, double** distanceMatrix, int* 
 		}
 		V_s[i][1] = i;
 	}
+/*	double** newh = new double*[4];
+	for (int i = 0; i < 4; ++i)
+	{
+		newh[i] = new double[2];
+	}
+	newh[0][0] = 4; newh[0][1] = 5;
+	newh[1][0] = 1; newh[1][1] = 3;
+	newh[2][0] = 3; newh[2][1] = 2;
+	newh[3][0] = 57; newh[3][1] = 9;*/
+
 	quickSort_twolist(V_s, 0, myMetric->point_number-1);
+	//quickSort_twolist(newh, 0, 3);
+/*	for (int i = 0; i < 4; ++i)
+	{
+		cout << newh[i][0] <<newh[i][1] <<endl;
+	}*/
+	
+/*    for (int i = 0; i < myMetric->point_number ; ++i)
+    {
+    	cout << "V_s " << i << " - " << V_s[i][0] << " - " << V_s[i][1] <<endl;
+    }*/
     for (int i = 0; i < myConf->number_of_clusters; i ++) {
         centroids[i] = V_s[i][1];
         cout << "centroid " << i << " - " << centroids[i] << endl;
     }
-    for (int i = 0; i < myMetric->point_number ; ++i)
-    {
-    	cout << "V_s " << i << " - " << V_s[i][0] << " - " << V_s[i][1] <<endl;
-    }
-
-
-	/*
-
-	//Initialize centroids
-	for (int i = 0; i < myConf->number_of_clusters; ++i)
-	{
-		centroids[i] = -1;
-	}
-
-	//Initialize minDistances
-	for (int i = 0; i < myMetric->point_number; ++i)
-	{
-		minDistances[i] = INT_MAX;
-	}
-
-	chosenCentroid =  (int)(((double)rand() / (double)RAND_MAX)*((double)myMetric->point_number));
-	cout << "First chosen : " << chosenCentroid << endl;
-	for (int i = 0; i < myConf->number_of_clusters; ++i)
-	{
-		for (int u = i; u < myConf->number_of_clusters; ++u)
-		{
-			centroids[u] = -1;
-		}
-		for (int u = 0; u < myMetric->point_number; ++u)
-		{
-			minDistances[u] = INT_MAX;
-		}
-
-		cout << "in for " << endl;
-		centroids[i] = chosenCentroid;
-		Sum = 0;
-		maxProb = 0;
-		cout << "889" <<endl;
-		for (int v = 0; v < myMetric->point_number; ++v)		//for every point
-		{
-			cout << "new point" <<endl;
-			//cin >> GARBAGE;
-			for (int j = 0; j <= i; ++j)			//for every centroid up until now
-			{
-				//cout << "dm - md:" << minDistances[v] <<endl;
-				//cout << "dm - md: " << distanceMatrix[v][centroids[j]] << " - " << minDistances[v] <<endl;
-				cout << v << " - " << centroids[j] << endl;
-				if ( v > centroids[j]) {
-					column = v;
-					row = centroids[j];
-				}
-				else {
-					row = v;
-					column = centroids[j];
-				}
-				if (distanceMatrix[row][column] < minDistances[v] && v != centroids[j])
-				{
-					minDistances[v] = distanceMatrix[row][column];
-					cout << "Min distance : " << minDistances[v] << endl;
-					if (minDistances[v] == 0) {
-						cin >> GARBAGE;
-					}
-				}
-			}
-		}
-		cout << "ok" <<endl;
-		cin >> GARBAGE;
-		for (int v = 0; v < myMetric->point_number; ++v)
-		{
-			if (!Exists(centroids, i, v))
-			{
-				Sum += pow(minDistances[v], 2);
-				cout << "Sum : " << Sum << endl;
-				//cin >> GARBAGE;
-			}
-		}
-		cin >> GARBAGE;
-		for (int v = 0; v <  myMetric->point_number; ++v)
-		{
-			if (!Exists(centroids, i, v))
-			{
-				probabilities[v] = (pow(minDistances[v], 2) / Sum) * ((double)rand() / (double)RAND_MAX);
-				cout << "Probability : " << probabilities[v] << endl;
-			}
-			else
-			{
-				probabilities[v] = -1;
-			}
-		}
-cin >> GARBAGE;
-
-		for (int v = 0; v < myMetric->point_number; ++v)
-		{
-			if (probabilities[v] != -1)
-			{
-				if (probabilities[v] > maxProb)
-				{
-					chosenCentroid = v;
-					maxProb = probabilities[v];
-				}
-			}
-		}
-		cout << "Next chosen : " << chosenCentroid << endl;
-		cin >> GARBAGE;
-	}*/
 }
 
 void swap_twolist(double& a, double& b){
@@ -168,6 +83,12 @@ void quickSort_twolist(double** myArray, int first, int last ){ //appied QS for 
     int pivot;
     if(first < last){
         pivot = parition_twolist(myArray, first, last);
+/*        cout << "printarr" <<endl;
+            for (int i = first; i <=last; ++i)
+		    {
+		    	cout << myArray[i][0] <<endl;
+		    }
+		    cout << "(((((((" <<endl;*/
         quickSort_twolist(myArray, first, pivot-1);
         quickSort_twolist(myArray, pivot+1, last);
     }
@@ -175,18 +96,44 @@ void quickSort_twolist(double** myArray, int first, int last ){ //appied QS for 
 
 
 int parition_twolist(double** myArray, int first, int last){        //appied QS for twolist
+    /*for (int i = first; i <= last; ++i)
+    {
+    	
+    	cout << myArray[i][0] <<endl;
+    }
+    cout << "(((((((" <<endl;
+	cout << "================partition" <<endl;*/
     int  piv = first;
-    int pivot = myArray[first][0];
-
+    //cout << "piv starting: " << piv <<endl;
+    double pivot = myArray[first][0];
+    //cout << "pivot: " <<pivot<<endl;
     for(int i = first+1 ; i <= last ; i++){
         if(myArray[i][0] <= pivot)
         {
+        	piv++;
+        	//cout << "-------" <<endl;
+        	//cout << "changing" <<endl;
+        	//cout <<myArray[i][0] <<endl;
             swap_twolist(myArray[i][0], myArray[piv][0]);
+            // cout << "with" <<endl;
+            // cout <<myArray[i][0] <<endl;
+            // cout << "-------" <<endl;
             swap_twolist(myArray[i][1], myArray[piv][1]);
-            piv++;
+           
+            //cout << "piv: " << piv <<endl;
         }
     }
     swap_twolist(myArray[piv][0], myArray[first][0]);
     swap_twolist(myArray[piv][1], myArray[first][1]);
+/*    cout << "returning piv: " <<piv <<endl;
+    cout << "==================" <<endl;
+    cout << "printarr" <<endl;
+    for (int i = first; i <= last; ++i)
+    {
+    	
+    	cout << myArray[i][0] <<endl;
+    }
+    cout << "(((((((" <<endl;*/
     return piv;
 }
+

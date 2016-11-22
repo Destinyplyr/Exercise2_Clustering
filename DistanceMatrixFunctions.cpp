@@ -37,8 +37,9 @@ int parition(double* myArray, int first, int last){
     for(int i = first+1 ; i <= last ; i++){
         if(myArray[i] <= pivot)
         {
-            swap(myArray[i], myArray[piv]);
             piv++;
+            swap(myArray[i], myArray[piv]);
+            
         }
     }
     swap(myArray[piv], myArray[first]);
