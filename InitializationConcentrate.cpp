@@ -2,11 +2,10 @@
 #include "UtilsH.h"
 #include "Algorithms.h"
 
-template <typename T>
-void Concentrate(Conf* myConf, Metrics* myMetric, double** distanceMatrix, ListData<T>* myList, int* centroids)
+void Concentrate(Conf* myConf, Metrics* myMetric, double** distanceMatrix, int* centroids)
 {
 	double Sum = 0;
-	double divisor;
+	double* divisor;
 	double maxProb = 0;
 	double** V_s = new double*[myMetric->point_number];     //V_s[i][0] -> holds V for i centroid [1] holds which point is this centroid
 	for (int i = 0; i < myMetric->point_number; ++i)		//init
@@ -19,21 +18,42 @@ void Concentrate(Conf* myConf, Metrics* myMetric, double** distanceMatrix, ListD
 	int column, row;
 	string GARBAGE;
 
+	divisor = new double [myMetric->point_number];
+	for (int i = 0; i < myMetric->point_number; ++i)
+	{
+		divisor[i] = 0;
+		for (int j = 0; j < myMetric->point_number; ++j)
+		{
+			divisor[i] += DistanceMatrixDistance(distanceMatrix, i, j);
+		}
+	}
+
+	cout << "before for" <<endl;
+
+
 	for (int i =0; i <myMetric->point_number; ++i ) {
 		for (int j = 0; j < myMetric->point_number; ++j)
 		{
-			divisor = 0;
-			for (int t = 0; t < myMetric->point_number; ++t)
-			{
-				divisor += DistanceMatrixDistance(distanceMatrix, j, t);
+			if ( i != j) {
+				//divisor = 0;
+				// for (int t = 0; t < myMetric->point_number; ++t)
+				// {
+				// 	divisor += DistanceMatrixDistance(distanceMatrix, j, t);
+				// }
+				V_s[i][0] += DistanceMatrixDistance(distanceMatrix, i, j) / divisor[j];
+				//cout << "v is " << V_s[i][0] <<endl;
 			}
-			V_s[i][0] += DistanceMatrixDistance(distanceMatrix, i, j) / divisor;
 		}
 		V_s[i][1] = i;
 	}
 	quickSort_twolist(V_s, 0, myMetric->point_number-1);
     for (int i = 0; i < myConf->number_of_clusters; i ++) {
         centroids[i] = V_s[i][1];
+        cout << "centroid " << i << " - " << centroids[i] << endl;
+    }
+    for (int i = 0; i < myMetric->point_number ; ++i)
+    {
+    	cout << "V_s " << i << " - " << V_s[i][0] << " - " << V_s[i][1] <<endl;
     }
 
 
@@ -138,6 +158,12 @@ cin >> GARBAGE;
 	}*/
 }
 
+void swap_twolist(double& a, double& b){
+    double temp = a;
+    a = b;
+    b = temp;
+}
+
 void quickSort_twolist(double** myArray, int first, int last ){ //appied QS for twolist
     int pivot;
     if(first < last){
@@ -155,12 +181,12 @@ int parition_twolist(double** myArray, int first, int last){        //appied QS 
     for(int i = first+1 ; i <= last ; i++){
         if(myArray[i][0] <= pivot)
         {
-            swap(myArray[i][0], myArray[piv][0]);
-            swap(myArray[i][1], myArray[piv][1]);
+            swap_twolist(myArray[i][0], myArray[piv][0]);
+            swap_twolist(myArray[i][1], myArray[piv][1]);
             piv++;
         }
     }
-    swap(myArray[piv][0], myArray[first][0]);
-    swap(myArray[piv][1], myArray[first][1]);
+    swap_twolist(myArray[piv][0], myArray[first][0]);
+    swap_twolist(myArray[piv][1], myArray[first][1]);
     return piv;
 }

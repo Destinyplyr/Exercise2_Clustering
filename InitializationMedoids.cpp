@@ -2,8 +2,7 @@
 #include "UtilsH.h"
 #include "Algorithms.h"
 
-template <typename T>
-void KMedoidsPP(Conf* myConf, Metrics* myMetric, double** distanceMatrix, ListData<T>* myList, int* centroids)
+void KMedoidsPP(Conf* myConf, Metrics* myMetric, double** distanceMatrix, int* centroids)
 {
 	cout << "dist" << distanceMatrix[0][0] <<endl;
 	double Sum = 0;

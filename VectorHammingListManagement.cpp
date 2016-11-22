@@ -41,12 +41,13 @@ void ListData<T>::ListInsertionVector(std::ifstream& inputFile, Metrics* myMetri
 				index++;
 	   		}
 	   		if (!this->EuclideanDuplicate(point, myMetric->point_dimension)) {
+	   			//cout << "point inserted: " << point[0] << " - " << point_number << " - " << itemNos <<endl;
 	   			this->Insert(point, point_number, itemNos);
 	   		}
 	   		inputFile >> itemNos;		//next itemno
 	   		//cout << "item NOs : " << itemNos << endl;
    		}while(getline(inputFile, genericStr));
-   		cout << "point number : " << point_number << endl;
+   		//cout << "point number : " << point_number << endl;
    		myMetric->point_number = point_number;
 	}
 
@@ -63,6 +64,7 @@ void ListData<T>::DistanceMatrixComputationVector(Metrics* myMetric, double** di
 	// }
 
 	driver_node = this->header;
+	//cout << myMetric->point_number <<endl;
 
 	for (int i = 0; i < myMetric->point_number; i++) {
 		current_node = driver_node->getNext();
@@ -72,7 +74,6 @@ void ListData<T>::DistanceMatrixComputationVector(Metrics* myMetric, double** di
 				distance_matrix[i][j] = 0;
 			}
 			else {
-
 				if (strcmp(myMetric->metric_space.c_str(), "hamming") == 0)
 				{
 					//distance_matrix[i][j] = this->Distance(current_node->getKey(), driver_node->getKey(), myMetric->point_dimension);
@@ -85,8 +86,9 @@ void ListData<T>::DistanceMatrixComputationVector(Metrics* myMetric, double** di
 					if (strcmp(myMetric->metric.c_str(), "euclidean") == 0)
 					{
 						distance_matrix[i][j] = DistanceEuclid(current_node->getKey(), driver_node->getKey(), myMetric->point_dimension);
-						//cout << distance_matrix[i][j] << "\t";
+						//cout << distance_matrix[i][j] << endl;
 						current_node = current_node->getNext();
+
 					}
 					
 					if (strcmp(myMetric->metric.c_str(), "cosine") == 0)
