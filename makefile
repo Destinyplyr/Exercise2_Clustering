@@ -1,8 +1,8 @@
 # In order to execute this "makefile" just type "make"
 
-OBJS 	=  mainSample.o Utilities.o MainFunctions.o MathFunctions.o DistanceMatrixFunctions.o InitializationMedoids.o InitializationConcentrate.o
-SOURCE	=  mainSample.cpp Utilities.cpp MainFunctions.cpp MathFunctions.cpp DistanceMatrixFunctions.cpp InitializationMedoids.cpp InitializationConcentrate.cpp
-HEADER  = mainSample.h UtilsH.h Headers.h Returns.h MathFunctions.h DistanceMatrixFunctions.h
+OBJS 	=  mainSample.o Utilities.o MainFunctions.o MathFunctions.o DistanceMatrixFunctions.o InitializationMedoids.o InitializationConcentrate.o ClusterNodeFunctions.o ClusterTableFunctions.o
+SOURCE	=  mainSample.cpp Utilities.cpp MainFunctions.cpp MathFunctions.cpp DistanceMatrixFunctions.cpp InitializationMedoids.cpp InitializationConcentrate.cpp ClusterNodeFunctions.cpp ClusterTableFunctions.cpp
+HEADER  = mainSample.h UtilsH.h Headers.h Returns.h MathFunctions.h DistanceMatrixFunctions.h ClusterNode.h ClusterTable.h
 OUT  	= medoids
 CC	= g++
 FLAGS   = -g -c 
@@ -36,6 +36,12 @@ InitializationMedoids.o: InitializationMedoids.cpp
 
 InitializationConcentrate.o: InitializationConcentrate.cpp
 	$(CC) $(FLAGS) InitializationConcentrate.cpp			
+
+ClusterNodeFunctions.o: ClusterNodeFunctions.cpp
+	$(CC) $(FLAGS) ClusterNodeFunctions.cpp		
+
+ClusterTableFunctions.o: ClusterTableFunctions.cpp
+	$(CC) $(FLAGS) ClusterTableFunctions.cpp	
 
 # clean 
 clean:

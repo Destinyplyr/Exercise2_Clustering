@@ -16,7 +16,7 @@ void PAM(Conf* myConf, Metrics* myMetric, double** distanceMatrix, ListData<T>* 
 
 	for (int i = 0; i < myMetric->point_number; ++i)
 	{
-
+		
 	}
 
 	/*for (int i= 0; i < myMetric->point_number; ++i)
