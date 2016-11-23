@@ -174,63 +174,21 @@ int ClusterTable::ClusterDistance(double** distanceMatrix, int cluster_no)      
 }
 
 
-int ClusterTable::ClusterDistanceFromCentroid(double** distanceMatrix, int cluster_no)      //return medoid
+double ClusterTable::ClusterDistanceFromCentroid(double** distanceMatrix, int cluster_no, int centroid)      //return distance of cluster from point
 {
     double minDistance = INT_MAX;
-    double clusterDistance;
+    double clusterDistance = 0;
     int minDistanceMedoid = -1;
-    ClusterNode* driverNode = this->clusterTable[cluster_no];
     ClusterNode* currentNode;
-    while (driverNode != NULL) 
-    {
-        cout << "#############new driver " <<endl;
-        clusterDistance = 0;
-        currentNode = this->clusterTable[cluster_no];
-        while (currentNode != NULL) {
-            clusterDistance += DistanceMatrixDistance(distanceMatrix, driverNode->getItemNo(), currentNode->getItemNo());
-            //  cout << "curr dis: " << clusterDistance <<endl;
-            currentNode = currentNode->getNext();
-        }
-        if (clusterDistance < minDistance) {
-            minDistance = clusterDistance;
-            cout << "curr dis is min dis" <<endl;
-            minDistanceMedoid = driverNode->getItemNo();
-        }
-        driverNode = driverNode->getNext();
-        cout << "#############" <<endl;
+    currentNode = this->clusterTable[cluster_no];
+    while (currentNode != NULL) {
+        clusterDistance += DistanceMatrixDistance(distanceMatrix, centroid, currentNode->getItemNo());
+        //  cout << "curr dis: " << clusterDistance <<endl;
+        currentNode = currentNode->getNext();
     }
-    cout << "giving " << minDistanceMedoid <<" back" <<endl;
-    return minDistanceMedoid;
+    return clusterDistance;
 }
 
-int ClusterTable::ClusterDistanceNonCentroid(double** distanceMatrix, int cluster_no, ) 
-{
-    double minDistance = INT_MAX;
-    double clusterDistance;
-    int minDistanceMedoid = -1;
-    ClusterNode* driverNode = this->clusterTable[cluster_no];
-    ClusterNode* currentNode;
-    while (driverNode != NULL) 
-    {
-        cout << "#############new driver " <<endl;
-        clusterDistance = 0;
-        currentNode = this->clusterTable[cluster_no];
-        while (currentNode != NULL) {
-            clusterDistance += DistanceMatrixDistance(distanceMatrix, driverNode->getItemNo(), currentNode->getItemNo());
-            //  cout << "curr dis: " << clusterDistance <<endl;
-            currentNode = currentNode->getNext();
-        }
-        if (clusterDistance < minDistance) {
-            minDistance = clusterDistance;
-            cout << "curr dis is min dis" <<endl;
-            minDistanceMedoid = driverNode->getItemNo();
-        }
-        driverNode = driverNode->getNext();
-        cout << "#############" <<endl;
-    }
-    cout << "giving " << minDistanceMedoid <<" back" <<endl;
-    return minDistanceMedoid;
-}
 
 
 

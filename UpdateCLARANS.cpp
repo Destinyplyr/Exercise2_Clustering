@@ -6,11 +6,11 @@
 bool CLARANS(Conf* myConf, Metrics* myMetric, double** distanceMatrix, int* centroids,  ClusterTable* clusterTable, int** clusterAssign)
 {
 	int newMedoid;
+	int cluster;
 	bool changed = false;
 	int randomCentroid, randomNonCentroid;
 	int minimumCentroid, minimumNonCentroid;
-	double distanceSubtraction;
-	double minimumSubtraction;
+	double maximumSubtraction;
 
 	for (int i = 0; i < myConf->clarans_iterations; ++i)
 	{
@@ -30,8 +30,18 @@ bool CLARANS(Conf* myConf, Metrics* myMetric, double** distanceMatrix, int* cent
 				}
 
 			}while(Exists(centroids, myConf->number_of_clusters, randomNonCentroid));
-
-			if ( < clusterTable->ClusterDistanceFromCentroid(distanceMatrix, ReturnCluster(myConf, centroids, randomCentroid)))
+			cluster = ReturnCluster(myConf, centroids, randomCentroid);
+			//if noncentroid better
+			if (clusterTable->ClusterDistanceFromCentroid(distanceMatrix, cluster, randomNonCentroid) < clusterTable->ClusterDistanceFromCentroid(distanceMatrix, cluster, randomCentroid))
+			{
+				//if change is the best we have
+				if (clusterTable->ClusterDistanceFromCentroid(distanceMatrix, cluster, randomCentroid) - clusterTable->ClusterDistanceFromCentroid(distanceMatrix, cluster, randomNonCentroid) > maximumSubtraction)
+				{
+					maximumSubtraction = clusterTable->ClusterDistanceFromCentroid(distanceMatrix, cluster, randomCentroid) - clusterTable->ClusterDistanceFromCentroid(distanceMatrix, cluster, randomNonCentroid);
+					minimumCentroid = randomCentroid;
+					minimumNonCentroid = randomNonCentroid;
+				}
+			}
 
 		}
 		
