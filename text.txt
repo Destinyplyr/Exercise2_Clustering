@@ -1,8 +1,8 @@
 File : DataEuclidean.csv opened successfully!
 
-File : cluster.conf opened successfully!
-
 File : clusterOut.txt opened successfully!
+
+File : cluster.conf opened successfully!
 
 AAAAAANTE : 0
 paw gia to distance
