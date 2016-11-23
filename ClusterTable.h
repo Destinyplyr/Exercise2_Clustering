@@ -20,7 +20,7 @@ class ClusterTable
 		void setList(ClusterNode* table);
 		int getClusterNumber();
 		void setClusterNumber(int number_of_clusters);
-		void Remove(int item_no); 
+		void Remove(int item_no, int cluster_no); 
 		void InsertAtCluster(int item_no, int cluster_no); 
 
 		// void PrintData();;

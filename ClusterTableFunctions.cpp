@@ -78,12 +78,18 @@ void ClusterTable::setClusterNumber(int number_of_clusters)
 
 
 
-void ClusterTable::Remove(int item_no) 
+void ClusterTable::Remove(int item_no, int cluster_no) 
 {
-    if (clusterTable[item_no] != NULL) 
+
+	if (cluster_no == -1)
+	{
+		return;
+	}
+
+    if (clusterTable[cluster_no] != NULL) 
     {
     	ClusterNode *prev = NULL;
-        ClusterNode *list = clusterTable[item_no];
+        ClusterNode *list = clusterTable[cluster_no];
         while ((list->getNext() != NULL) && (list->getItemNo() != item_no)) 
         {
         	prev = list;
@@ -95,7 +101,7 @@ void ClusterTable::Remove(int item_no)
             {
             	ClusterNode *next= list->getNext();
                 delete list;
-                clusterTable[item_no] = next;
+                clusterTable[cluster_no] = next;
             } 
             else 
             {

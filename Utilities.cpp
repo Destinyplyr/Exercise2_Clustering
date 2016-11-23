@@ -134,3 +134,61 @@ bool Exists(int* items, int pos, int newItem)
 	}
 	return false;
 }
+
+
+
+
+
+double ObjectiveCost(int** clusterAssign, double** distanceMatrix, Metrics* myMetric)
+{
+	int column, row, j;
+	double theCost = 0.0f;
+
+	for (int i = 0; i < myMetric->point_number; ++i)
+	{
+		j = clusterAssign[i][0];
+		if (j != i)
+		{
+			if (j < i)
+			{
+				column = i;
+				row = j;
+			}
+			else
+			{
+				column = j;
+				row = i;
+			}
+		}
+		theCost += distanceMatrix[row][column];
+	}
+
+	return theCost;
+}
+
+
+
+
+
+
+void Init_Tables(double*** distance_matrix, Metrics* myMetric, Conf* myConf, int** centroids, ClusterTable** clusterTable, int*** clusterAssign)
+{
+	cout << "in Init_Tables" << endl;
+	*distance_matrix = new double*[myMetric->point_number];		//distance matrix creation
+	for (int i = 0; i < myMetric->point_number; i++) {
+		*distance_matrix[i] = new double[myMetric->point_number];
+	}
+	cout << "ekana to distance" << endl;
+	*centroids = new int[myMetric->point_number];
+	cout << "ekana to insertion" << endl;
+
+	*clusterTable = new ClusterTable(myConf->number_of_clusters);
+	*clusterAssign = new int*[myMetric->point_number];
+	for (int i = 0; i < myMetric->point_number; ++i)
+	{
+		*clusterAssign[i] = new int[3];
+		*clusterAssign[i][0] = -1;
+		*clusterAssign[i][1] = -1;
+		*clusterAssign[i][2] = -1;
+	}
+}

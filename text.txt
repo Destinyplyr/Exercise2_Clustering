@@ -4,18 +4,4 @@ File : cluster.conf opened successfully!
 
 File : clusterOut.txt opened successfully!
 
-AAAAAANTE : 0
-paw gia to distance
-ekana to distance
-ekana to centroids
-oeoeoeoeo
-********************************************************
-ekana to distance
-ekana to insertion
-********************************************************
-ekana kai to DistanceMatrixComputation
-before for
-centroid 0 - 854
-centroid 1 - 897
-centroid 2 - 876
-centroid 3 - 895
+in Init_Tables
