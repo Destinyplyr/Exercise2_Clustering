@@ -42,8 +42,23 @@ bool CLARANS(Conf* myConf, Metrics* myMetric, double** distanceMatrix, int* cent
 					minimumNonCentroid = randomNonCentroid;
 				}
 			}
-
 		}
+		//swapping
+		cluster = ReturnCluster(myConf, centroids, minimumCentroid);
+		centroids[cluster]  = minimumNonCentroid;
+		for (int j = 0; j < myMetric->point_number; ++j)		//updating clusterAssign
+		{
+			if(clusterAssign[i][0] == minimumCentroid) {
+				clusterAssign[i][0] = minimumNonCentroid;
+			}
+			if(clusterAssign[i][1] == minimumCentroid) {
+				clusterAssign[i][1] = minimumNonCentroid;
+			}
+			if(clusterAssign[i][2] == minimumCentroid) {
+				clusterAssign[i][2] = minimumNonCentroid;
+			}
+		}
+
 		
 		// newMedoid = clusterTable->ClusterDistance(distanceMatrix, i);
 		// if (newMedoid == -1) {
