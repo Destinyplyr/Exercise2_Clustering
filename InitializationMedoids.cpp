@@ -1,6 +1,5 @@
 #include "Headers.h"
 #include "UtilsH.h"
-#include "Algorithms.h"
 
 void KMedoidsPP(Conf* myConf, Metrics* myMetric, double** distanceMatrix, int* centroids)
 {
@@ -27,7 +26,7 @@ void KMedoidsPP(Conf* myConf, Metrics* myMetric, double** distanceMatrix, int* c
 	}
 
 	chosenCentroid =  (int)(((double)rand() / (double)RAND_MAX)*((double)myMetric->point_number));
-	cout << "First chosen : " << chosenCentroid << endl;
+	//cout << "First chosen : " << chosenCentroid << endl;
 	for (int i = 0; i < myConf->number_of_clusters; ++i)
 	{
 		for (int u = i; u < myConf->number_of_clusters; ++u)
@@ -39,20 +38,20 @@ void KMedoidsPP(Conf* myConf, Metrics* myMetric, double** distanceMatrix, int* c
 			minDistances[u] = INT_MAX;	
 		}
 
-		cout << "in for " << endl;
+		//cout << "in for " << endl;
 		centroids[i] = chosenCentroid;
 		Sum = 0;
 		maxProb = 0;
-		cout << "889" <<endl;
+		//cout << "889" <<endl;
 		for (int v = 0; v < myMetric->point_number; ++v)		//for every point
 		{
-			cout << "new point" <<endl;
+			//cout << "new point" <<endl;
 			//cin >> GARBAGE;
 			for (int j = 0; j <= i; ++j)			//for every centroid up until now
 			{
 				//cout << "dm - md:" << minDistances[v] <<endl;
 				//cout << "dm - md: " << distanceMatrix[v][centroids[j]] << " - " << minDistances[v] <<endl;
-				cout << v << " - " << centroids[j] << endl;
+				//cout << v << " - " << centroids[j] << endl;
 				if ( v > centroids[j]) {
 					column = v;
 					row = centroids[j];
@@ -64,38 +63,37 @@ void KMedoidsPP(Conf* myConf, Metrics* myMetric, double** distanceMatrix, int* c
 				if (distanceMatrix[row][column] < minDistances[v] && v != centroids[j])
 				{
 					minDistances[v] = distanceMatrix[row][column];
-					cout << "Min distance : " << minDistances[v] << endl;
+					//cout << "Min distance : " << minDistances[v] << endl;
 					if (minDistances[v] == 0) {
-						cin >> GARBAGE;
+						//cin >> GARBAGE;
 					}
 				}
 			}
 		}
-		cout << "ok" <<endl;
-		cin >> GARBAGE;
+		//cout << "ok" <<endl;
+		//cin >> GARBAGE;
 		for (int v = 0; v < myMetric->point_number; ++v)
 		{
 			if (!Exists(centroids, i, v))
 			{
 				Sum += pow(minDistances[v], 2);
-				cout << "Sum : " << Sum << endl;
+				//cout << "Sum : " << Sum << endl;
 				//cin >> GARBAGE;
 			}
 		}
-		cin >> GARBAGE;
+		//cin >> GARBAGE;
 		for (int v = 0; v <  myMetric->point_number; ++v)
 		{
 			if (!Exists(centroids, i, v))
 			{
 				probabilities[v] = (pow(minDistances[v], 2) / Sum) * ((double)rand() / (double)RAND_MAX);
-				cout << "Probability : " << probabilities[v] << endl;
+				//cout << "Probability : " << probabilities[v] << endl;
 			}
 			else
 			{
 				probabilities[v] = -1;
 			}
 		}
-cin >> GARBAGE;
 
 		for (int v = 0; v < myMetric->point_number; ++v)
 		{
@@ -108,7 +106,7 @@ cin >> GARBAGE;
 				}
 			}
 		}
-		cout << "Next chosen : " << chosenCentroid << endl;
-		cin >> GARBAGE;
+		//cout << "Next chosen : " << chosenCentroid << endl;
+		//cin >> GARBAGE;
 	}
 }

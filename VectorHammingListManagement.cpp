@@ -74,12 +74,12 @@ void ListData<T>::DistanceMatrixComputationVector(Metrics* myMetric, double** di
 				distance_matrix[i][j] = 0;
 			}
 			else {
-				if (strcmp(myMetric->metric_space.c_str(), "hamming") == 0)
-				{
-					//distance_matrix[i][j] = this->Distance(current_node->getKey(), driver_node->getKey(), myMetric->point_dimension);
-					//cout << distance_matrix[i][j] << "\t";
-					current_node = current_node->getNext();
-				}
+				// if (strcmp(myMetric->metric_space.c_str(), "hamming") == 0)
+				// {
+				// 	distance_matrix[i][j] = this->DistanceB2BHamming(current_node->getKey(), driver_node->getKey());
+				// 	cout << distance_matrix[i][j] << "\t";
+				// 	current_node = current_node->getNext();
+				// }
 
 				if (strcmp(myMetric->metric_space.c_str(), "vector") == 0)
 				{

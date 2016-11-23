@@ -78,7 +78,6 @@ void ListData<T>::Insert(T newItem, int itemno, string itemName)
 	//cout << "Item inserted" << endl;
 }
 
-
 template <typename T>
 int ListData<T>::Distance(T item1, T item2)
 {
@@ -107,6 +106,13 @@ int ListData<T>::Distance(T item1, T item2)
 
 
 template <typename T>
+double ListData<T>::DistanceB2BHamming(T item1, T item2)
+{
+	return (item1 ^= item2).count();
+}
+
+
+template <typename T>
 double ListData<T>::CosineDistance(double item1[], double item2[], int size)      //Cosine
 {
 	double norm1, norm2;
@@ -131,6 +137,18 @@ bool ListData<T>::HammingDuplicate(T item) {
 	Node<T>* currentNode = header;
 	while(currentNode != NULL) {
 		if (item.compare(currentNode->getKey()) == 0) {
+			return true;
+		}
+		currentNode = currentNode->getNext();
+	}
+	return false;
+}
+
+template <typename T>
+bool ListData<T>::HammingB2BDuplicate(T item) {
+	Node<T>* currentNode = header;
+	while(currentNode != NULL) {
+		if ((item ^= currentNode->getKey()) == 0) {
 			return true;
 		}
 		currentNode = currentNode->getNext();

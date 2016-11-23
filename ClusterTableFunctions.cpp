@@ -11,10 +11,11 @@ ClusterTable::ClusterTable()
 ClusterTable::ClusterTable(int number_of_clusters)
 {
 	this->number_of_clusters = number_of_clusters;
-	clusterTable = new ClusterNode*[number_of_clusters];
+	this->clusterTable = new ClusterNode*[number_of_clusters];
+    cout << "list actuel: " << clusterTable << endl;
 	for (int i = 0; i < number_of_clusters; ++i)
 	{
-		clusterTable[i] = NULL;
+		this->clusterTable[i] = NULL;
 	}
 	//cout << "------->  ClusterTable initialized successfully!" << endl << endl;
 }
@@ -78,12 +79,18 @@ void ClusterTable::setClusterNumber(int number_of_clusters)
 
 
 
-void ClusterTable::Remove(int item_no) 
+void ClusterTable::Remove(int item_no, int cluster_no) 
 {
-    if (clusterTable[item_no] != NULL) 
+
+	if (cluster_no == -1)
+	{
+		return;
+	}
+
+    if (clusterTable[cluster_no] != NULL) 
     {
     	ClusterNode *prev = NULL;
-        ClusterNode *list = clusterTable[item_no];
+        ClusterNode *list = clusterTable[cluster_no];
         while ((list->getNext() != NULL) && (list->getItemNo() != item_no)) 
         {
         	prev = list;
@@ -95,7 +102,7 @@ void ClusterTable::Remove(int item_no)
             {
             	ClusterNode *next= list->getNext();
                 delete list;
-                clusterTable[item_no] = next;
+                clusterTable[cluster_no] = next;
             } 
             else 
             {
@@ -113,16 +120,17 @@ void ClusterTable::Remove(int item_no)
 
 void ClusterTable::InsertAtCluster(int item_no, int cluster_no) 
 {
+    if (cluster_no == -1) {
+        return;
+    }
 	ClusterNode* prev = NULL;
     ClusterNode* list = clusterTable[cluster_no];
-
     while (list != NULL)
     {
         prev = list;
         list = list->getNext();
     }
     list = new ClusterNode(item_no, NULL);
-
     if (prev == NULL)
     {
         clusterTable[cluster_no] = list;

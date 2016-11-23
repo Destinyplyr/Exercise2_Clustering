@@ -1,8 +1,8 @@
 # In order to execute this "makefile" just type "make"
 
-OBJS 	=  mainSample.o Utilities.o MainFunctions.o MathFunctions.o DistanceMatrixFunctions.o InitializationMedoids.o InitializationConcentrate.o ClusterNodeFunctions.o ClusterTableFunctions.o
-SOURCE	=  mainSample.cpp Utilities.cpp MainFunctions.cpp MathFunctions.cpp DistanceMatrixFunctions.cpp InitializationMedoids.cpp InitializationConcentrate.cpp ClusterNodeFunctions.cpp ClusterTableFunctions.cpp
-HEADER  = mainSample.h UtilsH.h Headers.h Returns.h MathFunctions.h DistanceMatrixFunctions.h ClusterNode.h ClusterTable.h
+OBJS 	=  mainSample.o Utilities.o MainFunctions.o MathFunctions.o DistanceMatrixFunctions.o InitializationMedoids.o InitializationConcentrate.o ClusterNodeFunctions.o ClusterTableFunctions.o AssignmentPAM.o
+SOURCE	=  mainSample.cpp Utilities.cpp MainFunctions.cpp MathFunctions.cpp DistanceMatrixFunctions.cpp InitializationMedoids.cpp InitializationConcentrate.cpp ClusterNodeFunctions.cpp ClusterTableFunctions.cpp AssignmentPAM.cpp
+HEADER  = mainSample.h UtilsH.h Headers.h Returns.h MathFunctions.h DistanceMatrixFunctions.h Algorithms.h ClusterNode.h ClusterTable.h
 OUT  	= medoids
 CC	= g++
 FLAGS   = -g -c 
@@ -15,7 +15,7 @@ all: $(OBJS)
 # create/compile the individual files
 
 
-mainSample.o: mainSample.cpp Node.h ListData.h Algorithms.h ListsFunctions.cpp NodeFunctions.cpp VectorHammingListManagement.cpp DBListManagement.cpp
+mainSample.o: mainSample.cpp Node.h ListData.h ListsFunctions.cpp NodeFunctions.cpp VectorHammingListManagement.cpp DBListManagement.cpp HammingListManagement.cpp
 	$(CC) $(FLAGS) mainSample.cpp			
 
 Utilities.o: Utilities.cpp
@@ -42,6 +42,9 @@ ClusterNodeFunctions.o: ClusterNodeFunctions.cpp
 
 ClusterTableFunctions.o: ClusterTableFunctions.cpp
 	$(CC) $(FLAGS) ClusterTableFunctions.cpp	
+
+AssignmentPAM.o: AssignmentPAM.cpp
+	$(CC) $(FLAGS) AssignmentPAM.cpp		
 
 # clean 
 clean:

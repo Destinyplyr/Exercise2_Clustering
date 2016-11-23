@@ -23,7 +23,7 @@ void ListData<T>::ListInsertionDB(std::ifstream& inputFile, Metrics* myMetric)
         //itemName[ind] = pointStr;
         point_number++;
     }
-	cout << "point number : " << point_number << endl;
+	//cout << "point number : " << point_number << endl;
 	myMetric->point_number = point_number;
 
 	inputFile.clear();              //Restart

@@ -21,11 +21,15 @@ class ListData
 		int Distance(T item1, T item2);
 		double CosineDistance(double p1[], double p2[], int size);
 		bool HammingDuplicate(T item);
+		bool HammingB2BDuplicate(T item);
 		bool EuclideanDuplicate(T item, int size);
 		void ListInsertionVector(std::ifstream& inputFile, Metrics* myMetric);
 		void DistanceMatrixComputationVector(Metrics* myMetric, double** distance_matrix);
 		void ListInsertionDB(std::ifstream& inputFile, Metrics* myMetric);
 		void DistanceMatrixComputationDB(std::ifstream& inputFile, Metrics* myMetric, double** distance_matrix);
+		void ListInsertionHamming(std::ifstream& inputFile, Metrics* myMetric);
+		double DistanceB2BHamming(T item1, T item2);
+		void DistanceMatrixComputationHamming(Metrics* myMetric, double** distance_matrix);
 		
 	private:
 		Node<T>* header;
