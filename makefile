@@ -1,7 +1,7 @@
 # In order to execute this "makefile" just type "make"
 
-OBJS 	=  mainSample.o Utilities.o MainFunctions.o MathFunctions.o DistanceMatrixFunctions.o InitializationMedoids.o InitializationConcentrate.o ClusterNodeFunctions.o ClusterTableFunctions.o AssignmentPAM.o
-SOURCE	=  mainSample.cpp Utilities.cpp MainFunctions.cpp MathFunctions.cpp DistanceMatrixFunctions.cpp InitializationMedoids.cpp InitializationConcentrate.cpp ClusterNodeFunctions.cpp ClusterTableFunctions.cpp AssignmentPAM.cpp
+OBJS 	=  mainSample.o Utilities.o MainFunctions.o MathFunctions.o DistanceMatrixFunctions.o InitializationMedoids.o InitializationConcentrate.o ClusterNodeFunctions.o ClusterTableFunctions.o AssignmentPAM.o UpdateALaLoyds.o UpdateCLARANS.o
+SOURCE	=  mainSample.cpp Utilities.cpp MainFunctions.cpp MathFunctions.cpp DistanceMatrixFunctions.cpp InitializationMedoids.cpp InitializationConcentrate.cpp ClusterNodeFunctions.cpp ClusterTableFunctions.cpp AssignmentPAM.cpp UpdateALaLoyds.cpp UpdateCLARANS.cpp
 HEADER  = mainSample.h UtilsH.h Headers.h Returns.h MathFunctions.h DistanceMatrixFunctions.h Algorithms.h ClusterNode.h ClusterTable.h
 OUT  	= medoids
 CC	= g++
@@ -44,7 +44,13 @@ ClusterTableFunctions.o: ClusterTableFunctions.cpp
 	$(CC) $(FLAGS) ClusterTableFunctions.cpp	
 
 AssignmentPAM.o: AssignmentPAM.cpp
-	$(CC) $(FLAGS) AssignmentPAM.cpp		
+	$(CC) $(FLAGS) AssignmentPAM.cpp	
+
+UpdateALaLoyds.o: UpdateALaLoyds.cpp
+	$(CC) $(FLAGS) UpdateALaLoyds.cpp
+
+UpdateCLARANS.o: UpdateCLARANS.cpp
+	$(CC) $(FLAGS) UpdateCLARANS.cpp
 
 # clean 
 clean:

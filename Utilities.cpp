@@ -116,7 +116,14 @@ void SetClaransFraction(Conf* myConf, Metrics* myMetric)
 		}
 		else
 		{
-			myConf->clarans_set_fraction = 250;
+			if (myConf->number_of_clusters * (myMetric->point_number - myConf->number_of_clusters) < 250)
+			{
+				myConf->clarans_set_fraction = myConf->number_of_clusters * (myMetric->point_number - myConf->number_of_clusters);
+			}
+			else
+			{
+				myConf->clarans_set_fraction = 250;
+			}
 		}
 	}
 }
@@ -139,14 +146,14 @@ bool Exists(int* items, int pos, int newItem)
 
 
 
-double ObjectiveCost(int** clusterAssign, double** distanceMatrix, Metrics* myMetric)
+double ObjectiveCost(int** clusterAssign, double** distanceMatrix, Metrics* myMetric)		//returns the cost of all
 {
 	int column, row, j;
 	double theCost = 0.0f;
 
 	for (int i = 0; i < myMetric->point_number; ++i)
 	{
-		j = clusterAssign[i][0];
+		j = clusterAssign[i][0];			//holds best - second best and current centroid
 		if (j != i)
 		{
 			if (j < i)
@@ -192,5 +199,15 @@ void Init_Tables(double*** distance_matrix, Metrics* myMetric, Conf* myConf, int
 		(*clusterAssign)[i][0] = -1;
 		(*clusterAssign)[i][1] = -1;
 		(*clusterAssign)[i][2] = -1;
+	}
+}
+
+int ReturnCluster(Conf* myConf, int* centroids, int centroid) {
+	for (int i = 0; i < myConf->number_of_clusters; ++i)
+	{
+		if (centroids[i] == centroid)
+		{
+			return i;
+		}
 	}
 }

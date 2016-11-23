@@ -1,4 +1,5 @@
 #include "Returns.h"
+#include "DistanceMatrixFunctions.h"
 #include "ClusterNode.h"
 
 class ClusterTable
@@ -22,6 +23,7 @@ class ClusterTable
 		void setClusterNumber(int number_of_clusters);
 		void Remove(int item_no, int cluster_no); 
 		void InsertAtCluster(int item_no, int cluster_no); 
+		int ClusterDistance(double** distanceMatrix, int cluster_no);
 
 		// void PrintData();;
 		// void Insert(T item, int itemno, std::string itemName);;
