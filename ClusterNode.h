@@ -11,8 +11,6 @@ class ClusterNode
 		void setItemNo(int item_no);
 		int getItemNo();
 		
-	
-
 		// void PrintData();
 		// void Insert(T item, int itemno, std::string itemName);
 		// void initEuclideanList(std::ifstream& inputFile, std::ifstream& queryFile, int k, int L, std::ofstream& outputfile, int* dataLength);
