@@ -147,10 +147,11 @@ int main(int argc, char **argv)
 			//KMedoidsPP(myConf, myMetric, distance_matrix, centroids);
 			Concentrate(myConf, myMetric, distance_matrix, centroids);
 			cout << clusterAssign[0][0] <<endl;
-			PAM(myConf, myMetric, distance_matrix, centroids, clusterTable, clusterAssign);
-			if (!ALaLoyds(myConf, distance_matrix, centroids, clusterTable)) {
-				cout << "done!" << endl;
-			}
+			// PAM(myConf, myMetric, distance_matrix, centroids, clusterTable, clusterAssign);
+			// if (!ALaLoyds(myConf, distance_matrix, centroids, clusterTable)) {
+			// 	cout << "done!" << endl;
+			// }
+			CLARANS(myConf, myMetric, distance_matrix, centroids, clusterTable, clusterAssign);
 		}
 		
 		if (strcmp(myMetric->metric.c_str(), "cosine") == 0)
@@ -164,10 +165,11 @@ int main(int argc, char **argv)
 			cosineList->DistanceMatrixComputationVector(myMetric, distance_matrix);
 			//KMedoidsPP(myConf, myMetric, distance_matrix, centroids);
 			Concentrate(myConf, myMetric, distance_matrix, centroids);
-			PAM(myConf, myMetric, distance_matrix, centroids, clusterTable, clusterAssign);
-			if (!ALaLoyds(myConf, distance_matrix, centroids, clusterTable)) {
-				cout << "done!" << endl;
-			}
+			// PAM(myConf, myMetric, distance_matrix, centroids, clusterTable, clusterAssign);
+			// if (!ALaLoyds(myConf, distance_matrix, centroids, clusterTable)) {
+			// 	cout << "done!" << endl;
+			// }
+			CLARANS(myConf, myMetric, distance_matrix, centroids, clusterTable, clusterAssign);
 		}
 	}
 
@@ -183,10 +185,11 @@ int main(int argc, char **argv)
 		DBHList->DistanceMatrixComputationDB(inputFile, myMetric, distance_matrix);
 		Concentrate(myConf, myMetric, distance_matrix, centroids);
 		//KMedoidsPP(myConf, myMetric, distance_matrix, centroids);
-		PAM(myConf, myMetric, distance_matrix, centroids, clusterTable, clusterAssign);
-		if (!ALaLoyds(myConf, distance_matrix, centroids, clusterTable)) {
-			cout << "done!" << endl;
-		}
+		// PAM(myConf, myMetric, distance_matrix, centroids, clusterTable, clusterAssign);
+		// if (!ALaLoyds(myConf, distance_matrix, centroids, clusterTable)) {
+		// 	cout << "done!" << endl;
+		// }
+		CLARANS(myConf, myMetric, distance_matrix, centroids, clusterTable, clusterAssign);
 
 	}
 

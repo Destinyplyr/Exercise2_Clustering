@@ -89,7 +89,7 @@ void ClusterTable::Remove(int item_no, int cluster_no)
 	}
     if (clusterTable[cluster_no] != NULL) 
     {
-        cout << "IN Remove " << endl;
+        cout << "IN Remove " << cluster_no<< endl;
     	ClusterNode *prev = NULL;
         ClusterNode *list = clusterTable[cluster_no];
         cout << "rem 1" <<endl;
@@ -137,7 +137,7 @@ void ClusterTable::InsertAtCluster(int item_no, int cluster_no)
     ClusterNode* newNode;
     while (list != NULL)
     {
-        cout << "we have a friend here - 907" <<endl;
+        //cout << "we have a friend here - 907" <<endl;
         prev = list;
         list = list->getNext();
     }

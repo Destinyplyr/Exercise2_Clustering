@@ -58,7 +58,7 @@ void PAM(Conf* myConf, Metrics* myMetric, double** distanceMatrix, int* centroid
 		if (clusterAssign[i][2] != clusterAssign[i][0]) 
 		{
 			if (clusterAssign[i][2] != -1) {
-				cluster_no = ReturnCluster(myConf, centroids, clusterAssign[i][2]);
+				cluster_no = ReturnCluster(myConf, centroids, clusterAssign[i][0]);
 			}
 			clusterTable->Remove(i, cluster_no);
 			cout << "Remove DONE!!!!!!!!!!!!!!! " << endl;
