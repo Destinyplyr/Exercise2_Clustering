@@ -145,13 +145,14 @@ int main(int argc, char **argv)
 			euclideanList->DistanceMatrixComputationVector(myMetric, distance_matrix);
 			cout << "ekana kai to DistanceMatrixComputation" << endl;
 			//KMedoidsPP(myConf, myMetric, distance_matrix, centroids);
-			Concentrate(myConf, myMetric, distance_matrix, centroids);
-			cout << clusterAssign[0][0] <<endl;
+			//Concentrate(myConf, myMetric, distance_matrix, centroids);
+			//cout << clusterAssign[0][0] <<endl;
 			// PAM(myConf, myMetric, distance_matrix, centroids, clusterTable, clusterAssign);
 			// if (!ALaLoyds(myConf, distance_matrix, centroids, clusterTable)) {
 			// 	cout << "done!" << endl;
 			// }
-			CLARANS(myConf, myMetric, distance_matrix, centroids, clusterTable, clusterAssign);
+			//CLARANS(myConf, myMetric, distance_matrix, centroids, clusterTable, clusterAssign);
+			CLARA( myConf,  myMetric, distance_matrix, centroids, clusterTable, clusterAssign);
 		}
 		
 		if (strcmp(myMetric->metric.c_str(), "cosine") == 0)

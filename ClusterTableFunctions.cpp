@@ -211,6 +211,42 @@ double ClusterTable::ClusterDistanceFromCentroid(double** distanceMatrix, int cl
     return clusterDistance;
 }
 
+double ClusterTable::ClusterSilhouette(Conf* myConf, double** distanceMatrix, int* centroids,  int cluster_no, int point, int** clusterAssign)
+{
+    double avg_silh = 0;
+    int number_in_cluster = 0;
+    int number_in_scnd_cluster = 0;
+    int b_i, a_i;
+    int number_of_scnd_cluster;
+    ClusterNode* currentNode = clusterTable[cluster_no];
+    number_of_scnd_cluster = ReturnCluster(myConf, centroids, clusterAssign[point][1]);
+    ClusterNode* secondNode = clusterTable[number_of_cluster];
+
+    while (currentNode != NULL) {
+        number_in_cluster++;
+        currentNode = currentNode->getNext();
+    }
+    while (secondNode != NULL) {
+        number_in_scnd_cluster++;
+        secondNode = secondNode->getNext();
+    }
+    currentNode = ClusterTable[cluster_no];
+    while (currentNode != NULL) {
+        a_i = ClusterDistanceFromCentroid(distanceMatrix, cluster_no, currentNode->getItemNo()) /  number_in_cluster;
+        b_i = ClusterDistanceFromCentroid(distanceMatrix, number_of_scnd_cluster, currentNode->getItemNo()) / number_in_scnd_cluster;
+        if (a_i >= b_i) 
+        {
+            avg_silh += (b_i - a_i) / a_i;
+        }
+        else
+        {
+            avg_silh += (b_i - a_i) / b_i;
+        }
+        currentNode = currentNode->getNext();
+    }
+    return avg_silh/ number_in_cluster;
+}
+
 
 
 

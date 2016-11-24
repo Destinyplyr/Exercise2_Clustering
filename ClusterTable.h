@@ -25,6 +25,7 @@ class ClusterTable
 		void InsertAtCluster(int item_no, int cluster_no); 
 		int ClusterDistance(double** distanceMatrix, int cluster_no);
 		double ClusterDistanceFromCentroid(double** distanceMatrix, int cluster_no, int centroid);
+		double ClusterSilhouette(Conf* myConf, double** distanceMatrix, int* centroids,  int cluster_no, int point, int** clusterAssign);
 		// void PrintData();;
 		// void Insert(T item, int itemno, std::string itemName);;
 		// void initEuclideanList(std::ifstream& inputFile, std::ifstream& queryFile, int k, int L, std::ofstream& outputfile, int* dataLength);;

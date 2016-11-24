@@ -153,7 +153,7 @@ double ObjectiveCost(int** clusterAssign, double** distanceMatrix, Metrics* myMe
 
 	for (int i = 0; i < myMetric->point_number; ++i)
 	{
-		j = clusterAssign[i][0];			//holds best - second best and current centroid
+/*		j = clusterAssign[i][0];			//holds best - second best and current centroid
 		if (j != i)
 		{
 			if (j < i)
@@ -166,8 +166,9 @@ double ObjectiveCost(int** clusterAssign, double** distanceMatrix, Metrics* myMe
 				column = j;
 				row = i;
 			}
-		}
-		theCost += distanceMatrix[row][column];
+		}*/
+		//theCost += distanceMatrix[row][column];
+		theCost += DistanceMatrixDistance( distanceMatrix, clusterAssign[i][0], i);
 	}
 
 	return theCost;

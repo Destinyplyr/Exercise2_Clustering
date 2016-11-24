@@ -1,7 +1,7 @@
 # In order to execute this "makefile" just type "make"
 
-OBJS 	=  mainSample.o Utilities.o MainFunctions.o MathFunctions.o DistanceMatrixFunctions.o InitializationMedoids.o InitializationConcentrate.o ClusterNodeFunctions.o ClusterTableFunctions.o AssignmentPAM.o UpdateALaLoyds.o UpdateCLARANS.o
-SOURCE	=  mainSample.cpp Utilities.cpp MainFunctions.cpp MathFunctions.cpp DistanceMatrixFunctions.cpp InitializationMedoids.cpp InitializationConcentrate.cpp ClusterNodeFunctions.cpp ClusterTableFunctions.cpp AssignmentPAM.cpp UpdateALaLoyds.cpp UpdateCLARANS.cpp
+OBJS 	=  mainSample.o Utilities.o MainFunctions.o MathFunctions.o DistanceMatrixFunctions.o InitializationMedoids.o InitializationConcentrate.o ClusterNodeFunctions.o ClusterTableFunctions.o AssignmentPAM.o UpdateALaLoyds.o UpdateCLARANS.o CLARA.o PAM.o
+SOURCE	=  mainSample.cpp Utilities.cpp MainFunctions.cpp MathFunctions.cpp DistanceMatrixFunctions.cpp InitializationMedoids.cpp InitializationConcentrate.cpp ClusterNodeFunctions.cpp ClusterTableFunctions.cpp AssignmentPAM.cpp UpdateALaLoyds.cpp UpdateCLARANS.cpp CLARA.cpp PAM.cpp
 HEADER  = mainSample.h UtilsH.h Headers.h Returns.h MathFunctions.h DistanceMatrixFunctions.h Algorithms.h ClusterNode.h ClusterTable.h
 OUT  	= medoids
 CC	= g++
@@ -51,6 +51,12 @@ UpdateALaLoyds.o: UpdateALaLoyds.cpp
 
 UpdateCLARANS.o: UpdateCLARANS.cpp
 	$(CC) $(FLAGS) UpdateCLARANS.cpp
+
+CLARA.o: CLARA.cpp
+	$(CC) $(FLAGS) CLARA.cpp
+
+PAM.o: PAM.cpp
+	$(CC) $(FLAGS) PAM.cpp
 
 # clean 
 clean:
