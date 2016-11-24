@@ -58,6 +58,7 @@ void PAM(Conf* myConf, Metrics* myMetric, double** distanceMatrix, int* centroid
 		for(int k = 0; k < myConf->number_of_clusters; k++) {
 			if (centroids[k] == clusterAssign[i][0]) 
 			{
+				cout << "centroid before instert : " << centroids[k] << endl;
 				clusterTable->InsertAtCluster(i, k);
 				break;
 			}

@@ -203,10 +203,14 @@ void Init_Tables(double*** distance_matrix, Metrics* myMetric, Conf* myConf, int
 }
 
 int ReturnCluster(Conf* myConf, int* centroids, int centroid) {
+	cout << "mumble " <<myConf->number_of_clusters <<endl;
 	for (int i = 0; i < myConf->number_of_clusters; ++i)
 	{
+		cout << "centroids[i] - centroid " << centroids[i] << " -  " << centroid << endl;
+		cout << "whadisi: " << i <<endl;
 		if (centroids[i] == centroid)
 		{
+			cout << "returns : " <<i <<endl;
 			return i;
 		}
 	}

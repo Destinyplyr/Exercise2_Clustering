@@ -18,15 +18,16 @@ ClusterNode::ClusterNode(int item_no, ClusterNode* next)
 
 ClusterNode::~ClusterNode()
 {
+	cout << "mesa ston destructor tou ClusterNode" << endl;
 	if (next != NULL)
 	{
 		delete next;
 		next = NULL;
-		//cout << "------->  Finished processing the ClusterNode." << endl;
+		cout << "------->  Finished processing the ClusterNode." << endl;
 	}
 	else
 	{
-		//cout << "------->  Finished processing the ClusterNode." << endl;
+		cout << "------->  Finished processing the ClusterNode." << endl;
 	}
 }
 

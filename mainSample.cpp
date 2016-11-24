@@ -122,13 +122,13 @@ int main(int argc, char **argv)
 		//KMedoidsPP(myConf, myMetric, distance_matrix, centroids);
 		Concentrate(myConf, myMetric, distance_matrix, centroids);
 		cout << clusterAssign[0][0] <<endl;
-		PAM(myConf, myMetric, distance_matrix, centroids, clusterTable, clusterAssign);
-		if (!ALaLoyds(myConf, distance_matrix, centroids, clusterTable)) {
-			cout << "done!" << endl;
-		}
-
-
+		//PAM(myConf, myMetric, distance_matrix, centroids, clusterTable, clusterAssign);
+		// if (!ALaLoyds(myConf, distance_matrix, centroids, clusterTable)) {
+		// 	cout << "done!" << endl;
+		// }
+		CLARANS(myConf, myMetric, distance_matrix, centroids, clusterTable, clusterAssign);
 	}
+
 
 	if (strcmp(myMetric->metric_space.c_str(), "vector") == 0)
 	{

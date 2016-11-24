@@ -89,6 +89,7 @@ void ClusterTable::Remove(int item_no, int cluster_no)
 
     if (clusterTable[cluster_no] != NULL) 
     {
+        cout << "IN Remove " << endl;
     	ClusterNode *prev = NULL;
         ClusterNode *list = clusterTable[cluster_no];
         while ((list->getNext() != NULL) && (list->getItemNo() != item_no)) 
@@ -134,10 +135,12 @@ void ClusterTable::InsertAtCluster(int item_no, int cluster_no)
     if (prev == NULL)
     {
         clusterTable[cluster_no] = list;
+        cout << "sett prev first" <<endl;
     }
     else
     {
         prev->setNext(list);
+        cout << "sett prev" <<endl;
     }
 
     //cout << "Item inserted in hash table with hash : " << cluster_no <<endl;
@@ -176,14 +179,23 @@ int ClusterTable::ClusterDistance(double** distanceMatrix, int cluster_no)      
 
 double ClusterTable::ClusterDistanceFromCentroid(double** distanceMatrix, int cluster_no, int centroid)      //return distance of cluster from point
 {
+    cout << "in ClusterDistanceFromCentroid" << endl;
     double minDistance = INT_MAX;
     double clusterDistance = 0;
     int minDistanceMedoid = -1;
     ClusterNode* currentNode;
     currentNode = this->clusterTable[cluster_no];
+    // if (currentNode == NULL)
+    // {
+    //     cout << "einAI NULL" << endl;
+    //     exit(1);
+    // }
+   cout << "before whiel - " << endl;
+    //cout << "ginetai auto? " << currentNode->getItemNo() << endl;
     while (currentNode != NULL) {
+        //cout << "in while" << endl;
         clusterDistance += DistanceMatrixDistance(distanceMatrix, centroid, currentNode->getItemNo());
-        //  cout << "curr dis: " << clusterDistance <<endl;
+        //cout << "curr dis: " << clusterDistance <<endl;
         currentNode = currentNode->getNext();
     }
     return clusterDistance;

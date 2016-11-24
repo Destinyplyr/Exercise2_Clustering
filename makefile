@@ -54,7 +54,7 @@ UpdateCLARANS.o: UpdateCLARANS.cpp
 
 # clean 
 clean:
-	rm -f $(OBJS) $(OUT)
+	rm -f $(OBJS) $(OUT) ListsFunctions.o NodeFunctions.o VectorHammingListManagement.o DBListManagement.o HammingListManagement.o
 
 #accounting
 count:
