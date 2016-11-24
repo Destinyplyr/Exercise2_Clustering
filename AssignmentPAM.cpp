@@ -6,6 +6,7 @@ void PAM(Conf* myConf, Metrics* myMetric, double** distanceMatrix, int* centroid
 {
     int* new_centroids;
     int* best_centroids;
+    int cluster_no = 0;
     double minDistance;
     double secondBest;
 	cout << "IN PAM" << endl;
@@ -53,23 +54,30 @@ void PAM(Conf* myConf, Metrics* myMetric, double** distanceMatrix, int* centroid
 		}
 
 		cout << "paw gia Remove" << endl;
-		clusterTable->Remove(i, clusterAssign[i][2]);
-		cout << "Remove DONE!!!!!!!!!!!!!!! " << endl;
-		for(int k = 0; k < myConf->number_of_clusters; k++) {
-			if (centroids[k] == clusterAssign[i][0]) 
-			{
-				cout << "centroid before instert : " << centroids[k] << endl;
-				clusterTable->InsertAtCluster(i, k);
-				break;
+		cout << "my current cluster - beofre rem - 906: old " << clusterAssign[i][2] << " new " << clusterAssign[i][0]<<endl;
+		if (clusterAssign[i][2] != clusterAssign[i][0]) 
+		{
+			if (clusterAssign[i][2] != -1) {
+				cluster_no = ReturnCluster(myConf, centroids, clusterAssign[i][2]);
 			}
+			clusterTable->Remove(i, cluster_no);
+			cout << "Remove DONE!!!!!!!!!!!!!!! " << endl;
+			for(int k = 0; k < myConf->number_of_clusters; k++) {
+				if (centroids[k] == clusterAssign[i][0]) 
+				{
+					cout << "centroid before instert : " << centroids[k] << endl;
+					clusterTable->InsertAtCluster(i, k);
+					break;
+				}
+			}
+			cout << "InsertAtCluster DONE!!!!!!!!!!!!!!!!!" << endl;
+			clusterAssign[i][2] = clusterAssign[i][0]; 
+			cout << "change after InsertAtCluster DON!!!!" << endl;
+			cout <<  "NEAREST CENTRO : ^^^^^^^^^^^^^^^^^^^^^^^^" << clusterAssign[i][2] << endl;
 		}
 		
-		cout << "InsertAtCluster DONE!!!!!!!!!!!!!!!!!" << endl;
-		clusterAssign[i][2] = clusterAssign[i][0]; 
-		cout << "change after InsertAtCluster DON!!!!" << endl;
-		cout <<  "NEAREST CENTRO : ^^^^^^^^^^^^^^^^^^^^^^^^" << clusterAssign[i][2] << endl;
 	}
-
+	cout << "oeoeo " << clusterTable->getArray()[2]->getItemNo() <<endl;
 	/*for (int i= 0; i < myMetric->point_number; ++i)
 	{
 		for (int j = 0; j < myMetric->point_number; ++j)

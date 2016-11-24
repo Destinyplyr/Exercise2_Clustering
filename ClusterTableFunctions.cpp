@@ -84,31 +84,38 @@ void ClusterTable::Remove(int item_no, int cluster_no)
 
 	if (cluster_no == -1)
 	{
+        cout << "I have not yet been added -909" <<endl;
 		return;
 	}
-
     if (clusterTable[cluster_no] != NULL) 
     {
         cout << "IN Remove " << endl;
     	ClusterNode *prev = NULL;
         ClusterNode *list = clusterTable[cluster_no];
+        cout << "rem 1" <<endl;
         while ((list->getNext() != NULL) && (list->getItemNo() != item_no)) 
         {
         	prev = list;
             list = list->getNext();
         }
+        cout << "rem 2" <<endl;
         if (list->getItemNo() == item_no) 
         {
+            cout << "rem 3" <<endl;
         	if (prev == NULL) 
             {
+                cout << "rem 4.1" <<endl;
             	ClusterNode *next= list->getNext();
                 delete list;
+                cout << "rem 4.2" <<endl;
                 clusterTable[cluster_no] = next;
             } 
             else 
             {
+                cout << "rem 5.1" <<endl;
             	ClusterNode *_next = list->getNext();
                 delete list;
+                cout << "rem 5.2" <<endl;
             	prev->setNext(_next);
             }
         }
@@ -122,24 +129,27 @@ void ClusterTable::Remove(int item_no, int cluster_no)
 void ClusterTable::InsertAtCluster(int item_no, int cluster_no) 
 {
     if (cluster_no == -1) {
+        cout << "This should not happen - 908" <<endl;
         return;
     }
 	ClusterNode* prev = NULL;
-    ClusterNode* list = clusterTable[cluster_no];
+    ClusterNode* list = this->clusterTable[cluster_no];
+    ClusterNode* newNode;
     while (list != NULL)
     {
+        cout << "we have a friend here - 907" <<endl;
         prev = list;
         list = list->getNext();
     }
-    list = new ClusterNode(item_no, NULL);
+    newNode = new ClusterNode(item_no, NULL);
     if (prev == NULL)
     {
-        clusterTable[cluster_no] = list;
+        clusterTable[cluster_no] = newNode;
         cout << "sett prev first" <<endl;
     }
     else
     {
-        prev->setNext(list);
+        prev->setNext(newNode);
         cout << "sett prev" <<endl;
     }
 

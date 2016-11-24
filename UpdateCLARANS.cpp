@@ -16,8 +16,11 @@ bool CLARANS(Conf* myConf, Metrics* myMetric, double** distanceMatrix, int* cent
 	for (int i = 0; i < myConf->clarans_iterations; ++i)
 	{
 		maximumSubtraction = INT_MIN;
-		PAM(myConf, myMetric, distanceMatrix, centroids, clusterTable, clusterAssign);
 		cout << "PAM number : " << i << endl;
+		if (i > 0) {
+			cout << "oeoeo" << clusterTable->getArray()[2]->getItemNo() <<endl;
+		}
+		PAM(myConf, myMetric, distanceMatrix, centroids, clusterTable, clusterAssign);
 		//cout << "oeoeo" << clusterTable->getArray()[2]->getItemNo() <<endl;
 		for (int j = 0; j < myConf->clarans_set_fraction; j ++) {
 			cout << "clarans_set_fraction proxorame : " << j << endl;
@@ -59,10 +62,10 @@ bool CLARANS(Conf* myConf, Metrics* myMetric, double** distanceMatrix, int* cent
 		}
 		cout << "going for the swap" << endl;
 		//swapping
-		cluster = ReturnCluster(myConf, centroids, minimumCentroid);
+		cluster = minimumCentroid;//= ReturnCluster(myConf, centroids, minimumCentroid);
 		cout << "cluster after swapping : " << cluster << endl;
 		centroids[cluster]  = minimumNonCentroid;
-		for (int j = 0; j < myMetric->point_number; ++j)		//updating clusterAssign
+/*		for (int j = 0; j < myMetric->point_number; ++j)		//updating clusterAssign
 		{
 			if(clusterAssign[i][0] == minimumCentroid) {
 				clusterAssign[i][0] = minimumNonCentroid;
@@ -73,7 +76,7 @@ bool CLARANS(Conf* myConf, Metrics* myMetric, double** distanceMatrix, int* cent
 			if(clusterAssign[i][2] == minimumCentroid) {
 				clusterAssign[i][2] = minimumNonCentroid;
 			}
-		}
+		}*/
 		cout << "update clusterAssign donr!!!!!!!!!!!!!!!!!!!!!!!!!" << endl;
 
 		
