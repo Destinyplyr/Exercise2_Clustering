@@ -121,14 +121,14 @@ int main(int argc, char **argv)
 
 		hammingList->DistanceMatrixComputationHamming(myMetric, distance_matrix);
 		//KMedoidsPP(myConf, myMetric, distance_matrix, centroids);
-		//Concentrate(myConf, myMetric, distance_matrix, centroids);
+		Concentrate(myConf, myMetric, distance_matrix, centroids);
 		//cout << clusterAssign[0][0] <<endl;
 		//PAM(myConf, myMetric, distance_matrix, centroids, clusterTable, clusterAssign);
-		// if (!ALaLoyds(myConf, myMetric, distance_matrix, centroids, clusterTable, clusterAssign)) {
-		// 	cout << "done!" << endl;
-		// }
-		//CLARANS(myConf, myMetric, distance_matrix, centroids, clusterTable, clusterAssign);
-		CLARA( myConf,  myMetric, distance_matrix, centroids, clusterTable, clusterAssign);
+		if (!ALaLoyds(myConf, myMetric, distance_matrix, centroids, clusterTable, clusterAssign)) {
+			cout << "done!" << endl;
+		}
+		CLARANS(myConf, myMetric, distance_matrix, centroids, clusterTable, clusterAssign);
+		//CLARA( myConf,  myMetric, distance_matrix, centroids, clusterTable, clusterAssign);
 		clusterTable->PrintingSilhouette(myConf, distance_matrix, centroids, clusterAssign);
 	}
 
@@ -149,14 +149,14 @@ int main(int argc, char **argv)
 			euclideanList->DistanceMatrixComputationVector(myMetric, distance_matrix);
 			cout << "ekana kai to DistanceMatrixComputation" << endl;
 			//KMedoidsPP(myConf, myMetric, distance_matrix, centroids);
-			//Concentrate(myConf, myMetric, distance_matrix, centroids);
+			Concentrate(myConf, myMetric, distance_matrix, centroids);
 			//cout << clusterAssign[0][0] <<endl;
-			// PAM(myConf, myMetric, distance_matrix, centroids, clusterTable, clusterAssign);
+			//PAM(myConf, myMetric, distance_matrix, centroids, clusterTable, clusterAssign);
 			// if (!ALaLoyds(myConf, myMetric, distance_matrix, centroids, clusterTable, clusterAssign)) {
 			// 	cout << "done!" << endl;
 			// }
-			//CLARANS(myConf, myMetric, distance_matrix, centroids, clusterTable, clusterAssign);
-			CLARA( myConf,  myMetric, distance_matrix, centroids, clusterTable, clusterAssign);
+			CLARANS(myConf, myMetric, distance_matrix, centroids, clusterTable, clusterAssign);
+			//CLARA( myConf,  myMetric, distance_matrix, centroids, clusterTable, clusterAssign);
 			clusterTable->PrintingSilhouette(myConf, distance_matrix, centroids, clusterAssign);
 		}
 		
@@ -171,13 +171,13 @@ int main(int argc, char **argv)
 			//cout << "********************************************************" << endl;
 			cosineList->DistanceMatrixComputationVector(myMetric, distance_matrix);
 			//KMedoidsPP(myConf, myMetric, distance_matrix, centroids);
-			//Concentrate(myConf, myMetric, distance_matrix, centroids);
+			Concentrate(myConf, myMetric, distance_matrix, centroids);
 			//PAM(myConf, myMetric, distance_matrix, centroids, clusterTable, clusterAssign);
 			// if (!ALaLoyds(myConf, myMetric, distance_matrix, centroids, clusterTable, clusterAssign)) {
 			// 	cout << "done!" << endl;
 			// }
-			//CLARANS(myConf, myMetric, distance_matrix, centroids, clusterTable, clusterAssign);
-			CLARA( myConf,  myMetric, distance_matrix, centroids, clusterTable, clusterAssign);
+			CLARANS(myConf, myMetric, distance_matrix, centroids, clusterTable, clusterAssign);
+			//CLARA( myConf,  myMetric, distance_matrix, centroids, clusterTable, clusterAssign);
 			clusterTable->PrintingSilhouette(myConf, distance_matrix, centroids, clusterAssign);
 		}
 	}
@@ -193,14 +193,14 @@ int main(int argc, char **argv)
 		cout << "********************************************************" << endl;
 
 		DBHList->DistanceMatrixComputationDB(inputFile, myMetric, distance_matrix);
-		//Concentrate(myConf, myMetric, distance_matrix, centroids);
+		Concentrate(myConf, myMetric, distance_matrix, centroids);
 		//KMedoidsPP(myConf, myMetric, distance_matrix, centroids);
 		//PAM(myConf, myMetric, distance_matrix, centroids, clusterTable, clusterAssign);
 		// if (!ALaLoyds(myConf, myMetric, distance_matrix, centroids, clusterTable, clusterAssign)) {
 		// 	cout << "done!" << endl;
 		// }
-		//CLARANS(myConf, myMetric, distance_matrix, centroids, clusterTable, clusterAssign);
-		CLARA( myConf,  myMetric, distance_matrix, centroids, clusterTable, clusterAssign);
+		CLARANS(myConf, myMetric, distance_matrix, centroids, clusterTable, clusterAssign);
+		//CLARA( myConf,  myMetric, distance_matrix, centroids, clusterTable, clusterAssign);
 		//cout << "paei na kanei to print" << endl;
 		//clusterTable->PrintCluster(0);
 		//cout << "EKANE TO PRINT" << endl;

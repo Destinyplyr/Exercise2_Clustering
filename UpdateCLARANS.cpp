@@ -63,9 +63,9 @@ bool CLARANS(Conf* myConf, Metrics* myMetric, double** distanceMatrix, int* cent
 		}
 		cout << "going for the swap" << endl;
 		//swapping
+		cout << "swapping CLARANS : " << centroids[cluster] <<endl;
 		cluster = minimumCentroid;//= ReturnCluster(myConf, centroids, minimumCentroid);
-		cout << "cluster after swapping : " << cluster << endl;
-		centroids[cluster]  = minimumNonCentroid;
+		cout << "cluster after swapping : " << minimumNonCentroid << endl;
 		for (int j = 0; j < myMetric->point_number; ++j)		//updating clusterAssign
 		{
 			if(clusterAssign[j][0] == minimumCentroid) {
@@ -78,6 +78,7 @@ bool CLARANS(Conf* myConf, Metrics* myMetric, double** distanceMatrix, int* cent
 				clusterAssign[j][2] = minimumNonCentroid;
 			}
 		}
+		centroids[cluster]  = minimumNonCentroid;
 		cout << "update clusterAssign donr!!!!!!!!!!!!!!!!!!!!!!!!!" << endl;
 
 		
