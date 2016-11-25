@@ -1,5 +1,6 @@
 #include "Headers.h"
 #include "UtilsH.h"
+#include "Algorithms.h"
 
 
 
@@ -65,18 +66,18 @@ bool CLARANS(Conf* myConf, Metrics* myMetric, double** distanceMatrix, int* cent
 		cluster = minimumCentroid;//= ReturnCluster(myConf, centroids, minimumCentroid);
 		cout << "cluster after swapping : " << cluster << endl;
 		centroids[cluster]  = minimumNonCentroid;
-/*		for (int j = 0; j < myMetric->point_number; ++j)		//updating clusterAssign
+		for (int j = 0; j < myMetric->point_number; ++j)		//updating clusterAssign
 		{
-			if(clusterAssign[i][0] == minimumCentroid) {
-				clusterAssign[i][0] = minimumNonCentroid;
+			if(clusterAssign[j][0] == minimumCentroid) {
+				clusterAssign[j][0] = minimumNonCentroid;
 			}
-			if(clusterAssign[i][1] == minimumCentroid) {
-				clusterAssign[i][1] = minimumNonCentroid;
+			if(clusterAssign[j][1] == minimumCentroid) {
+				clusterAssign[j][1] = minimumNonCentroid;
 			}
-			if(clusterAssign[i][2] == minimumCentroid) {
-				clusterAssign[i][2] = minimumNonCentroid;
+			if(clusterAssign[j][2] == minimumCentroid) {
+				clusterAssign[j][2] = minimumNonCentroid;
 			}
-		}*/
+		}
 		cout << "update clusterAssign donr!!!!!!!!!!!!!!!!!!!!!!!!!" << endl;
 
 		

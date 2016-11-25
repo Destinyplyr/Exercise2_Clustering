@@ -1,5 +1,6 @@
 #include "Headers.h"
 #include "UtilsH.h"
+#include "Algorithms.h"
 
 void KMedoidsPP(Conf* myConf, Metrics* myMetric, double** distanceMatrix, int* centroids)
 {

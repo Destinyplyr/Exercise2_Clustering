@@ -189,7 +189,7 @@ int ClusterTable::ClusterDistance(double** distanceMatrix, int cluster_no)      
 
 double ClusterTable::ClusterDistanceFromCentroid(double** distanceMatrix, int cluster_no, int centroid)      //return distance of cluster from point
 {
-    cout << "in ClusterDistanceFromCentroid" << endl;
+    //cout << "in ClusterDistanceFromCentroid" << endl;
     double minDistance = INT_MAX;
     double clusterDistance = 0;
     int minDistanceMedoid = -1;
@@ -200,7 +200,7 @@ double ClusterTable::ClusterDistanceFromCentroid(double** distanceMatrix, int cl
     //     cout << "einAI NULL" << endl;
     //     exit(1);
     // }
-   cout << "before whiel - " << endl;
+   //cout << "before whiel - " << endl;
     //cout << "ginetai auto? " << currentNode->getItemNo() << endl;
     while (currentNode != NULL) {
         //cout << "in while" << endl;
@@ -211,42 +211,143 @@ double ClusterTable::ClusterDistanceFromCentroid(double** distanceMatrix, int cl
     return clusterDistance;
 }
 
-double ClusterTable::ClusterSilhouette(Conf* myConf, double** distanceMatrix, int* centroids,  int cluster_no, int point, int** clusterAssign)
+void ClusterTable::Init_Tables(double*** distance_matrix, Metrics* myMetric, Conf* myConf, int** centroids, ClusterTable** clusterTable, int*** clusterAssign)
 {
-    double avg_silh = 0;
-    int number_in_cluster = 0;
-    int number_in_scnd_cluster = 0;
-    int b_i, a_i;
-    int number_of_scnd_cluster;
-    ClusterNode* currentNode = clusterTable[cluster_no];
-    number_of_scnd_cluster = ReturnCluster(myConf, centroids, clusterAssign[point][1]);
-    ClusterNode* secondNode = clusterTable[number_of_cluster];
+    cout << "in Init_Tables" << endl;
+    (*distance_matrix) = new double*[myMetric->point_number];       //distance matrix creation
+    cout << "before fore" <<endl;
+    for (int i = 0; i < myMetric->point_number; i++) {
+        (*distance_matrix)[i] = new double[myMetric->point_number];
+    }
+    cout << "ekana to distance" << endl;
+    (*centroids) = new int[myMetric->point_number];
+    cout << "ekana to insertion" << endl;
 
-    while (currentNode != NULL) {
-        number_in_cluster++;
+    (*clusterTable) = new ClusterTable(myConf->number_of_clusters);
+    cout << "list: " << (*clusterTable)->getArray() <<endl;
+    (*clusterAssign)= new int*[myMetric->point_number];
+    for (int i = 0; i < myMetric->point_number; ++i)
+    {
+        (*clusterAssign)[i] = new int[3];
+        (*clusterAssign)[i][0] = -1;
+        (*clusterAssign)[i][1] = -1;
+        (*clusterAssign)[i][2] = -1;
+    }
+}
+
+int ClusterTable::ReturnClusterSize(int cluster_no)
+{
+    ClusterNode* currentNode;
+    currentNode = clusterTable[cluster_no];
+        
+    if (currentNode == NULL)
+    {
+        cout << "einAI NULL o currentNode in ReturnClusterSize " << endl;
+        cout << "exiting..." << endl;
+        exit(1);
+    }
+
+    int count_items = 0;
+    while(currentNode != NULL)
+    {
+        count_items++;
         currentNode = currentNode->getNext();
     }
-    while (secondNode != NULL) {
-        number_in_scnd_cluster++;
-        secondNode = secondNode->getNext();
-    }
-    currentNode = ClusterTable[cluster_no];
-    while (currentNode != NULL) {
-        a_i = ClusterDistanceFromCentroid(distanceMatrix, cluster_no, currentNode->getItemNo()) /  number_in_cluster;
-        b_i = ClusterDistanceFromCentroid(distanceMatrix, number_of_scnd_cluster, currentNode->getItemNo()) / number_in_scnd_cluster;
-        if (a_i >= b_i) 
-        {
-            avg_silh += (b_i - a_i) / a_i;
-        }
-        else
-        {
-            avg_silh += (b_i - a_i) / b_i;
-        }
-        currentNode = currentNode->getNext();
-    }
-    return avg_silh/ number_in_cluster;
+    return count_items;
 }
 
 
+void ClusterTable::PrintCluster(int cluster_no)
+{
+    ClusterNode* currentNode = clusterTable[cluster_no];
+        
+    if (currentNode == NULL)
+    {
+        cout << "einAI NULL o currentNode in PrintCluster " << endl;
+        cout << "exiting..." << endl;
+        exit(1);
+    }
+
+    while(currentNode != NULL)
+    {
+        cout << "Printing Cluster : " << currentNode->getItemNo() << endl;
+        //count_items++;
+        currentNode = currentNode->getNext();
+    }
+}
+
+
+double ClusterTable::ClusterSilhouette(Conf* myConf, double** distanceMatrix, int* centroids,  int cluster_no, int** clusterAssign)
+{
+    double avg_silh = 0;
+    int number_in_cluster = 0;          //number of items in cluster
+    int number_in_scnd_cluster = 0;     //number of items in second best cluster
+    double b_i, a_i;
+    int number_of_scnd_cluster;         //index for second best cluster in clusterTable
+    ClusterNode* currentNode = clusterTable[cluster_no];
+    int times = 0;
+
+    if (currentNode == NULL)
+    {
+        cout << "einAI NULL o currentNode ston silhouette ypologismo " << endl;
+        cout << "exiting..." << endl;
+    }
+
+    ClusterNode* secondNode = NULL;
+    //cout << "PRINTIG CLUSTER NUMBER " << cluster_no << endl;
+    number_in_cluster = ReturnClusterSize(cluster_no);
+    cout << "current cluster size: " << number_in_cluster <<endl;
+    currentNode = clusterTable[cluster_no];
+    while (currentNode != NULL) {
+        ++times;
+        // cout << "THIS TIME : " << times << endl;
+        number_of_scnd_cluster = ReturnCluster(myConf, centroids, clusterAssign[currentNode->getItemNo()][1]);
+        //cout << "THIS CENTROID : " << clusterAssign[currentNode->getItemNo()][1] << endl;
+        //cout << "number_of_scnd_cluster : " << number_of_scnd_cluster << endl;
+        // if (number_of_scnd_cluster == cluster_no)
+        // {
+        //     cout << "WE HAVE THE SAME FUCKING CLUSTERS" << endl;
+        //     break;
+        //     //exit(7);
+        // }
+        secondNode = clusterTable[number_of_scnd_cluster];
+        number_in_scnd_cluster = ReturnClusterSize(number_of_scnd_cluster);
+        a_i = (double)ClusterDistanceFromCentroid(distanceMatrix, cluster_no, currentNode->getItemNo()) / (double) number_in_cluster;
+        cout << "Silhouette: a_i of " << currentNode->getItemNo() << " : " << a_i <<endl;
+        b_i = (double) ClusterDistanceFromCentroid(distanceMatrix, number_of_scnd_cluster, currentNode->getItemNo()) / (double)number_in_scnd_cluster;
+        cout << "Silhouette: b_i of " << currentNode->getItemNo() << " : " << b_i <<endl;
+        if (a_i >= b_i) 
+        {
+            cout << "Silhouette: adding in avg: " << (double)(b_i - a_i) / (double) a_i <<endl;
+            avg_silh += (double)(b_i - a_i) / (double) a_i;
+            cout << "Silhouette: current avg_silh : " <<avg_silh <<endl;
+        }
+        else
+        {
+            cout << "Silhouette: adding in avg: " << (double)(b_i - a_i) / (double) b_i <<endl;
+            avg_silh += (double)(b_i - a_i) / (double) b_i;
+            cout << "Silhouette: current avg_silh " << currentNode->getItemNo() << " : " << avg_silh <<endl;
+        }
+        currentNode = currentNode->getNext();
+    }
+    cout << "Silhouette: return silhouette :" << ((double)avg_silh/(double) number_in_cluster) << endl;
+    return ((double)avg_silh/(double) number_in_cluster);
+}
+
+
+double ClusterTable::PrintingSilhouette(Conf* myConf, double** distanceMatrix, int* centroids, int** clusterAssign)
+{
+    double* s_i = new double[myConf->number_of_clusters];
+    double s_total = 0;
+    cout << "Silhouette: [";
+    for (int i = 0; i < myConf->number_of_clusters; ++i)
+    {
+        s_i[i] = this->ClusterSilhouette(myConf, distanceMatrix, centroids,  i, clusterAssign);
+        cout << s_i[i] << ", ";
+        s_total += s_i[i];
+    }
+    cout << "after for loop in PrintingSilhouette " << endl;
+    cout << s_total / myConf->number_of_clusters << "]" <<endl;
+}
 
 

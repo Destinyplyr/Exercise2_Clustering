@@ -1,4 +1,5 @@
 #include "Headers.h"
+#include "Algorithms.h"
 #include "UtilsH.h"
 
 
@@ -71,7 +72,11 @@ void PAM(Conf* myConf, Metrics* myMetric, double** distanceMatrix, int* centroid
 				}
 			}
 			cout << "InsertAtCluster DONE!!!!!!!!!!!!!!!!!" << endl;
-			clusterAssign[i][2] = clusterAssign[i][0]; 
+			
+			if (clusterAssign[i][1] == clusterAssign[i][2]) {
+				clusterAssign[i][1] = clusterAssign[i][0];
+			}
+			clusterAssign[i][2] = clusterAssign[i][0];
 			cout << "change after InsertAtCluster DON!!!!" << endl;
 			cout <<  "NEAREST CENTRO : ^^^^^^^^^^^^^^^^^^^^^^^^" << clusterAssign[i][2] << endl;
 		}

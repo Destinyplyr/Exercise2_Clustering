@@ -115,18 +115,21 @@ int main(int argc, char **argv)
 		hammingList->ListInsertionHamming(inputFile, myMetric);
 
 		cout << "********************************************************" << endl;
-		Init_Tables(&distance_matrix, myMetric, myConf, &centroids, &clusterTable, &clusterAssign);
+		clusterTable->Init_Tables(&distance_matrix, myMetric, myConf, &centroids, &clusterTable, &clusterAssign);
+		SetClaransFraction(myConf, myMetric);
 		cout << "********************************************************" << endl;
 
 		hammingList->DistanceMatrixComputationHamming(myMetric, distance_matrix);
 		//KMedoidsPP(myConf, myMetric, distance_matrix, centroids);
-		Concentrate(myConf, myMetric, distance_matrix, centroids);
-		cout << clusterAssign[0][0] <<endl;
+		//Concentrate(myConf, myMetric, distance_matrix, centroids);
+		//cout << clusterAssign[0][0] <<endl;
 		//PAM(myConf, myMetric, distance_matrix, centroids, clusterTable, clusterAssign);
-		// if (!ALaLoyds(myConf, distance_matrix, centroids, clusterTable)) {
+		// if (!ALaLoyds(myConf, myMetric, distance_matrix, centroids, clusterTable, clusterAssign)) {
 		// 	cout << "done!" << endl;
 		// }
-		CLARANS(myConf, myMetric, distance_matrix, centroids, clusterTable, clusterAssign);
+		//CLARANS(myConf, myMetric, distance_matrix, centroids, clusterTable, clusterAssign);
+		CLARA( myConf,  myMetric, distance_matrix, centroids, clusterTable, clusterAssign);
+		clusterTable->PrintingSilhouette(myConf, distance_matrix, centroids, clusterAssign);
 	}
 
 
@@ -139,7 +142,8 @@ int main(int argc, char **argv)
 			euclideanList->ListInsertionVector(inputFile, myMetric);
 
 			//cout << "********************************************************" << endl;
-			Init_Tables(&distance_matrix, myMetric, myConf, &centroids, &clusterTable, &clusterAssign);
+			clusterTable->Init_Tables(&distance_matrix, myMetric, myConf, &centroids, &clusterTable, &clusterAssign);
+			SetClaransFraction(myConf, myMetric);
 			//cout << "********************************************************" << endl;
 			//cout << "bururur" << euclideanList->getNode()->getKey()[0] <<endl;
 			euclideanList->DistanceMatrixComputationVector(myMetric, distance_matrix);
@@ -148,11 +152,12 @@ int main(int argc, char **argv)
 			//Concentrate(myConf, myMetric, distance_matrix, centroids);
 			//cout << clusterAssign[0][0] <<endl;
 			// PAM(myConf, myMetric, distance_matrix, centroids, clusterTable, clusterAssign);
-			// if (!ALaLoyds(myConf, distance_matrix, centroids, clusterTable)) {
+			// if (!ALaLoyds(myConf, myMetric, distance_matrix, centroids, clusterTable, clusterAssign)) {
 			// 	cout << "done!" << endl;
 			// }
 			//CLARANS(myConf, myMetric, distance_matrix, centroids, clusterTable, clusterAssign);
 			CLARA( myConf,  myMetric, distance_matrix, centroids, clusterTable, clusterAssign);
+			clusterTable->PrintingSilhouette(myConf, distance_matrix, centroids, clusterAssign);
 		}
 		
 		if (strcmp(myMetric->metric.c_str(), "cosine") == 0)
@@ -161,16 +166,19 @@ int main(int argc, char **argv)
 			cosineList->ListInsertionVector(inputFile, myMetric);
 
 			//cout << "********************************************************" << endl;
-			Init_Tables(&distance_matrix, myMetric, myConf, &centroids, &clusterTable, &clusterAssign);
+			clusterTable->Init_Tables(&distance_matrix, myMetric, myConf, &centroids, &clusterTable, &clusterAssign);
+			SetClaransFraction(myConf, myMetric);
 			//cout << "********************************************************" << endl;
 			cosineList->DistanceMatrixComputationVector(myMetric, distance_matrix);
 			//KMedoidsPP(myConf, myMetric, distance_matrix, centroids);
-			Concentrate(myConf, myMetric, distance_matrix, centroids);
-			// PAM(myConf, myMetric, distance_matrix, centroids, clusterTable, clusterAssign);
-			// if (!ALaLoyds(myConf, distance_matrix, centroids, clusterTable)) {
+			//Concentrate(myConf, myMetric, distance_matrix, centroids);
+			//PAM(myConf, myMetric, distance_matrix, centroids, clusterTable, clusterAssign);
+			// if (!ALaLoyds(myConf, myMetric, distance_matrix, centroids, clusterTable, clusterAssign)) {
 			// 	cout << "done!" << endl;
 			// }
-			CLARANS(myConf, myMetric, distance_matrix, centroids, clusterTable, clusterAssign);
+			//CLARANS(myConf, myMetric, distance_matrix, centroids, clusterTable, clusterAssign);
+			CLARA( myConf,  myMetric, distance_matrix, centroids, clusterTable, clusterAssign);
+			clusterTable->PrintingSilhouette(myConf, distance_matrix, centroids, clusterAssign);
 		}
 	}
 
@@ -180,21 +188,27 @@ int main(int argc, char **argv)
 		DBHList->ListInsertionDB(inputFile, myMetric);
 
 		cout << "********************************************************" << endl;
-		Init_Tables(&distance_matrix, myMetric, myConf, &centroids, &clusterTable, &clusterAssign);
+		clusterTable->Init_Tables(&distance_matrix, myMetric, myConf, &centroids, &clusterTable, &clusterAssign);
+		SetClaransFraction(myConf, myMetric);
 		cout << "********************************************************" << endl;
 
 		DBHList->DistanceMatrixComputationDB(inputFile, myMetric, distance_matrix);
-		Concentrate(myConf, myMetric, distance_matrix, centroids);
+		//Concentrate(myConf, myMetric, distance_matrix, centroids);
 		//KMedoidsPP(myConf, myMetric, distance_matrix, centroids);
-		// PAM(myConf, myMetric, distance_matrix, centroids, clusterTable, clusterAssign);
-		// if (!ALaLoyds(myConf, distance_matrix, centroids, clusterTable)) {
+		//PAM(myConf, myMetric, distance_matrix, centroids, clusterTable, clusterAssign);
+		// if (!ALaLoyds(myConf, myMetric, distance_matrix, centroids, clusterTable, clusterAssign)) {
 		// 	cout << "done!" << endl;
 		// }
-		CLARANS(myConf, myMetric, distance_matrix, centroids, clusterTable, clusterAssign);
+		//CLARANS(myConf, myMetric, distance_matrix, centroids, clusterTable, clusterAssign);
+		CLARA( myConf,  myMetric, distance_matrix, centroids, clusterTable, clusterAssign);
+		//cout << "paei na kanei to print" << endl;
+		//clusterTable->PrintCluster(0);
+		//cout << "EKANE TO PRINT" << endl;
+		clusterTable->PrintingSilhouette(myConf, distance_matrix, centroids, clusterAssign);
 
 	}
 
-	SetClaransFraction(myConf, myMetric);
+	
 	//CLI(inputFile, outputFile, myConf, myMetric);
 
 	/*cout << "for the horde : " << endl;

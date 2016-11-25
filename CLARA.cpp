@@ -1,5 +1,6 @@
 #include "Headers.h"
 #include "UtilsH.h"
+#include "Algorithms.h"
 
 
 void CLARA(Conf* myConf, Metrics* myMetric, double** distanceMatrix, int* centroids,  ClusterTable* clusterTable, int** clusterAssign)
@@ -16,24 +17,29 @@ void CLARA(Conf* myConf, Metrics* myMetric, double** distanceMatrix, int* centro
 	cout << "IN CLARA" << endl;
 	int column, row, j;
 	string GARBAGE;
+	ClusterTable* minfullPAMclusterTable = NULL;
+	int** minfullPAMclusterAssign = NULL;
 	//struct with distance?
 	// for (int i = 0; i < myConf->number_of_clusters; ++i)
 	// {
 	// 	cout << "centroid : " << i << " is " << centroids[i] << endl;
 	// }
 
+    int** CLARAclusterAssign= new int*[myMetric->point_number];
+    for (int i = 0; i < myMetric->point_number; ++i)
+    {
+        CLARAclusterAssign[i] = new int[3];
+        CLARAclusterAssign[i][0] = -1;
+        CLARAclusterAssign[i][1] = -1;
+        CLARAclusterAssign[i][2] = -1;
+    }
+
+
 	int* fullPAMcentroids = new int[myConf->number_of_clusters];
 	int* min_centroids = new int[myConf->number_of_clusters];
 
-	int** fullPAMclusterAssign = new int*[n_sample_size];
-	for (int i = 0; i < n_sample_size; ++i)
-	{
-		fullPAMclusterAssign[i] = new int[3];
-		fullPAMclusterAssign[i][0] = -1;
-		fullPAMclusterAssign[i][1] = -1;
-		fullPAMclusterAssign[i][2] = -1;
-	}
-	ClusterTable* fullPAMclusterTable = new ClusterTable(myConf->number_of_clusters);
+	int** fullPAMclusterAssign;
+	ClusterTable* fullPAMclusterTable;
 
 	int* current_sample = new int[n_sample_size];		//holds the items of the sample
 	for (int i = 0; i < n_sample_size; ++i)
@@ -43,8 +49,17 @@ void CLARA(Conf* myConf, Metrics* myMetric, double** distanceMatrix, int* centro
 
 	for (int i = 0; i < s; ++i)
 	{
+		fullPAMclusterAssign = new int*[n_sample_size];
+		for (int j = 0; j < n_sample_size; ++j)
+		{
+			fullPAMclusterAssign[j] = new int[3];
+			fullPAMclusterAssign[j][0] = -1;
+			fullPAMclusterAssign[j][1] = -1;
+			fullPAMclusterAssign[j][2] = -1;
+		}
+		fullPAMclusterTable= new ClusterTable(myConf->number_of_clusters);
 		min_cost = INT_MAX;
-		for (j = 0; j < n_sample_size; j++) 
+		for (int j = 0; j < n_sample_size; j++) 
 		{
 			do {
 				new_item= (int)(((double)rand() / (double) RAND_MAX)*(myMetric->point_number));
@@ -65,14 +80,14 @@ void CLARA(Conf* myConf, Metrics* myMetric, double** distanceMatrix, int* centro
 						break;
 					}
 				}
-				clusterAssign[j][0] = fullPAMclusterAssign[position][0];		//move to clusterAssign
-				clusterAssign[j][1] = fullPAMclusterAssign[position][1];
-				clusterAssign[j][2] = fullPAMclusterAssign[position][2];		
+				CLARAclusterAssign[j][0] = fullPAMclusterAssign[position][0];		//move to claraclusterAssign
+				CLARAclusterAssign[j][1] = fullPAMclusterAssign[position][1];
+				CLARAclusterAssign[j][2] = fullPAMclusterAssign[position][2];		
 			}
 		}
-		PAM( myConf,  myMetric, distanceMatrix, fullPAMcentroids, fullPAMclusterTable,clusterAssign);
+		PAM( myConf,  myMetric, distanceMatrix, fullPAMcentroids, fullPAMclusterTable, CLARAclusterAssign);
 		//cin >> GARBAGE;
-		current_cost = ObjectiveCost(clusterAssign, distanceMatrix, myMetric);
+		current_cost = ObjectiveCost(CLARAclusterAssign, distanceMatrix, myMetric);
 		if (current_cost < min_cost)
 		{
 			cout << "904 - mincost clara: " << current_cost <<endl;
@@ -83,6 +98,36 @@ void CLARA(Conf* myConf, Metrics* myMetric, double** distanceMatrix, int* centro
 				cout << min_centroids[w] << " " ;
 			}
 			cout << endl;
+			//DELETE minfullPAMclusterAssign before next command!!!!!
+			if (minfullPAMclusterAssign != NULL) 
+			{
+				for (int u = 0; u < myMetric->point_number; u++)
+				{
+					//delete[] minfullPAMclusterAssign[u];
+				}
+				//delete[] minfullPAMclusterAssign;
+				minfullPAMclusterAssign = NULL;
+			}
+			//DELETE minfullPAMclusterTable before next command
+			if (minfullPAMclusterTable != NULL) 
+			{
+				//delete minfullPAMclusterTable;
+				minfullPAMclusterTable = NULL;
+			}
+
+			minfullPAMclusterAssign = CLARAclusterAssign;
+			minfullPAMclusterTable = fullPAMclusterTable;
+		}
+		else
+		{
+			for (int u = 0; u < myMetric->point_number; u++)
+			{
+				//delete[] fullPAMclusterAssign[i];
+			}
+			//delete[] fullPAMclusterAssign;
+			fullPAMclusterAssign = NULL;
+			//delete fullPAMclusterTable;
+			fullPAMclusterTable = NULL;
 		}
 	}
 	cout <<"CLARA SENDS ITS REGARDS" <<endl;
@@ -92,6 +137,23 @@ void CLARA(Conf* myConf, Metrics* myMetric, double** distanceMatrix, int* centro
 		cout << min_centroids[w] << " " ;
 	}
 	cout << endl;
+	clusterTable->setArray(fullPAMclusterTable->getArray());
+	for (int i = 0; i < myMetric->point_number; ++i)
+	{
+		if(!Exists(centroids, myConf->number_of_clusters, CLARAclusterAssign[i][0]) || !Exists(centroids, myConf->number_of_clusters, CLARAclusterAssign[i][1]) || !Exists(centroids, myConf->number_of_clusters, CLARAclusterAssign[i][2])) 
+		{
+			cout << "YHUUUGE PROBLLEM ----" <<endl;
+			cout << CLARAclusterAssign[i][0] << " " << CLARAclusterAssign[i][1] << " " << CLARAclusterAssign[i][2] <<endl;
+			cout << "---------------------" <<endl;
+		}
+	}
+	for (int j = 0; j < myMetric->point_number; ++j)
+	{
+		clusterAssign[j][0] = CLARAclusterAssign[j][0];		
+		clusterAssign[j][1] = CLARAclusterAssign[j][1];
+		clusterAssign[j][2] = CLARAclusterAssign[j][2];
+	}
+
 	return;
 
 /*

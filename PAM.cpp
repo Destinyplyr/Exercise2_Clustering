@@ -1,5 +1,6 @@
 #include "Headers.h"
 #include "UtilsH.h"
+#include "Algorithms.h"
 
 
 void FullPAM(Conf* myConf, double** distanceMatrix, int* centroids,  ClusterTable* clusterTable, int** clusterAssign, int* current_sample, int n_sample_size)
@@ -76,9 +77,10 @@ void FullPAM(Conf* myConf, double** distanceMatrix, int* centroids,  ClusterTabl
 				}
 			}
 			cout << "InsertAtCluster DONE!!!!!!!!!!!!!!!!!" << endl;
+			//THIS IS SO WROOOOOOOOOOOOOOOOOOOOOOOOOOOOOOONG!!!!!!!!!!!!!!!!!!!!!!!!!!
 			clusterAssign[i][2] = clusterAssign[i][0]; 
 			cout << "change after InsertAtCluster DON!!!!" << endl;
-			cout <<  "NEAREST CENTRO : ^^^^^^^^^^^^^^^^^^^^^^^^" << clusterAssign[i][2] << endl;
+			cout <<  "NEAREST CENTRO IN FULL PAM : ^^^^^^^^^^^^^^^^^^^^^^^^" << clusterAssign[i][2] << endl;
 		}
 		
 	}
@@ -118,5 +120,17 @@ void FullPAM(Conf* myConf, double** distanceMatrix, int* centroids,  ClusterTabl
 			break;
 		}
 		centroids[cluster]  = minimumNonCentroid;
+		for (int j = 0; j < n_sample_size; ++j)		//updating clusterAssign
+		{
+			if(clusterAssign[j][0] == minimumCentroid) {
+				clusterAssign[j][0] = minimumNonCentroid;
+			}
+			if(clusterAssign[j][1] == minimumCentroid) {
+				clusterAssign[j][1] = minimumNonCentroid;
+			}
+			if(clusterAssign[j][2] == minimumCentroid) {
+				clusterAssign[j][2] = minimumNonCentroid;
+			}
+		}
 	}
 }
