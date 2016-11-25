@@ -63,6 +63,12 @@ bool CLARANS(Conf* myConf, Metrics* myMetric, double** distanceMatrix, int* cent
 		}
 		cout << "going for the swap" << endl;
 		//swapping
+		cout << "==================" << endl << "PRINTING CLRS" <<endl;
+		for (int w = 0; w <myConf->number_of_clusters; w++) {
+			cout << centroids[w] << " ";
+		}
+		cout <<endl;
+		
 		cout << "swapping CLARANS : " << centroids[cluster] <<endl;
 		cluster = minimumCentroid;//= ReturnCluster(myConf, centroids, minimumCentroid);
 		cout << "cluster after swapping : " << minimumNonCentroid << endl;

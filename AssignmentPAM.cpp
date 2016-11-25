@@ -72,7 +72,7 @@ void PAM(Conf* myConf, Metrics* myMetric, double** distanceMatrix, int* centroid
 				}
 			}
 			cout << "InsertAtCluster DONE!!!!!!!!!!!!!!!!!" << endl;
-			
+
 			if (clusterAssign[i][1] == clusterAssign[i][2]) {
 				clusterAssign[i][1] = clusterAssign[i][0];
 			}
@@ -82,6 +82,11 @@ void PAM(Conf* myConf, Metrics* myMetric, double** distanceMatrix, int* centroid
 		}
 		
 	}
+	cout << "==================" << endl << "PRINTING CLRS" <<endl;
+	for (int w = 0; w <myConf->number_of_clusters; w++) {
+		cout << centroids[w] << " ";
+	}
+	cout <<endl;
 	cout << "oeoeo " << clusterTable->getArray()[2]->getItemNo() <<endl;
 	/*for (int i= 0; i < myMetric->point_number; ++i)
 	{
