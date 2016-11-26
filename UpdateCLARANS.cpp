@@ -7,6 +7,7 @@
 bool CLARANS(Conf* myConf, Metrics* myMetric, double** distanceMatrix, int* centroids,  ClusterTable* clusterTable, int** clusterAssign)
 {
 	int newMedoid;
+	bool changeflag = false;
 	int cluster;
 	bool changed = false;
 	int randomCentroid, randomNonCentroid;
@@ -19,6 +20,7 @@ bool CLARANS(Conf* myConf, Metrics* myMetric, double** distanceMatrix, int* cent
 
 	for (int i = 0; i < myConf->clarans_iterations; ++i)
 	{
+		changeflag = false;
 		maximumSubtraction = INT_MIN;
 		cout << "Clarans iteration number : " << i << endl;
 		if (i > 0) {
@@ -62,8 +64,13 @@ bool CLARANS(Conf* myConf, Metrics* myMetric, double** distanceMatrix, int* cent
 					//cout << "minimumCentroid : " << minimumCentroid << endl;
 					minimumNonCentroid = randomNonCentroid;
 					//cout << "minimumNonCentroid : " << minimumNonCentroid << endl;
+					changeflag = true;
 				}
 			}
+		}
+		if (!changeflag) 
+		{
+			return (int)changeflag;
 		}
 		//cout << "going for the swap" << endl;
 		//swapping
