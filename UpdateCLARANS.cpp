@@ -14,6 +14,9 @@ bool CLARANS(Conf* myConf, Metrics* myMetric, double** distanceMatrix, int* cent
 	double currentSubtraction;
 	double maximumSubtraction;
 
+	std::cout.setf(std::ios_base::fixed, std::ios_base::floatfield);
+	std::cout.precision(20);
+
 	for (int i = 0; i < myConf->clarans_iterations; ++i)
 	{
 		maximumSubtraction = INT_MIN;
@@ -34,7 +37,7 @@ bool CLARANS(Conf* myConf, Metrics* myMetric, double** distanceMatrix, int* cent
 			do 
 			{
 				randomNonCentroid = (int)(((double)rand() / (double) RAND_MAX)*(myMetric->point_number));
-				//cout << "randomNonCentroid : " << randomNonCentroid << endl;
+				cout << "randomNonCentroid : " << randomNonCentroid << endl;
 				if (randomNonCentroid == myMetric->point_number) 
 				{
 					randomCentroid--;
@@ -46,14 +49,15 @@ bool CLARANS(Conf* myConf, Metrics* myMetric, double** distanceMatrix, int* cent
 			//cout << "cluster : " << cluster << endl;
 			//if noncentroid better
 			currentSubtraction = clusterTable->ClusterDistanceFromCentroid(distanceMatrix, cluster, centroids[randomCentroid]) - clusterTable->ClusterDistanceFromCentroid(distanceMatrix, cluster, randomNonCentroid);
+			cout << "currentSubtraction: " << currentSubtraction <<endl;
 			if (currentSubtraction > 0)
 			{
-				//cout << "centroid is better " << endl;
+				cout << "centroid is good " << endl;
 				//if change is the best we have
 				if (currentSubtraction > maximumSubtraction)
 				{
 					maximumSubtraction = currentSubtraction;
-					//cout << "chan is the best we have - maximumSubtraction is  : " << maximumSubtraction << endl;
+					cout << "chan is the best we have - maximumSubtraction is  : " << maximumSubtraction << endl;
 					minimumCentroid = randomCentroid;
 					//cout << "minimumCentroid : " << minimumCentroid << endl;
 					minimumNonCentroid = randomNonCentroid;
@@ -72,20 +76,27 @@ bool CLARANS(Conf* myConf, Metrics* myMetric, double** distanceMatrix, int* cent
 		//cout << "swapping CLARANS : " << centroids[cluster] <<endl;
 		cluster = minimumCentroid;//= ReturnCluster(myConf, centroids, minimumCentroid);
 		//cout << "cluster after swapping : " << minimumNonCentroid << endl;
+		cout << "Changing " << centroids[minimumCentroid] <<" with " << minimumNonCentroid <<endl;
 		for (int j = 0; j < myMetric->point_number; ++j)		//updating clusterAssign
 		{
-			if(clusterAssign[j][0] == minimumCentroid) {
+			cout << "current minimum centroid " << j << " "  << " - " << clusterAssign[j][0] <<endl;
+			if(clusterAssign[j][0] == centroids[minimumCentroid]) {
+				cout << "changed0" <<endl;
 				clusterAssign[j][0] = minimumNonCentroid;
 			}
-			if(clusterAssign[j][1] == minimumCentroid) {
+			cout << "current minimum centroid " << j << " "  << " - " << clusterAssign[j][1] <<endl;
+			if(clusterAssign[j][1] == centroids[minimumCentroid]) {
+				cout << "changed1" <<endl;
 				clusterAssign[j][1] = minimumNonCentroid;
 			}
-			if(clusterAssign[j][2] == minimumCentroid) {
+			cout << "current minimum centroid " << j << " "  << " - " << clusterAssign[j][2] <<endl;
+			if(clusterAssign[j][2] == centroids[minimumCentroid]) {
+				cout << "changed2" <<endl;
 				clusterAssign[j][2] = minimumNonCentroid;
 			}
 		}
 		//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! BBBBBUUUUUUUUUUUUUUUUUUGGGGGGGGGG !!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-		//centroids[cluster]  = minimumNonCentroid;
+		centroids[cluster]  = minimumNonCentroid;
 		// cout << "==================" << endl << "PRINTING CLUSTERS WITHIN CHANGE : " <<endl;
 		// for (int w = 0; w <myConf->number_of_clusters; w++) {
 		// 	cout << centroids[w] << " ";

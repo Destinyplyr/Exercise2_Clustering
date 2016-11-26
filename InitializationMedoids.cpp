@@ -66,7 +66,7 @@ void KMedoidsPP(Conf* myConf, Metrics* myMetric, double** distanceMatrix, int* c
 					minDistances[v] = distanceMatrix[row][column];
 					//cout << "Min distance : " << minDistances[v] << endl;
 					if (minDistances[v] == 0) {
-						//cin >> GARBAGE;
+						cin >> GARBAGE;
 					}
 				}
 			}
@@ -85,7 +85,7 @@ void KMedoidsPP(Conf* myConf, Metrics* myMetric, double** distanceMatrix, int* c
 		//cin >> GARBAGE;
 		for (int v = 0; v <  myMetric->point_number; ++v)
 		{
-			if (!Exists(centroids, i, v))
+			if (!Exists(centroids, i+1, v))
 			{
 				probabilities[v] = (pow(minDistances[v], 2) / Sum) * ((double)rand() / (double)RAND_MAX);
 				//cout << "Probability : " << probabilities[v] << endl;
@@ -104,6 +104,7 @@ void KMedoidsPP(Conf* myConf, Metrics* myMetric, double** distanceMatrix, int* c
 				{
 					chosenCentroid = v;
 					maxProb = probabilities[v];
+					//cout << "chosenCentroid: " << chosenCentroid << " - " << "maxprob: " << maxProb <<endl;
 				}
 			}
 		}

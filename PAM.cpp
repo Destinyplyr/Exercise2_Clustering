@@ -119,18 +119,19 @@ void FullPAM(Conf* myConf, double** distanceMatrix, int* centroids,  ClusterTabl
 			cout << "finished Full PAM" <<endl;
 			break;
 		}
-		centroids[cluster]  = minimumNonCentroid;
+		
 		for (int j = 0; j < n_sample_size; ++j)		//updating clusterAssign
 		{
-			if(clusterAssign[j][0] == minimumCentroid) {
+			if(clusterAssign[j][0] == centroids[minimumCentroid]) {
 				clusterAssign[j][0] = minimumNonCentroid;
 			}
-			if(clusterAssign[j][1] == minimumCentroid) {
+			if(clusterAssign[j][1] == centroids[minimumCentroid]) {
 				clusterAssign[j][1] = minimumNonCentroid;
 			}
-			if(clusterAssign[j][2] == minimumCentroid) {
+			if(clusterAssign[j][2] == centroids[minimumCentroid]) {
 				clusterAssign[j][2] = minimumNonCentroid;
 			}
 		}
+		centroids[cluster]  = minimumNonCentroid;
 	}
 }
