@@ -181,14 +181,14 @@ double ObjectiveCost(int** clusterAssign, double** distanceMatrix, Metrics* myMe
 
 
 int ReturnCluster(Conf* myConf, int* centroids, int centroid) {
-	cout << "mumble " <<myConf->number_of_clusters <<endl;
+	//cout << "mumble " <<myConf->number_of_clusters <<endl;
 	for (int i = 0; i < myConf->number_of_clusters; ++i)
 	{
-		cout << "centroids[i] - centroid " << centroids[i] << " -  " << centroid << endl;
-		cout << "whadisi: " << i <<endl;
+		cout << "Searching... centroids[i] - centroid " << centroids[i] << "  -  " << centroid << endl;
+		//cout << "whadisi: " << i <<endl;
 		if (centroids[i] == centroid)
 		{
-			cout << "returns : " <<i <<endl;
+			cout << "Returns (from ReturnCluster function) : " <<i <<endl;
 			return i;
 		}
 	}

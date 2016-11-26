@@ -46,7 +46,7 @@ void Concentrate(Conf* myConf, Metrics* myMetric, double** distanceMatrix, int* 
 		}
 		V_s[i][1] = i;
 	}
-/*	double** newh = new double*[4];
+	/*double** newh = new double*[4];
 	for (int i = 0; i < 4; ++i)
 	{
 		newh[i] = new double[2];
@@ -136,4 +136,3 @@ int parition_twolist(double** myArray, int first, int last){        //appied QS 
     cout << "(((((((" <<endl;*/
     return piv;
 }
-

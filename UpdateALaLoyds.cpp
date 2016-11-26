@@ -33,6 +33,10 @@ bool ALaLoyds(Conf* myConf, Metrics* myMetric, double** distanceMatrix, int* cen
 			cout << "changed centroid - "<< centroids[i] <<endl;
 		}
 	}
+	cout << "==================" << endl << "PRINTING CLUSTERS WITHIN ALaLoyds : " <<endl;
+	for (int w = 0; w <myConf->number_of_clusters; w++) {
+		cout << centroids[w] << " ";
+	}
 	return changed;
  //    int* new_centroids;
  //    int* best_centroids;
