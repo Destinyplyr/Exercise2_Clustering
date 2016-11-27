@@ -73,8 +73,8 @@ void ListData<T>::DistanceMatrixComputationHamming(Metrics* myMetric, double** d
 	// }
 
 	driver_node = this->header;
-	bitset<64> a(string("1010111010100100001010110000100100001001000100011101100011100000"));
-	bitset<64> b(string("0010111010100100011011110001100010011001000000011101100001100000"));
+	// bitset<64> a(string("1010111010100100001010110000100100001001000100011101100011100000"));
+	// bitset<64> b(string("0010111010100100011011110001100010011001000000011101100001100000"));
 	//cout << myMetric->point_number <<endl;
 
 	for (int i = 0; i < myMetric->point_number; i++) {
@@ -88,8 +88,8 @@ void ListData<T>::DistanceMatrixComputationHamming(Metrics* myMetric, double** d
 				if (strcmp(myMetric->metric_space.c_str(), "hamming") == 0)
 				{
 					distance_matrix[i][j] = this->DistanceB2BHamming(current_node->getKey(), driver_node->getKey());
-					cout << "dham: " <<this->DistanceB2BHamming(a, b) <<endl;					//cout << distance_matrix[i][j] << "\t";
-					exit(-1);
+					//cout << "dham: " <<this->DistanceB2BHamming(a, b) <<endl;					//cout << distance_matrix[i][j] << "\t";
+					//exit(-1);
 					current_node = current_node->getNext();
 				}
 			}

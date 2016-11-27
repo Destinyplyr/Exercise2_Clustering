@@ -1,6 +1,5 @@
-#include <cstdlib>
-#include <fstream>
-#include <sstream>
+#include "Headers.h"
+#include "Returns.h"
 
 double DistanceMatrixDistance(double** inputFile, double item1, double item2);
 void quickSort(double* myArray, int first, int last );

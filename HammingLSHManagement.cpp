@@ -7,8 +7,6 @@ using namespace std;
 template <typename T>                                                                                           //dataLength is number of points
 void ListData<T>::initHammingLSHManagement(Conf* myConf, ifstream& inputFile, double** distanceMatrix, int k, int L, int* dataLength, int* hashCreationDone, Hash<bitset<64> >* hashTableList, int* centroids, int** clusterAssign)
 {
-	int k = 4;
-	int L = 5;
 	int hammingSize = 0;     //Used for hamming size, or number of vector attributes
 	int itemNo = 0;         //How many items we have?
 	int hdis;
@@ -17,12 +15,15 @@ void ListData<T>::initHammingLSHManagement(Conf* myConf, ifstream& inputFile, do
 	int minBruteDistance = 9999;
 	int minLSHDistance = 9999;
 	int tableSize = (*dataLength) / 8;			// n/8
+	int minimumCentroid = -1;
+	int secondBestCentroid = -1;
 	double elapsed_secs_lsh, elapsed_secs_brute;
 	double elapsed_secs_hashing, elapsed_secs_query;
+	double distance_bucketpoint_from_centroid;
+	double minimumDistance = INT_MAX;
+	double minDistance = INT_MAX;
+	double secondBestDistance = INT_MAX;
 	double Radius = 0;
-	ifstream inputFile;
-	ifstream queryFile;
-	ofstream outputFile;
 	string metric_space;
 	string filename;
 	string choice;
@@ -33,6 +34,7 @@ void ListData<T>::initHammingLSHManagement(Conf* myConf, ifstream& inputFile, do
 	string myString;
 	bool turn = false;
 	bool outParameter = false, inParameter = false, queryParameter = false;
+	bool assigned_in_this_radius = false;
 	clock_t begin, begin_brute, end_brute, end_List_creation;
 	clock_t begin_lsh_hashing, end_lsh_hashing;
 	clock_t begin_lsh_query, end_lsh_query;
@@ -47,9 +49,9 @@ void ListData<T>::initHammingLSHManagement(Conf* myConf, ifstream& inputFile, do
 	{
 		point_to_centroid_assignment[i] = new double[4];
 		point_to_centroid_assignment[i][0] = -1;            //init   
-		point_to_centroid_assignment[i][1] = -1;
+		point_to_centroid_assignment[i][1] = INT_MAX;
 		point_to_centroid_assignment[i][2] = -1;
-		point_to_centroid_assignment[i][3] = -1;
+		point_to_centroid_assignment[i][3] = INT_MAX;
 	}
 
 
@@ -86,10 +88,10 @@ void ListData<T>::initHammingLSHManagement(Conf* myConf, ifstream& inputFile, do
 	int currentIndex = 0;
 	int hashResult = 0;
 
-
+	int* miniHashIndex;
 	for (int l = 0; l < L; l++) 	//every hash table
 	{
-		int* miniHashIndex = new int[k];		
+		miniHashIndex = new int[k];		
 		//which mini-hashing functions should I choose?
 		for (int i=0; i < k; i++)
 		{
@@ -106,16 +108,17 @@ void ListData<T>::initHammingLSHManagement(Conf* myConf, ifstream& inputFile, do
 		{	//new hash table list
 			hashTableList[l].initHash(tableSize);
 			//itemNo = 0;
-			listNode = header;
+			listNode = getNode();
 			while(listNode != NULL)
 			{
 				hashResult = 0;
 				for (int i=0; i < k; i++) 	//for every mini hashing function
 				{
 				    currentIndex = miniHashIndex[i];        //current index regarding the Hamming string;
-				    hashResult += pow (2, i) * (genericStr[currentIndex] - '0');    //creates the binary as an int
+				    hashResult += pow (2, i) * (listNode->getKey()[currentIndex] != 0);    //creates the binary as an int
+				    cout << "Inserting in hamming hashtable: curr Hash result: " << hashResult <<endl;
 				}
-				hashTableList[l].Insert(hashResult, genericStr, hashResult, itemNo, itemName);
+				hashTableList[l].Insert(hashResult, listNode->getKey(), hashResult, itemNo, itemName);
 				listNode = listNode->getNext();
 			}
 			/*while (!inputFile.eof())
@@ -239,9 +242,9 @@ void ListData<T>::initHammingLSHManagement(Conf* myConf, ifstream& inputFile, do
 
 	Radius = FindRadiusForAssignment(myConf, distanceMatrix, centroids);
 	cout << "Radius AFTER min distances : " << Radius << endl; 
-	nodePtr = NULL;
+	Node<T> *nodePtr = NULL;
 	minimumNode = NULL; 
-	//standard assignment
+	//standard assignment 
 	for (int o = 0; o < L; ++o) 	//for every hashtable
 	{
 		cout << "For hash table " << o << " : " << endl;
@@ -250,29 +253,36 @@ void ListData<T>::initHammingLSHManagement(Conf* myConf, ifstream& inputFile, do
 		do
 		{
 			assigned_in_this_radius = false;
-			for (int q = 0; q < myConf->number_of_clusters; q++) 	//for every centroid
+			for (int q = 0; q < myConf->number_of_clusters; q++) 	//for every centroid 
 			{
 				cout << "For centroid : " << q << " : " << endl;
 				hashResult = 0;
 
 
-				//hamming hashing
+				//hamming hashing for centroid
 				for (int i=0; i < k; i++)
 				{
 					//Current index regarding the Hamming string - using the miniHash that was used before
-					currentIndex = miniHashIndexList[l][i];        
-					hashResult += pow (2, i) * (queryCode[currentIndex] - '0');    //Creates the binary as an int
+					currentIndex = miniHashIndexList[o][i];
+					nodePtr = this->getNode();
+					while (nodePtr->getItemNo() != centroids[q])
+					{
+						nodePtr = nodePtr->getNext();
+					}   
+					hashResult += pow (2, i) * (nodePtr->getKey()[currentIndex] != 0);    //Creates the binary as an int
+					cout << "Inserting in hamming hashtable: curr Hash result: " << hashResult <<endl;
 				}
-				//cout << "------->  Hash result : " << hashResult <<endl;
-				listNode = hashTableList[l].getHashTable()[hashResult].getBucket();
-				listBucketTable[l] = listNode;
+				//cout << "------->  Hash result : " << hashResult <<endl;]
+
+				//listNode = hashTableList[l].getHashTable()[hashResult].getBucket();
+				//listBucketTable[l] = listNode;
 
 
 				cout << "The hash result : " << hashResult << endl;
 				nodePtr = hashTableList[o].getHashTable()[hashResult].getBucket();
 				if (nodePtr == NULL)
 				{
-					cout << "nodePtr after hashing is NULL";
+					cout << "nodePtr after hashing centroid is NULL";
 					//exit(15);
 				}
 				while (nodePtr != NULL && nodePtr->getFlagAsAssigned() != 1)
@@ -413,7 +423,7 @@ void ListData<T>::initHammingLSHManagement(Conf* myConf, ifstream& inputFile, do
 		}
 		
 	}
-	do 
+	/*do 
 	{
 		queryFile.clear();      		//Restart
 		queryFile.seekg(0, ios::beg);   //Data file back from start
@@ -606,6 +616,6 @@ void ListData<T>::initHammingLSHManagement(Conf* myConf, ifstream& inputFile, do
 	else if ((choice.compare("exit") != 0) && (choice.compare("'exit'") != 0)) {
 		cout << "Command not recognised. Exiting... You lost your chance..." <<endl;
 		exit(-1);
-	}
-	return 0;
+	}*/
+	return;
 }

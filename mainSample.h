@@ -1,4 +1,4 @@
-#include <bitset>
+
 #include "NodeFunctions.cpp"
 #include "ListsFunctions.cpp"
 #include "VectorHammingListManagement.cpp"
@@ -6,6 +6,7 @@
 #include "HashFunctions.cpp"
 #include "DBListManagement.cpp"
 #include "DBHManagement.cpp"
+#include "HammingLSHManagement.cpp"
 #include "Headers.h"
 #include "UtilsH.h"
 #include "Algorithms.h"

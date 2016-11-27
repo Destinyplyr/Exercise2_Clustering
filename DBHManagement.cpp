@@ -55,9 +55,9 @@ void ListData<T>::initDBHManagement(Conf* myConf, ifstream& inputFile, double** 
 	{
 		point_to_centroid_assignment[i] = new double[4];
 		point_to_centroid_assignment[i][0] = -1;            //init   
-		point_to_centroid_assignment[i][1] = -1;
+		point_to_centroid_assignment[i][1] = INT_MAX;
 		point_to_centroid_assignment[i][2] = -1;
-		point_to_centroid_assignment[i][3] = -1;
+		point_to_centroid_assignment[i][3] = INT_MAX;
 	}
 
 	std::cout.setf(std::ios_base::fixed, std::ios_base::floatfield);

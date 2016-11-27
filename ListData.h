@@ -1,6 +1,7 @@
 #ifndef LIST_DATA
 #define LIST_DATA
 
+#include "Headers.h"
 #include "Node.h"
 #include "MathFunctions.h"
 #include "Returns.h"

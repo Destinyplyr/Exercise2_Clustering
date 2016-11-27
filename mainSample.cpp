@@ -146,6 +146,7 @@ int main(int argc, char **argv)
 		}
 		delete clusterTable;
 		clusterTable = new ClusterTable(myConf->number_of_clusters);
+		clusterTable->CreateClusterTableFromClusterAssign(myConf, myMetric,clusterAssign, centroids);
 		if (!ALaLoyds(myConf, myMetric, distance_matrix, centroids, clusterTable, clusterAssign)) {
 		 	cout << "done!" << endl;
 		}

@@ -7,6 +7,7 @@
 #include <math.h>
 #include <climits>
 #include <limits>
+#include <bitset>
 
 using namespace std;
 
