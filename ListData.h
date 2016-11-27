@@ -4,6 +4,7 @@
 #include "Node.h"
 #include "MathFunctions.h"
 #include "Returns.h"
+#include "Hash.h"
 
 template <typename T>
 class ListData
@@ -17,7 +18,7 @@ class ListData
 		void Insert(T item, int itemno, std::string itemName);
 		void initEuclideanList(std::ifstream& inputFile, std::ifstream& queryFile, int k, int L, std::ofstream& outputfile, int* dataLength);
 		void initCosineList(std::ifstream& inputFile, std::ifstream& queryFile, int k, int L, std::ofstream& outputfile,  int* dataLength);
-		void initDBHManagement(std::ifstream& inputFile, std::ifstream& queryFile, int k, int L, std::ofstream& outputfile, int* dataLength);
+		void initDBHManagement(Conf* myConf, ifstream& inputFile, double** distanceMatrix, int k, int L, int* dataLength, int* hashCreationDone, Hash<double>* hashTableList, int* centroids);
 		int Distance(T item1, T item2);
 		double CosineDistance(double p1[], double p2[], int size);
 		bool HammingDuplicate(T item);

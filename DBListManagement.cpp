@@ -19,7 +19,7 @@ void ListData<T>::ListInsertionDB(std::ifstream& inputFile, Metrics* myMetric)
     getline(inputFile, genericStr);
     stringstream linestream2(genericStr);
     while (getline(linestream2, itemNos, ',')) {       //Calculate dimension of points
-    	this->Insert(NULL, point_number, itemNos);
+    	this->Insert(0, point_number, itemNos);
         //itemName[ind] = pointStr;
         point_number++;
     }

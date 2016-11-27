@@ -20,8 +20,21 @@ class Node
 		int getItemNo();
 		T getKey();
 		std::string getItemName();
+		int getFlagForAssignment();
+		void setFlagForAssignment(int flagged_for_assignment);
+		int getFlagAsAssigned();
+		void setFlagAsAssigned(int flagged_as_assigned);
+		double getDistanceFromCentroid();
+		void setDistanceFromCentroid(double distance_from_centroid);
+		int getCentroid();
+		void setCentroid(int centroid);
+
 
 	private:
+		int flagged_for_assignment;
+		int flagged_as_assigned;
+		double distance_from_centroid;
+		int centroid;
 	    int itemno;
 		int g;
 		T key;

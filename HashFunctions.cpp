@@ -111,8 +111,8 @@ Hash<T>::Hash()
 
 
 template <typename T>
-void Hash<T>::initHash(int k, string metric) {
-    int tableSize;
+void Hash<T>::initHash(int tableSize) {
+/*    int tableSize;
     //cout << "metric_space " << metric << endl;
     if (strcmp(metric.c_str(), "hamming") == 0) {
         tableSize = pow(2, k);
@@ -125,10 +125,10 @@ void Hash<T>::initHash(int k, string metric) {
     }
     if (strcmp(metric.c_str(), "matrix") == 0) {
         tableSize = pow(2, k);
-    }
+    }*/
     this->tableSize = tableSize;
 	this->hashTable = new headHashNode<T>[tableSize]();
-    this->metric_space = metric;
+    //this->metric_space = metric;
 }
 
 
@@ -147,7 +147,71 @@ void Hash<T>::Insert(int hashResult, T newItem, int g, int itemno, string itemNa
 
     Node<T>* newNode = new Node<T>(newItem, g, itemno, itemName);
     this->hashTable[hashResult].Insert(hashResult, newNode, g);
+    cout << "Printing in Hash<T>::Insert just insert: " << hashTable[hashResult].getBucket()->getItemNo()<<endl;
 }
+
+template <typename T>
+void Hash<T>::MoveToBack(int item_no, int cluster_no) 
+{
+    Node<T>* currentNode = hashTable[cluster_no].getBucket();
+    Node<T> *prev = NULL;
+    Node<T> *list = currentNode;
+    if (currentNode != NULL) 
+    {
+        //cout << "IN Remove " << cluster_no<< endl;
+        //cout << "rem 1" <<endl;
+        while ((list->getNext() != NULL) && (list->getItemNo() != item_no)) 
+        {
+            prev = list;
+            list = list->getNext();
+        }
+        //cout << "rem 2" <<endl;
+        if (list->getItemNo() == item_no) 
+        {
+            //cout << "rem 3" <<endl;
+            if (prev == NULL) 
+            {
+                //cout << "rem 4.1" <<endl;
+                Node<T> *next= list->getNext();
+                //delete list;
+                //cout << "rem 4.2" <<endl;
+                hashTable[cluster_no].setBucket(next);
+            } 
+            else 
+            {
+                //cout << "rem 5.1" <<endl;
+                Node<T> *_next = list->getNext();
+                //delete list;
+                //cout << "rem 5.2" <<endl;
+                prev->setNext(_next);
+            }
+        }
+    }
+    currentNode = list;
+    //Node<T>* prev = NULL;
+    list = hashTable[cluster_no].getBucket();
+    while (list != NULL)
+    {
+        //cout << "we have a friend here - 907" <<endl;
+        prev = list;
+        list = list->getNext();
+    }
+    //newNode = new ClusterNode(item_no, NULL);
+    if (prev == NULL)
+    {
+        hashTable[cluster_no].setBucket(currentNode);
+        //cout << "sett prev first" <<endl;
+    }
+    else
+    {
+        prev->setNext(currentNode);
+        //cout << "sett prev" <<endl;
+    }
+
+    //cout << "Item inserted in hash table with hash : " << cluster_no <<endl;
+}
+
+
 
 
 template <typename T>

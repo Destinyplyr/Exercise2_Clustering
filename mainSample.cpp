@@ -18,6 +18,9 @@ int main(int argc, char **argv)
 	Conf* myConf = new Conf();
 	Metrics* myMetric = new Metrics();
 	bool completeFlag = false;
+	bool first_time_lsh;
+	int L, k;
+	int hashCreationDone;
 	//bool outParameter = false, inParameter = false, confParameter = false;
 
 	std::cout.setf(std::ios_base::fixed, std::ios_base::floatfield);
@@ -193,7 +196,7 @@ int main(int argc, char **argv)
 
 	if (strcmp(myMetric->metric_space.c_str(), "matrix") == 0)
 	{
-		ListData<double*>* DBHList = new ListData<double*>();
+		ListData<double>* DBHList = new ListData<double>();
 		DBHList->ListInsertionDB(inputFile, myMetric);
 
 		cout << "********************************************************" << endl;
@@ -205,6 +208,15 @@ int main(int argc, char **argv)
 		//Concentrate(myConf, myMetric, distance_matrix, centroids);
 		KMedoidsPP(myConf, myMetric, distance_matrix, centroids);
 		// PAM(myConf, myMetric, distance_matrix, centroids, clusterTable, clusterAssign);
+		L = 5;
+		k = 4;
+		Hash<double>* hashTableList = new Hash<double>[L]();      //Na min orizetai se kathe iteration tou update, giati xanaorizetai
+		if (first_time_lsh == true) 
+		{
+			first_time_lsh = false;
+			hashCreationDone = 0;
+			DBHList->initDBHManagement(myConf, inputFile, distance_matrix, k , L, &(myMetric->point_number), &hashCreationDone, hashTableList, centroids);
+		}
 		// if (!ALaLoyds(myConf, myMetric, distance_matrix, centroids, clusterTable, clusterAssign)) {
 		// 	cout << "done!" << endl;
 		// }
@@ -214,6 +226,10 @@ int main(int argc, char **argv)
 		//clusterTable->PrintCluster(0);
 		//cout << "EKANE TO PRINT" << endl;
 		clusterTable->PrintingSilhouette(myConf, distance_matrix, centroids, clusterAssign);
+
+		
+		//delete DBHList;
+		//continue;
 
 	}
 

@@ -1,12 +1,7 @@
 #ifndef HASH_H
 #define HASH_H
 
-#include <iostream>
-#include <fstream>
-#include <string.h>
-#include <math.h>
-#include <cmath>
-#include <vector>
+#include "Headers.h"
 #include "Node.h"
 #include "TrickList.h"
 
@@ -50,11 +45,13 @@ class Hash
 		Hash(int k, string metric_space);
 		Hash();
 		~Hash();
-		void initHash(int k, string metric_space);
+		//void initHash(int k, string metric_space);
+		void initHash(int tableSize);//, string metric);
 		void setNext(Node<T>* next);
 		void setKey(T key);
 		void Insert(int hashResult, T newItem);
 		void Insert(int hashResult, T newItem, int g, int itemno, std::string itemName);
+		void MoveToBack(int item_no, int cluster_no);
 		void printHash();
 		T getKey();
 		headHashNode<T>* getHashTable();

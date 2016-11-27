@@ -5,6 +5,10 @@
 template <typename T>
 Node<T>::Node()
 {
+	this->flagged_for_assignment = -1;
+	this->flagged_as_assigned = -1;
+	this->distance_from_centroid = INT_MAX;
+	this->centroid = -1;
 	this->itemno = -1;
     this->next = NULL;
 	//cout << "Node created successfully!" << endl;
@@ -14,6 +18,10 @@ Node<T>::Node()
 template <typename T>
 Node<T>::Node(T key)
 {
+	this->flagged_for_assignment = -1;
+	this->flagged_as_assigned = -1;
+	this->distance_from_centroid = INT_MAX;
+	this->centroid = -1;
 	this->itemno = -1;
 	this->key = key;		//Works for both Hamming (T = string) and Vector (T = double*)
 	this->next = NULL;
@@ -24,6 +32,10 @@ Node<T>::Node(T key)
 template <typename T>
 Node<T>::Node(T key, int g, int itemno, string itemName)
 {
+	this->flagged_for_assignment = -1;
+	this->flagged_as_assigned = -1;
+	this->distance_from_centroid = INT_MAX;
+	this->centroid = -1;
     this->itemno = itemno;
 	this->key = key;			//Works for both Hamming (T = string) and Vector (T = double*)
 	this->next = NULL;
@@ -109,4 +121,57 @@ template <typename T>
 string Node<T>::getItemName()
 {
 	return itemName;
+}
+
+template <typename T>
+int Node<T>::getFlagForAssignment()
+{
+	return flagged_for_assignment;
+}
+
+
+template <typename T>
+void Node<T>::setFlagForAssignment(int flagged_for_assignment)
+{
+	this->flagged_for_assignment = flagged_for_assignment;
+}
+
+template <typename T>
+int Node<T>::getFlagAsAssigned()
+{
+	return flagged_as_assigned;
+}
+
+
+template <typename T>
+void Node<T>::setFlagAsAssigned(int flagged_as_assigned)
+{
+	this->flagged_as_assigned = flagged_as_assigned;
+}
+
+
+template <typename T>
+double Node<T>::getDistanceFromCentroid()
+{
+	return distance_from_centroid;
+}
+
+
+template <typename T>
+void Node<T>::setDistanceFromCentroid(double distance_from_centroid)
+{
+	this->distance_from_centroid = distance_from_centroid;
+}
+
+template <typename T>
+int Node<T>::getCentroid()
+{
+	return centroid;
+}
+
+
+template <typename T>
+void Node<T>::setCentroid(int centroid)
+{
+	this->centroid = centroid;
 }
