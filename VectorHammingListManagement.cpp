@@ -29,7 +29,6 @@ void ListData<T>::ListInsertionVector(std::ifstream& inputFile, Metrics* myMetri
 		getline(inputFile, genericStr);
 		do {
 			index = 0;
-			point_number++;
 			//cout << "apo th getline katw " << genericStr << endl;
 	   		stringstream linestream(genericStr);
 	   		getline(linestream, pointStr, '\t');
@@ -41,10 +40,11 @@ void ListData<T>::ListInsertionVector(std::ifstream& inputFile, Metrics* myMetri
 				index++;
 	   		}
 	   		if (!this->EuclideanDuplicate(point, myMetric->point_dimension)) {
-	   			//cout << "point inserted: " << point[0] << " - " << point_number << " - " << itemNos <<endl;
+	   			cout << "point inserted: " << point[0] << " - " << point_number << " - " << itemNos <<endl;
 	   			this->Insert(point, point_number, itemNos);
 	   		}
 	   		inputFile >> itemNos;		//next itemno
+	   		point_number++;
 	   		//cout << "item NOs : " << itemNos << endl;
    		}while(getline(inputFile, genericStr));
    		//cout << "point number : " << point_number << endl;

@@ -17,8 +17,8 @@ class ListData
         Node<T>* getNode();
 		void PrintData();
 		void Insert(T item, int itemno, std::string itemName);
-		void initEuclideanList(Conf* myConf, ifstream& inputFile, double** distanceMatrix, int k, int L, int* dataLength, int* hashCreationDone, Hash<double* >* hashTableList, int* centroids, int** clusterAssign);
-		void initCosineList(std::ifstream& inputFile, std::ifstream& queryFile, int k, int L, std::ofstream& outputfile,  int* dataLength);
+		void initEuclideanList(Conf* myConf, ifstream& inputFile, double** distanceMatrix, int k, int L, int* dataLengthPointNumber, int* hashCreationDone, Hash<double* >* hashTableList, int* centroids, int** clusterAssign);
+		void initCosineList(Conf* myConf, ifstream& inputFile, double** distanceMatrix, int k, int L, int* dataLengthPointNumber, int* hashCreationDone, Hash<double* >* hashTableList, int* centroids, int** clusterAssign);
 		void initDBHManagement(Conf* myConf, ifstream& inputFile, double** distanceMatrix, int k, int L, int* dataLength, int* hashCreationDone, Hash<double>* hashTableList, int* centroids, int** clusterAssign);
 		void initHammingLSHManagement(Conf* myConf, ifstream& inputFile, double** distanceMatrix, int k, int L, int* dataLength, int* hashCreationDone, Hash<bitset<64> >* hashTableList, int* centroids, int** clusterAssign);
 		int Distance(T item1, T item2);

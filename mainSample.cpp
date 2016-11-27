@@ -217,13 +217,25 @@ int main(int argc, char **argv)
 			cosineList->DistanceMatrixComputationVector(myMetric, distance_matrix);
 			KMedoidsPP(myConf, myMetric, distance_matrix, centroids);
 			//Concentrate(myConf, myMetric, distance_matrix, centroids);
+			Hash<double*>* hashTableList = new Hash<double*>[L]();      //Na min orizetai se kathe iteration tou update, giati xanaorizetai
+			if (first_time_lsh == true) 
+			{
+				first_time_lsh = false;
+				hashCreationDone = 0;
+				point_number = myMetric->point_number;
+				cosineList->initCosineList(myConf, inputFile, distance_matrix, k , L, &(point_number), &hashCreationDone, hashTableList, centroids, clusterAssign);
+			}
+			delete clusterTable;
+			clusterTable = new ClusterTable(myConf->number_of_clusters);
+			clusterTable->CreateClusterTableFromClusterAssign(myConf, myMetric,clusterAssign, centroids);
 			// PAM(myConf, myMetric, distance_matrix, centroids, clusterTable, clusterAssign);
-			// if (!ALaLoyds(myConf, myMetric, distance_matrix, centroids, clusterTable, clusterAssign)) {
-			// 	cout << "done!" << endl;
-			// }
-			CLARANS(myConf, myMetric, distance_matrix, centroids, clusterTable, clusterAssign);
+			if (!ALaLoyds(myConf, myMetric, distance_matrix, centroids, clusterTable, clusterAssign)) {
+			 	cout << "done!" << endl;
+			}
+			//CLARANS(myConf, myMetric, distance_matrix, centroids, clusterTable, clusterAssign);
 			//CLARA( myConf,  myMetric, distance_matrix, centroids, clusterTable, clusterAssign);
 			clusterTable->PrintingSilhouette(myConf, distance_matrix, centroids, clusterAssign);
+			delete clusterTable; //DELETE CLUSTER TABLE (case lsh/dbh)
 		}
 	}
 

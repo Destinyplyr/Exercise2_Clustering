@@ -30,7 +30,6 @@ void ListData<T>::ListInsertionHamming(std::ifstream& inputFile, Metrics* myMetr
 		getline(inputFile, genericStr);
 		do {
 			index = 0;
-			point_number++;
 			//cout << "apo th getline katw " << genericStr << endl;
 	   		stringstream linestream(genericStr);
 	   		getline(linestream, pointStr, '\t');
@@ -42,6 +41,7 @@ void ListData<T>::ListInsertionHamming(std::ifstream& inputFile, Metrics* myMetr
     			this->Insert(currentPoint, point_number, itemNos);
     		}
     		inputFile >> itemNos;		//next itemno
+    		point_number++;
 	   		//cout << "item NOs : " << itemNos << endl;
 	   // 		point = new double[myMetric->point_dimension];
 	   // 		while (getline(linestream, pointStr, '\t'))    //Calculate dimension of points
