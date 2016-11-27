@@ -1,0 +1,381 @@
+
+//******************************** Algorithms.h ********************************
+
+
+//KMedoids++ initialization algorithm computation
+void KMedoidsPP(Conf* myConf, Metrics* myMetric, double** distanceMatrix, int* centroids);
+
+//Concentrate (Park-Jun) initialization algorithm computation
+void Concentrate(Conf* myConf, Metrics* myMetric, double** distanceMatrix, int* centroids);
+
+//PAM assignment algorithm computation
+void PAM(Conf* myConf, Metrics* myMetric, double** distanceMatrix, int* centroids, ClusterTable* clusterTable,  int** clusterAssign);
+
+//AlaLoyds update algorithm computation
+bool ALaLoyds(Conf* myConf, Metrics* myMetric, double** distanceMatrix, int* centroids,  ClusterTable* clusterTable, int** clusterAssign);
+
+//CLARANS update algorithm computation
+bool CLARANS(Conf* myConf, Metrics* myMetric, double** distanceMatrix, int* centroids,  ClusterTable* clusterTable, int** clusterAssign);
+
+//CLARA algorithm computation
+void CLARA(Conf* myConf, Metrics* myMetric, double** distanceMatrix, int* centroids,  ClusterTable* clusterTable, int** clusterAssign);
+
+//PAM initialization and update algorithm computation
+void FullPAM(Conf* myConf, double** distanceMatrix, int* centroids,  ClusterTable* clusterTable, int** clusterAssign, int* current_sample, int n_sample_size);
+
+//Quicksort of two lists
+void quickSort_twolist(double** myArray, int first, int last );
+
+//Partition for Quicksort
+int parition_twolist(double** myArray, int first, int last);
+
+
+//******************************** ClusterNode.h ********************************
+
+//ClusterNode parameter constructor
+ClusterNode(int item_no, ClusterNode* next);
+
+//Get next ClusterNode pointer
+ClusterNode* getNext();
+
+//Set the next ClusterNode pointer
+void setNext(ClusterNode* next);
+
+//Set ClusterNode's item number
+void setItemNo(int item_no);
+
+//Get ClusterNode's item number
+int getItemNo();
+
+
+//******************************** ClusterTable.h ********************************
+
+//Get ClusterTable's table
+ClusterNode** getArray();
+
+//Set ClusterTable's table
+void setArray(ClusterNode** clusterTable);
+
+//Get ClusterTable's pointer list
+ClusterNode* getList();
+
+//Set ClusterTable's pointer list
+void setList(ClusterNode* table);
+
+//Get Cluster number
+int getClusterNumber();
+
+//Set Cluster number
+void setClusterNumber(int number_of_clusters);
+
+//Remove item from cluster
+void Remove(int item_no, int cluster_no); 
+
+//Insert item at cluster
+void InsertAtCluster(int item_no, int cluster_no); 
+
+//Get Distamce from cluster
+int ClusterDistance(Metrics* myMetric, double** distanceMatrix, int cluster_no, int** clusterAssign);
+
+//Get distance from centroid
+double ClusterDistanceFromCentroid(double** distanceMatrix, int cluster_no, int centroid);
+
+//Get cluster Silhouette
+double ClusterSilhouette(Conf* myConf, double** distanceMatrix, int* centroids,  int cluster_no, int** clusterAssign);
+
+//Initialize tables
+void Init_Tables(double*** distanceMatrix, Metrics* myMetric, Conf* myConf, int** centroids, ClusterTable** clusterTable, int*** clusterAssign);
+
+//Print Silhouette
+double PrintingSilhouette(Conf* myConf, double** distanceMatrix, int* centroids, int** clusterAssign);
+
+//Return size of cluster
+int ReturnClusterSize(int cluster_no);
+
+//Print cluster 
+void PrintCluster(int cluster_no);
+
+//Create the cluster from helping clusterAssign struct
+int CreateClusterTableFromClusterAssign(Conf* myConf, Metrics* myMetric,int** clusterAssign, int* centroids);
+
+
+//******************************** DistanceMatrixFunctions.h ********************************
+
+//Computation of distance between points
+double DistanceMatrixDistance(double** inputFile, double item1, double item2);
+
+//Quicksort
+void quickSort(double* myArray, int first, int last );
+
+//Partition for Quciksort
+int parition(double* myArray, int first, int last);
+
+//Swap in partition
+void swap(int& a, int& b);
+
+
+//******************************** Hash.h ********************************
+	
+//headHashNode
+
+//Get bucket
+Node<T>* getBucket();
+
+//Initialize headHashNode 
+void initHeadHashNode(string metric);
+
+//Very specific thing
+void InsertTrick(int g, TrickList<T>* trickList, int L);
+
+//Set the bucket key
+void setBucketKey(int key);
+
+//Print hash node
+void printHash();
+
+//Set bucket
+void setBucket(Node<T>* bucket);
+
+//Insert at headHashNode
+int Insert(int hashResult, Node<T>* newItem);
+
+//Insert at heasHashNode, with g
+int Insert(int hashResult, Node<T>* newItem, int g);
+
+//Get bucket key
+int getBucketKey();
+
+
+//Hash
+
+//Initialize hash table
+void initHash(int tableSize);//, string metric);
+
+//Set HashTable's next pointer
+void setNext(Node<T>* next);
+
+//Set HashTable's key
+void setKey(T key);
+
+//Insert at HashTable
+void Insert(int hashResult, T newItem);
+
+//Insert at HashTable with item info and g
+void Insert(int hashResult, T newItem, int g, int itemno, std::string itemName);
+
+//Move item to the back of the list
+void MoveToBack(int item_no, int cluster_no);
+
+//Print hash table
+void printHash();
+
+//Get HashTable's key
+T getKey();
+
+//Get hash table
+headHashNode<T>* getHashTable();
+
+
+
+
+//******************************** ListData.h ********************************
+
+//Return list head
+Node<T>* ReturnHead();
+
+//Reaturn list head (same as previous)
+Node<T>* getNode();
+
+//Print list's data
+void PrintData();
+
+//Insert at list
+void Insert(T item, int itemno, std::string itemName);
+
+//Initialize Euclidean list
+void initEuclideanList(std::ifstream& inputFile, std::ifstream& queryFile, int k, int L, std::ofstream& outputfile, int* dataLength);
+
+//Initialize Cosine list
+void initCosineList(std::ifstream& inputFile, std::ifstream& queryFile, int k, int L, std::ofstream& outputfile,  int* dataLength);
+
+//Initialize DBH list
+void initDBHManagement(Conf* myConf, ifstream& inputFile, double** distanceMatrix, int k, int L, int* dataLength, int* hashCreationDone, Hash<double>* hashTableList, int* centroids, int** clusterAssign);
+
+//Distance between two T points
+int Distance(T item1, T item2);
+
+//Compute Cosine distance
+double CosineDistance(double p1[], double p2[], int size);
+
+//Find duplicates in Hamming
+bool HammingDuplicate(T item);
+
+//Find duplicates in hamming (bitset)
+bool HammingB2BDuplicate(T item);
+
+//Find duplicates in Euclidean
+bool EuclideanDuplicate(T item, int size);
+
+//Inserts data for vectors (Euclidean and Cosine)
+void ListInsertionVector(std::ifstream& inputFile, Metrics* myMetric);
+
+//Computes distance matrix for vectors (Euclidean and Cosine)
+void DistanceMatrixComputationVector(Metrics* myMetric, double** distance_matrix);
+
+//Inserts data for DBH
+void ListInsertionDB(std::ifstream& inputFile, Metrics* myMetric);
+
+//Computes distance matric for DBH
+void DistanceMatrixComputationDB(std::ifstream& inputFile, Metrics* myMetric, double** distance_matrix);
+
+//Inserts data for Hamming
+void ListInsertionHamming(std::ifstream& inputFile, Metrics* myMetric);
+
+//Computes distances for Hamming (bitset)
+double DistanceB2BHamming(T item1, T item2);
+
+//Computes distance matrix for Hamming
+void DistanceMatrixComputationHamming(Metrics* myMetric, double** distance_matrix);
+
+
+//******************************** mainSample.h ********************************
+
+//Command line interface management
+void CLI(ifstream& inputFile, ofstream& outputFile, Conf* myConf, Metrics* myMetric);
+
+//Reading necessary files
+void ReadFiles(ifstream& inputFile, Metrics* myMetric, int* N, double** distanceMatrix);
+
+
+//******************************** MathFunctions.h ********************************
+
+//Computes the dot product
+double dot_product(double* vector1, double* vector2, int vector_size);
+
+//Computes the Euclidean norm
+double euclid_norm(double* vector1, int vector_size);
+
+//Checks if array parameters are the same
+bool SameArray(double* array1, double* array2, int size);
+
+//Computes the Euclidean distance
+double DistanceEuclid(double item1[], double item2[], int size);
+
+
+//******************************** Node.h ********************************
+
+//Get Node's next pointer
+Node<T>* getNext();
+
+//Set Node's next pointer
+void setNext(Node<T>* next);
+
+//Set Node's key
+void setKey(T key);
+
+//Set Node's g function
+void setG(int g);
+
+//Set Node's item name
+void setItemName(std::string itemName);
+
+//Get Node's g function
+int getG();
+
+//Get Node's item number
+int getItemNo();
+
+//Get Node's key
+T getKey();
+
+//Get Node's item name
+std::string getItemName();
+
+//Get Node's flag fora assignment
+int getFlagForAssignment();
+
+//Set Node's flag for assignment
+void setFlagForAssignment(int flagged_for_assignment);
+
+//Get Node's assigned flag
+int getFlagAsAssigned();
+
+//Set Node's assigned flag
+void setFlagAsAssigned(int flagged_as_assigned);
+
+//Get the distance form centroid
+double getDistanceFromCentroid();
+
+//Set the distance from centroid
+void setDistanceFromCentroid(double distance_from_centroid);
+
+//Get the Node's centroid
+int getCentroid();
+
+//Set the Node's centroid
+void setCentroid(int centroid);
+
+//Set the Node's second best centroid
+void setSecondBestCentroid(int second_best_centroid);
+
+//Get the Node's second best centroid
+int getSecondBestCentroid();
+
+//Set the Node's second best distance 
+void setSecondBestDistance(int second_best_distance);
+
+//Get the Node's second best distance
+int getSecondBestDistance();
+
+
+
+//******************************** TrickList.h ********************************
+
+//Get Tricklist's next pointer
+TrickList<T>* getNext();
+
+//Set Tricklist's next pointer
+void setNext(TrickList<T>* next);
+
+//Insert at Tricklist
+void Insert(Node<T>* newItem, int L);
+
+//Set Tricklist's g function
+void setG(Node<T>* gCode);
+
+//Set Tricklist's L
+void setL(int table);
+
+//Get Tricklist's g node
+Node<T>* getGNode();
+
+//Compute NN of Euclidean within Tricklist
+Node<double*>* NNTrickList(double* thePoint, int size, std::ofstream &outputFile, int Radius, double* minOutsideDistance);
+
+//Get Tricklist's L
+int getL();
+
+//Compute the Euclidean distance within Tricklist
+static double Distance(double p1[], double p2[], int size);
+
+	
+
+//******************************** UtilsH.h ********************************
+
+//Initialize configuration file
+void Init_Conf(Conf* myConf, std::ifstream& conFile);
+
+//Initialize metric info for data
+void Init_Metrics(Metrics* myMetric, std::ifstream& inputFile);
+
+//Compute CLARANS fraction
+void SetClaransFraction(Conf* myConf, Metrics* myMetric);
+
+//Check if item exists in array
+bool Exists(int* items, int pos, int newItem);
+
+//Compute objective cost of cluster
+double ObjectiveCost(int** clusterAssign, double** distanceMatrix, Metrics* myMetric);
+
+//Return the centroid's cluster
+int ReturnCluster(Conf* myConf, int* centroids, int centroid);
