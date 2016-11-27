@@ -28,6 +28,11 @@ class Node
 		void setDistanceFromCentroid(double distance_from_centroid);
 		int getCentroid();
 		void setCentroid(int centroid);
+		void setSecondBestCentroid(int second_best_centroid);
+		int getSecondBestCentroid();
+		void setSecondBestDistance(int second_best_distance);
+		int getSecondBestDistance();
+
 
 
 	private:
@@ -35,6 +40,8 @@ class Node
 		int flagged_as_assigned;
 		double distance_from_centroid;
 		int centroid;
+		int second_best_centroid;
+		int second_best_distance;
 	    int itemno;
 		int g;
 		T key;

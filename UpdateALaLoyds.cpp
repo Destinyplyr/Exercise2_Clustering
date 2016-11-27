@@ -8,9 +8,16 @@ bool ALaLoyds(Conf* myConf, Metrics* myMetric, double** distanceMatrix, int* cen
 	int newMedoid;
 	bool changed = false;
 
+	cout << "==================" << endl << "PRINTING CLUSTERS BEFORE ALaLoyds (within) : " <<endl;
+	for (int w = 0; w <myConf->number_of_clusters; w++) {
+		cout << centroids[w] << " ";
+	}
+	cout << endl;
+
 	for (int i = 0; i < myConf->number_of_clusters; ++i)
 	{
-		newMedoid = clusterTable->ClusterDistance(distanceMatrix, i);
+		newMedoid = clusterTable->ClusterDistance(myMetric, distanceMatrix, i, clusterAssign);
+		cout << "newmedoid is: " <<newMedoid <<endl;
 		if (newMedoid == -1) {
 			cout << "There was a serious problem in the previous assignment - Aborting" <<endl;
 			exit(-1);
@@ -33,10 +40,12 @@ bool ALaLoyds(Conf* myConf, Metrics* myMetric, double** distanceMatrix, int* cen
 			cout << "changed centroid - "<< centroids[i] <<endl;
 		}
 	}
-	cout << "==================" << endl << "PRINTING CLUSTERS WITHIN ALaLoyds : " <<endl;
+	cout << "==================" << endl << "PRINTING CLUSTERS AFTER ALaLoyds (within) : " <<endl;
 	for (int w = 0; w <myConf->number_of_clusters; w++) {
 		cout << centroids[w] << " ";
 	}
+	cout << endl;
+	
 	return changed;
  //    int* new_centroids;
  //    int* best_centroids;

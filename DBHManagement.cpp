@@ -6,7 +6,7 @@ using namespace std;
 
 
 template <typename T>                                                                                           //dataLength is number of points
-void ListData<T>::initDBHManagement(Conf* myConf, ifstream& inputFile, double** distanceMatrix, int k, int L, int* dataLength, int* hashCreationDone, Hash<double>* hashTableList, int* centroids) 
+void ListData<T>::initDBHManagement(Conf* myConf, ifstream& inputFile, double** distanceMatrix, int k, int L, int* dataLength, int* hashCreationDone, Hash<double>* hashTableList, int* centroids, int** clusterAssign) 
 {
 	string genericStr;
 	string line;
@@ -30,6 +30,7 @@ void ListData<T>::initDBHManagement(Conf* myConf, ifstream& inputFile, double** 
 	double minLSHDistance = 999999;
 	double minDistance;
 	double minimumDistance;
+	double secondBestDistance;
 	double distance_bucketpoint_from_centroid = 0;
 	int lshCNN = 0;
 	int realCNN = 0;
@@ -39,6 +40,7 @@ void ListData<T>::initDBHManagement(Conf* myConf, ifstream& inputFile, double** 
 	int queryCounter = 1;
 	int tableSize;
 	int minimumCentroid;
+	int secondBestCentroid;
 	Node<double>* nodePtr;
 	Node<double>* minimumNode = NULL;
 
@@ -48,12 +50,14 @@ void ListData<T>::initDBHManagement(Conf* myConf, ifstream& inputFile, double** 
 	clock_t begin_lsh_hashing, end_lsh_hashing, begin_h_creation;
 	clock_t begin_lsh_query, end_lsh_query;
 
-	double** point_to_centroid_assignment = new double*[*dataLength];           //[0] holds current centroid  [1] holds distance from it
+	double** point_to_centroid_assignment = new double*[*dataLength];           //[0] holds current centroid  [1] holds distance from it [2] holds second best centroid [3]  holds distance from it
 	for (int i = 0; i < *dataLength; ++i)
 	{
-		point_to_centroid_assignment[i] = new double[2];
+		point_to_centroid_assignment[i] = new double[4];
 		point_to_centroid_assignment[i][0] = -1;            //init   
 		point_to_centroid_assignment[i][1] = -1;
+		point_to_centroid_assignment[i][2] = -1;
+		point_to_centroid_assignment[i][3] = -1;
 	}
 
 	std::cout.setf(std::ios_base::fixed, std::ios_base::floatfield);
@@ -179,7 +183,7 @@ void ListData<T>::initDBHManagement(Conf* myConf, ifstream& inputFile, double** 
 				}//int hashResult, T newItem, int g, int itemno, string itemName
 				cout << "Point " << u << " Hashtable "<< o <<" Building hashTable: Inserting in bucket: " <<hashResult <<endl;
 				hashTableList[o].Insert(hashResult, u, hashResult, u, itemName[u]);
-				cout << " ----> Checking insert: " << hashTableList[o].getHashTable()->getBucket()->getItemNo() <<endl;
+				cout << " ----> Checking insert: " << hashTableList[o].getHashTable()[hashResult].getBucket()->getItemNo() <<endl;
 			}
 		}
 		*hashCreationDone = 1;
@@ -195,6 +199,8 @@ void ListData<T>::initDBHManagement(Conf* myConf, ifstream& inputFile, double** 
 				nodePtr->setFlagAsAssigned(0);
 				nodePtr->setDistanceFromCentroid(INT_MAX);
 				nodePtr->setCentroid(-1);
+				nodePtr->setSecondBestCentroid(-1);
+				nodePtr->setSecondBestDistance(INT_MAX);
 				nodePtr = nodePtr->getNext();
 			}
 		}
@@ -283,6 +289,8 @@ void ListData<T>::initDBHManagement(Conf* myConf, ifstream& inputFile, double** 
 								{
 									cout << "It goes in for this centroid" << endl;
 									assigned_in_this_radius = true;
+									nodePtr->setSecondBestCentroid(nodePtr->getCentroid());
+									nodePtr->setSecondBestDistance(nodePtr->getDistanceFromCentroid());
 									nodePtr->setFlagForAssignment(1);
 									nodePtr->setCentroid(centroids[q]);
 									nodePtr->setDistanceFromCentroid(distance_bucketpoint_from_centroid);
@@ -296,35 +304,51 @@ void ListData<T>::initDBHManagement(Conf* myConf, ifstream& inputFile, double** 
 					}
 					for (int hash_bucket = 0; hash_bucket < tableSize; hash_bucket++)	//from assign to legit assigned
 					{
+						cout << "++++++++++++++++++++++++++++++++++++++++" <<endl;
 						cout << "This hash bucket : " << hash_bucket << endl;
 						nodePtr = hashTableList[o].getHashTable()[hash_bucket].getBucket();
 						while(nodePtr != NULL)
 						{
 							if (nodePtr->getFlagForAssignment() == 1) 
 							{
+								//cout << "will try to get past movetoback" <<endl;
+
 								nodePtr->setFlagAsAssigned(1);
-								hashTableList[o].MoveToBack(nodePtr->getItemNo(), hashResult);
+								hashTableList[o].MoveToBack(nodePtr->getItemNo(), hash_bucket);
 								cout << "Moved to back successfully!" << endl;
 								if(point_to_centroid_assignment[nodePtr->getItemNo()][0] == -1)
 								{
+									cout << "It was -1 (centroid - distance) and now updated to our local array : old :" << point_to_centroid_assignment[nodePtr->getItemNo()][0] << " : " << point_to_centroid_assignment[nodePtr->getItemNo()][1] << endl;
 									point_to_centroid_assignment[nodePtr->getItemNo()][0] = nodePtr->getCentroid();
 									point_to_centroid_assignment[nodePtr->getItemNo()][1] = nodePtr->getDistanceFromCentroid();
-									cout << "It was -1 (centroid - distance) and now updated to our local array : " << point_to_centroid_assignment[nodePtr->getItemNo()][0] << " : " << point_to_centroid_assignment[nodePtr->getItemNo()][1] << endl;
+									cout << "It was -1 (centroid - distance) and now updated to our local array : new :" << point_to_centroid_assignment[nodePtr->getItemNo()][0] << " : " << point_to_centroid_assignment[nodePtr->getItemNo()][1] << endl;
 								}
 								else 
 								{
+									cout << "We have a previous assignment in our local array" <<endl;
 									if(point_to_centroid_assignment[nodePtr->getItemNo()][1] > nodePtr->getDistanceFromCentroid())
 									{
+										cout << "It had values before (centroid - distance) and now updated to our local array : old " << point_to_centroid_assignment[nodePtr->getItemNo()][0] << " : " << point_to_centroid_assignment[nodePtr->getItemNo()][1] << endl;
 										point_to_centroid_assignment[nodePtr->getItemNo()][0] = nodePtr->getCentroid();
 										point_to_centroid_assignment[nodePtr->getItemNo()][1] = nodePtr->getDistanceFromCentroid();
-										cout << "It had values before (centroid - distance) and now updated to our local array : " << point_to_centroid_assignment[nodePtr->getItemNo()][0] << " : " << point_to_centroid_assignment[nodePtr->getItemNo()][1] << endl;
+										if (point_to_centroid_assignment[nodePtr->getItemNo()][3] > nodePtr->getSecondBestDistance())
+										{
+											point_to_centroid_assignment[nodePtr->getItemNo()][2] = nodePtr->getSecondBestCentroid();
+											point_to_centroid_assignment[nodePtr->getItemNo()][3] = nodePtr->getSecondBestDistance();
+										}
+										cout << "It had values before (centroid - distance) and now updated to our local array : new " << point_to_centroid_assignment[nodePtr->getItemNo()][0] << " : " << point_to_centroid_assignment[nodePtr->getItemNo()][1] << endl;
 									}
 								}
-								
+								//cout << "assign out of assign ifs" <<endl;
 							}
+							//cout << "assign out of fat if" <<endl;
 							nodePtr = nodePtr->getNext();
+							//cout << "got next" <<endl;
 						}
+						cout << "Finished assignment on matrix for bucket" <<endl;
+						cout << "++++++++++++++++++++++++++++++++++++++++" <<endl;
 					}
+					cout << "Multiplying Radius" <<endl;
 					Radius = Radius * 2;
 				}while(assigned_in_this_radius);
 			}
@@ -338,25 +362,48 @@ void ListData<T>::initDBHManagement(Conf* myConf, ifstream& inputFile, double** 
 					for (int centroid_iter = 0; centroid_iter < myConf->number_of_clusters; centroid_iter++)
 					{
 						cout << "Centroid : " << centroid_iter << endl;
-						distance_bucketpoint_from_centroid = DistanceMatrixDistance(distanceMatrix, nodePtr->getItemNo(), centroids[centroid_iter]);
+						// distance_bucketpoint_from_centroid = DistanceMatrixDistance(distanceMatrix, nodePtr->getItemNo(), centroids[centroid_iter]);
+						distance_bucketpoint_from_centroid = DistanceMatrixDistance(distanceMatrix, point_iter, centroids[centroid_iter]);
 						if (distance_bucketpoint_from_centroid < minimumDistance)
 						{
+							secondBestCentroid = minimumCentroid;
+							secondBestDistance = minimumDistance;
 							minimumDistance = distance_bucketpoint_from_centroid;
 							minimumCentroid = centroids[centroid_iter];
 						}
 					}
-					nodePtr->setFlagForAssignment(1);		//assignment on hashtable list
+/*					nodePtr->setFlagForAssignment(1);		//assignment on hashtable list
 					nodePtr->setCentroid(minimumCentroid);		//assignment data on node
 					nodePtr->setDistanceFromCentroid(minimumDistance);
 
-					nodePtr->setFlagAsAssigned(1);
+					nodePtr->setFlagAsAssigned(1);*/
 					//hashTableList[o].MoveToBack(nodePtr->getItemNo(), hashResult);    SHOULD BE DONE WITH HASHING
-					point_to_centroid_assignment[nodePtr->getItemNo()][0] = nodePtr->getCentroid();
-					point_to_centroid_assignment[nodePtr->getItemNo()][1] = nodePtr->getDistanceFromCentroid();
+					// point_to_centroid_assignment[nodePtr->getItemNo()][0] = nodePtr->getCentroid();
+					// point_to_centroid_assignment[nodePtr->getItemNo()][1] = nodePtr->getDistanceFromCentroid();
+					point_to_centroid_assignment[point_iter][0] = minimumCentroid;
+					point_to_centroid_assignment[point_iter][1] = minDistance;
+					point_to_centroid_assignment[point_iter][2] = secondBestCentroid;
+					point_to_centroid_assignment[point_iter][3] = secondBestDistance;
 				}
 				cout << "Leftover updated" << endl;
 			}
 			cout << "Exiting..." << endl;
+			for (int point_iter = 0; point_iter < *dataLength; point_iter++)	
+			{
+				cout << "On point " <<point_iter <<endl;
+				cout << "changing to best : " << point_to_centroid_assignment[point_iter][0] <<endl;
+				clusterAssign[point_iter][2] = point_to_centroid_assignment[point_iter][0];		//give best centroid chosen
+				cout << "changing to 2nd best : " << point_to_centroid_assignment[point_iter][2] <<endl;
+				if (point_to_centroid_assignment[point_iter][2] == -1) 
+				{
+					clusterAssign[point_iter][1] = clusterAssign[point_iter][2];
+				}
+				else
+				{
+					clusterAssign[point_iter][1] = point_to_centroid_assignment[point_iter][2];		//give 2nd best centroid
+				}
+				
+			}
 			/*for (int hash_bucket = 0; hash_bucket < tableSize; hash_bucket++)		//search all the buckets the leftovers
 			{
 				nodePtr = hashTableList[i].getHashTable()[hashResult].getBucket();

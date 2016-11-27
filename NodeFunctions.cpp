@@ -175,3 +175,31 @@ void Node<T>::setCentroid(int centroid)
 {
 	this->centroid = centroid;
 }
+
+template <typename T>
+void Node<T>::setSecondBestCentroid(int second_best_centroid)
+{
+	this->second_best_centroid = second_best_centroid;
+}
+
+
+template <typename T>
+int Node<T>::getSecondBestCentroid()
+{
+	return second_best_centroid;
+}
+
+
+template <typename T>
+void Node<T>::setSecondBestDistance(int second_best_distance)
+{
+	this->second_best_distance = second_best_distance;
+}
+
+
+template <typename T>
+int Node<T>::getSecondBestDistance()
+{
+	return second_best_distance;
+}
+

@@ -153,16 +153,44 @@ void ClusterTable::InsertAtCluster(int item_no, int cluster_no)
         //cout << "sett prev" <<endl;
     }
 
-    //cout << "Item inserted in hash table with hash : " << cluster_no <<endl;
+    cout << "Item inserted in cluster table with cluster : " << cluster_no <<endl;
+    list = this->clusterTable[cluster_no];
+/*    while (list != NULL)
+    {
+        cout << "we have a friend here - 904: all items in cluster after insertion" <<endl;
+        prev = list;
+        list = list->getNext();
+    }*/
 }
 
-
-int ClusterTable::ClusterDistance(double** distanceMatrix, int cluster_no)      //return medoid
+//returns medoid :S
+int ClusterTable::ClusterDistance(Metrics* myMetric, double** distanceMatrix, int cluster_no, int** clusterAssign)      //return medoid
 {
     double minDistance = INT_MAX;
     double clusterDistance;
     int minDistanceMedoid = -1;
-    ClusterNode* driverNode = this->clusterTable[cluster_no];
+/*    for (int point_iter = 0; point_iter < myMetric->point_number; point_iter++)
+    {
+        clusterDistance = 0;
+        if (clusterAssign[point_iter][2] == cluster_no)
+        {
+            for (int point_iter2 = 0; point_iter2 < myMetric->point_number; point_iter2++)
+            {
+                if (clusterAssign[point_iter2][2] == cluster_no)
+                {
+                    clusterDistance += DistanceMatrixDistance(distanceMatrix, point_iter, point_iter2);
+                }
+            }
+        }
+        if (clusterDistance < minDistance)
+        {
+            minDistance = clusterDistance;
+            //cout << "curr dis is min dis" <<endl;
+            minDistanceMedoid = point_iter;
+        }
+    }*/
+    //cout << "giving " << minDistanceMedoid <<" back" <<endl;
+    ClusterNode* driverNode = this->clusterTable[cluster_no];     //used without clusterAssign, only table -FASTER
     ClusterNode* currentNode;
     while (driverNode != NULL) 
     {
@@ -183,6 +211,7 @@ int ClusterTable::ClusterDistance(double** distanceMatrix, int cluster_no)      
         //cout << "#############" <<endl;
     }
     //cout << "giving " << minDistanceMedoid <<" back" <<endl;
+
     return minDistanceMedoid;
 }
 
@@ -339,12 +368,14 @@ double ClusterTable::PrintingSilhouette(Conf* myConf, double** distanceMatrix, i
 {
     double* s_i = new double[myConf->number_of_clusters];
     double s_total = 0;
-    cout << "Silhouette: [";
+    
     cout << "==================" << endl << "PRINTING CLUSTERS IN PrintingSilhouette fucntion : " <<endl;
     for (int w = 0; w <myConf->number_of_clusters; w++) {
         cout << centroids[w] << " ";
     }
-    cout << endl << endl;
+    cout << endl;
+
+    cout << "Silhouette: [";
     for (int i = 0; i < myConf->number_of_clusters; ++i)
     {
         s_i[i] = this->ClusterSilhouette(myConf, distanceMatrix, centroids,  i, clusterAssign);
@@ -355,4 +386,28 @@ double ClusterTable::PrintingSilhouette(Conf* myConf, double** distanceMatrix, i
     cout << "TOTAL : " << s_total / myConf->number_of_clusters << "]" <<endl;
 }
 
+int ClusterTable::CreateClusterTableFromClusterAssign(Conf* myConf, Metrics* myMetric,int** clusterAssign, int* centroids)
+{
+    int cluster_no;
+    for (int point_iter = 0; point_iter < myMetric->point_number; point_iter++)
+    {
+        cout << "Creating clustertable - checking args: clusterAssign[point_iter][2]: " << clusterAssign[point_iter][2] <<endl;
+        for (int centroid_iter = 0; centroid_iter < myConf->number_of_clusters; centroid_iter++)    //find centroid index
+        {
+            if (centroids[centroid_iter] == clusterAssign[point_iter][2]) 
+            {
+                cluster_no = centroid_iter;
+            }
+        }
+        if (clusterTable[cluster_no] == NULL)
+        {
+            cout << "Attempting to add on EMPTY cluster" <<endl;
+        }
+        else 
+        {
+            cout << "Attempting to add on NONEMPTY cluster" <<endl;
+        }
+        this->InsertAtCluster(point_iter, cluster_no);        //insert point on the cluster it was assigned to
+    }
+}
 

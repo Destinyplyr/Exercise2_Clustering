@@ -156,47 +156,57 @@ void Hash<T>::MoveToBack(int item_no, int cluster_no)
     Node<T>* currentNode = hashTable[cluster_no].getBucket();
     Node<T> *prev = NULL;
     Node<T> *list = currentNode;
+    Node<T> *list2 = currentNode;
     if (currentNode != NULL) 
     {
-        //cout << "IN Remove " << cluster_no<< endl;
-        //cout << "rem 1" <<endl;
+        cout << "cluster_no" << cluster_no <<endl;
+/*        while (list2 != NULL)
+        {
+            cout << "we have a friend here - 809 - all points in cluster" << list2->getItemNo() <<endl;
+            list2 = list2->getNext();
+        }*/
+        cout << "IN remove part of movetoback " << cluster_no<< endl;
+        cout << "movetoback 1" <<endl;
+
         while ((list->getNext() != NULL) && (list->getItemNo() != item_no)) 
         {
+            cout << "we have a friend here - 807 - all points until wanted " << list->getItemNo() <<endl;
             prev = list;
             list = list->getNext();
         }
-        //cout << "rem 2" <<endl;
+        cout << "movetoback 2" <<endl;
         if (list->getItemNo() == item_no) 
         {
-            //cout << "rem 3" <<endl;
+            cout << "movetoback 3" <<endl;
             if (prev == NULL) 
             {
-                //cout << "rem 4.1" <<endl;
+                cout << "movetoback 4.1" <<endl;
                 Node<T> *next= list->getNext();
                 //delete list;
-                //cout << "rem 4.2" <<endl;
+                cout << "movetoback 4.2" <<endl;
                 hashTable[cluster_no].setBucket(next);
             } 
             else 
             {
-                //cout << "rem 5.1" <<endl;
+                cout << "movetoback 5.1" <<endl;
                 Node<T> *_next = list->getNext();
                 //delete list;
-                //cout << "rem 5.2" <<endl;
+                cout << "movetoback 5.2" <<endl;
                 prev->setNext(_next);
             }
         }
     }
     currentNode = list;
-    //Node<T>* prev = NULL;
     list = hashTable[cluster_no].getBucket();
     while (list != NULL)
     {
-        //cout << "we have a friend here - 907" <<endl;
+        //cout << "we have a friend here - 907 - all points in bucket: to add back " << list->getItemNo() <<endl;
         prev = list;
         list = list->getNext();
     }
     //newNode = new ClusterNode(item_no, NULL);
+    cout << "ready to add on back" <<endl;
+    currentNode->setNext(NULL);
     if (prev == NULL)
     {
         hashTable[cluster_no].setBucket(currentNode);
@@ -207,7 +217,14 @@ void Hash<T>::MoveToBack(int item_no, int cluster_no)
         prev->setNext(currentNode);
         //cout << "sett prev" <<endl;
     }
-
+    cout << "added on back" <<endl;
+    list = hashTable[cluster_no].getBucket();
+/*    while (list != NULL)
+    {
+        cout << "we have a friend here - 906 - all points in bucket: added back " << list->getItemNo() <<endl;
+        prev = list;
+        list = list->getNext();
+    }*/
     //cout << "Item inserted in hash table with hash : " << cluster_no <<endl;
 }
 

@@ -23,13 +23,14 @@ class ClusterTable
 		void setClusterNumber(int number_of_clusters);
 		void Remove(int item_no, int cluster_no); 
 		void InsertAtCluster(int item_no, int cluster_no); 
-		int ClusterDistance(double** distanceMatrix, int cluster_no);
+		int ClusterDistance(Metrics* myMetric, double** distanceMatrix, int cluster_no, int** clusterAssign);
 		double ClusterDistanceFromCentroid(double** distanceMatrix, int cluster_no, int centroid);
 		double ClusterSilhouette(Conf* myConf, double** distanceMatrix, int* centroids,  int cluster_no, int** clusterAssign);
 		void Init_Tables(double*** distanceMatrix, Metrics* myMetric, Conf* myConf, int** centroids, ClusterTable** clusterTable, int*** clusterAssign);
 		double PrintingSilhouette(Conf* myConf, double** distanceMatrix, int* centroids, int** clusterAssign);
 		int ReturnClusterSize(int cluster_no);
 		void PrintCluster(int cluster_no);
+		int CreateClusterTableFromClusterAssign(Conf* myConf, Metrics* myMetric,int** clusterAssign, int* centroids);
 		// void PrintData();;
 		// void Insert(T item, int itemno, std::string itemName);;
 		// void initEuclideanList(std::ifstream& inputFile, std::ifstream& queryFile, int k, int L, std::ofstream& outputfile, int* dataLength);;

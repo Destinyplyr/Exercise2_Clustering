@@ -20,6 +20,8 @@ int main(int argc, char **argv)
 	bool completeFlag = false;
 	bool first_time_lsh;
 	int L, k;
+	L = 5;
+	k = 4;
 	int hashCreationDone;
 	//bool outParameter = false, inParameter = false, confParameter = false;
 
@@ -125,24 +127,35 @@ int main(int argc, char **argv)
 		hammingList->DistanceMatrixComputationHamming(myMetric, distance_matrix);
 		KMedoidsPP(myConf, myMetric, distance_matrix, centroids);
 		//Concentrate(myConf, myMetric, distance_matrix, centroids);
-		cout << "==================" << endl << "PRINTING CLUSTERS IN mainSample BEFORE CLARANS : " <<endl;
+		/*cout << "==================" << endl << "PRINTING CLUSTERS IN mainSample BEFORE CLARANS : " <<endl;
 		for (int w = 0; w <myConf->number_of_clusters; w++) {
 			cout << centroids[w] << " ";
-		}
+		}*/
+
 		//exit(1);
 		//cout << clusterAssign[0][0] <<endl;
-		// PAM(myConf, myMetric, distance_matrix, centroids, clusterTable, clusterAssign);
-		// if (!ALaLoyds(myConf, myMetric, distance_matrix, centroids, clusterTable, clusterAssign)) {
-		// 	cout << "done!" << endl;
-		// }
-		CLARANS(myConf, myMetric, distance_matrix, centroids, clusterTable, clusterAssign);
+		//PAM(myConf, myMetric, distance_matrix, centroids, clusterTable, clusterAssign);
+		Hash<bitset<64> >* hashTableList = new Hash<bitset<64> >[L]();      //Na min orizetai se kathe iteration tou update, giati xanaorizetai
+		if (first_time_lsh == true) 
+		{
+			first_time_lsh = false;
+			hashCreationDone = 0;
+			hammingList->initHammingLSHManagement(myConf, inputFile, distance_matrix, k , L, &(myMetric->point_number), &hashCreationDone, hashTableList, centroids, clusterAssign);
+		}
+		delete clusterTable;
+		clusterTable = new ClusterTable(myConf->number_of_clusters);
+		if (!ALaLoyds(myConf, myMetric, distance_matrix, centroids, clusterTable, clusterAssign)) {
+		 	cout << "done!" << endl;
+		}
+		//CLARANS(myConf, myMetric, distance_matrix, centroids, clusterTable, clusterAssign);
 		//CLARA( myConf,  myMetric, distance_matrix, centroids, clusterTable, clusterAssign);
 		cout << "==================" << endl << "PRINTING CLUSTERS IN mainSample Before PrintingSilhouette : " <<endl;
 		for (int w = 0; w <myConf->number_of_clusters; w++) {
 			cout << centroids[w] << " ";
 		}
 		cout <<endl;
-		//clusterTable->PrintingSilhouette(myConf, distance_matrix, centroids, clusterAssign);
+		clusterTable->PrintingSilhouette(myConf, distance_matrix, centroids, clusterAssign);
+		delete clusterTable; //DELETE CLUSTER TABLE (case lsh/dbh)
 	}
 
 
@@ -205,27 +218,30 @@ int main(int argc, char **argv)
 		cout << "********************************************************" << endl;
 
 		DBHList->DistanceMatrixComputationDB(inputFile, myMetric, distance_matrix);
-		//Concentrate(myConf, myMetric, distance_matrix, centroids);
-		KMedoidsPP(myConf, myMetric, distance_matrix, centroids);
+		Concentrate(myConf, myMetric, distance_matrix, centroids);
+		//KMedoidsPP(myConf, myMetric, distance_matrix, centroids);
 		// PAM(myConf, myMetric, distance_matrix, centroids, clusterTable, clusterAssign);
-		L = 5;
-		k = 4;
 		Hash<double>* hashTableList = new Hash<double>[L]();      //Na min orizetai se kathe iteration tou update, giati xanaorizetai
 		if (first_time_lsh == true) 
 		{
 			first_time_lsh = false;
 			hashCreationDone = 0;
-			DBHList->initDBHManagement(myConf, inputFile, distance_matrix, k , L, &(myMetric->point_number), &hashCreationDone, hashTableList, centroids);
+			DBHList->initDBHManagement(myConf, inputFile, distance_matrix, k , L, &(myMetric->point_number), &hashCreationDone, hashTableList, centroids, clusterAssign);
 		}
-		// if (!ALaLoyds(myConf, myMetric, distance_matrix, centroids, clusterTable, clusterAssign)) {
-		// 	cout << "done!" << endl;
-		// }
-		CLARANS(myConf, myMetric, distance_matrix, centroids, clusterTable, clusterAssign);
+		delete clusterTable;
+		clusterTable = new ClusterTable(myConf->number_of_clusters);
+		clusterTable->CreateClusterTableFromClusterAssign(myConf, myMetric,clusterAssign, centroids);
+		if (!ALaLoyds(myConf, myMetric, distance_matrix, centroids, clusterTable, clusterAssign)) {
+		 	cout << "done!" << endl;
+		}
+		//CLARANS(myConf, myMetric, distance_matrix, centroids, clusterTable, clusterAssign);
 		//CLARA( myConf,  myMetric, distance_matrix, centroids, clusterTable, clusterAssign);
 		//cout << "paei na kanei to print" << endl;
 		//clusterTable->PrintCluster(0);
 		//cout << "EKANE TO PRINT" << endl;
 		clusterTable->PrintingSilhouette(myConf, distance_matrix, centroids, clusterAssign);
+		delete clusterTable; //DELETE CLUSTER TABLE (case lsh/dbh)
+		
 
 		
 		//delete DBHList;
