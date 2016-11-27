@@ -181,12 +181,29 @@ int main(int argc, char **argv)
 			//Concentrate(myConf, myMetric, distance_matrix, centroids);
 			//cout << clusterAssign[0][0] <<endl;
 			// PAM(myConf, myMetric, distance_matrix, centroids, clusterTable, clusterAssign);
-			// if (!ALaLoyds(myConf, myMetric, distance_matrix, centroids, clusterTable, clusterAssign)) {
-			// 	cout << "done!" << endl;
-			// }
-			CLARANS(myConf, myMetric, distance_matrix, centroids, clusterTable, clusterAssign);
+			Hash<double*>* hashTableList = new Hash<double*>[L]();      //Na min orizetai se kathe iteration tou update, giati xanaorizetai
+			if (first_time_lsh == true) 
+			{
+				first_time_lsh = false;
+				hashCreationDone = 0;
+				point_number = myMetric->point_number;
+				euclideanList->initEuclideanList(myConf, inputFile, distance_matrix, k , L, &(point_number), &hashCreationDone, hashTableList, centroids, clusterAssign);
+			}
+			delete clusterTable;
+			clusterTable = new ClusterTable(myConf->number_of_clusters);
+			clusterTable->CreateClusterTableFromClusterAssign(myConf, myMetric,clusterAssign, centroids);
+			if (!ALaLoyds(myConf, myMetric, distance_matrix, centroids, clusterTable, clusterAssign)) {
+			 	cout << "done!" << endl;
+			}
+			//CLARANS(myConf, myMetric, distance_matrix, centroids, clusterTable, clusterAssign);
 			//CLARA( myConf,  myMetric, distance_matrix, centroids, clusterTable, clusterAssign);
+			cout << "==================" << endl << "PRINTING CLUSTERS IN mainSample Before PrintingSilhouette : " <<endl;
+			for (int w = 0; w <myConf->number_of_clusters; w++) {
+				cout << centroids[w] << " ";
+			}
+			cout <<endl;
 			clusterTable->PrintingSilhouette(myConf, distance_matrix, centroids, clusterAssign);
+			delete clusterTable; //DELETE CLUSTER TABLE (case lsh/dbh)
 		}
 		
 		if (strcmp(myMetric->metric.c_str(), "cosine") == 0)

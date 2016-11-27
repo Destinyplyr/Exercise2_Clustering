@@ -2,11 +2,15 @@
 using namespace std;
 
 double dot_product(double* vector1, double* vector2, int vector_size) {
+    string garbage;
+    //cout << "starting dot product" <<endl;
 	double dot_product = 0;
 	for (int i =0; i < vector_size; i++) {
-        //cout << "vector 1 - vector 2: " << vector1[0] << " - " << vector2[0] <<endl;
+        //cout << "vector 1 - vector 2: " << vector1[i] << " - " << vector2[i] <<endl;
 		dot_product += vector1[i] * vector2[i];
 	}
+    //cin >>garbage;
+    //cout << "finished dot product" <<endl;
 	return dot_product;
 }
 

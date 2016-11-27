@@ -1,7 +1,7 @@
-
 #include "NodeFunctions.cpp"
 #include "ListsFunctions.cpp"
 #include "VectorHammingListManagement.cpp"
+#include "EuclideanList.cpp"
 #include "HammingListManagement.cpp"
 #include "HashFunctions.cpp"
 #include "DBListManagement.cpp"

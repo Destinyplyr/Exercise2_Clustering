@@ -15,7 +15,7 @@ all: $(OBJS)
 # create/compile the individual files
 
 
-mainSample.o: mainSample.cpp Node.h ListData.h Hash.h ListsFunctions.cpp NodeFunctions.cpp VectorHammingListManagement.cpp DBListManagement.cpp HammingListManagement.cpp DBHManagement.cpp HashFunctions.cpp HammingLSHManagement.cpp
+mainSample.o: mainSample.cpp Node.h ListData.h Hash.h ListsFunctions.cpp NodeFunctions.cpp VectorHammingListManagement.cpp DBListManagement.cpp HammingListManagement.cpp DBHManagement.cpp HashFunctions.cpp HammingLSHManagement.cpp EuclideanList.cpp TrickFunctions.cpp
 	$(CC) $(FLAGS) mainSample.cpp			
 
 Utilities.o: Utilities.cpp
