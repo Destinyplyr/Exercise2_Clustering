@@ -52,6 +52,7 @@ class Hash
 		void Insert(int hashResult, T newItem);
 		void Insert(int hashResult, T newItem, int g, int itemno, std::string itemName);
 		void MoveToBack(int item_no, int cluster_no);
+		void ReInitializeHashTable(int L, int tableSize);
 		void printHash();
 		T getKey();
 		headHashNode<T>* getHashTable();

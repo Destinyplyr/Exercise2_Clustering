@@ -6,6 +6,7 @@ int main(int argc, char **argv)
 	int assignChoice;
 	int updateChoice;
 	int* centroids;
+	int point_number;
 	ClusterTable* clusterTable;
 	int** clusterAssign;
 	double** distance_matrix;
@@ -140,7 +141,8 @@ int main(int argc, char **argv)
 		{
 			first_time_lsh = false;
 			hashCreationDone = 0;
-			hammingList->initHammingLSHManagement(myConf, inputFile, distance_matrix, k , L, &(myMetric->point_number), &hashCreationDone, hashTableList, centroids, clusterAssign);
+			point_number = myMetric->point_number;
+			hammingList->initHammingLSHManagement(myConf, inputFile, distance_matrix, k , L, &(point_number), &hashCreationDone, hashTableList, centroids, clusterAssign);
 		}
 		delete clusterTable;
 		clusterTable = new ClusterTable(myConf->number_of_clusters);
@@ -226,7 +228,8 @@ int main(int argc, char **argv)
 		{
 			first_time_lsh = false;
 			hashCreationDone = 0;
-			DBHList->initDBHManagement(myConf, inputFile, distance_matrix, k , L, &(myMetric->point_number), &hashCreationDone, hashTableList, centroids, clusterAssign);
+			point_number = myMetric->point_number;
+			DBHList->initDBHManagement(myConf, inputFile, distance_matrix, k , L, &(point_number), &hashCreationDone, hashTableList, centroids, clusterAssign);
 		}
 		delete clusterTable;
 		clusterTable = new ClusterTable(myConf->number_of_clusters);

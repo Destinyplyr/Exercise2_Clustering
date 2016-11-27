@@ -5,7 +5,7 @@
 using namespace std;
 
 template <typename T>                                                                                           //dataLength is number of points
-void ListData<T>::initHammingManagement(Conf* myConf, ifstream& inputFile, double** distanceMatrix, int k, int L, int* dataLength, int* hashCreationDone, Hash<double>* hashTableList, int* centroids, int** clusterAssign)
+void ListData<T>::initHammingLSHManagement(Conf* myConf, ifstream& inputFile, double** distanceMatrix, int k, int L, int* dataLength, int* hashCreationDone, Hash<bitset<64> >* hashTableList, int* centroids, int** clusterAssign)
 {
 	int k = 4;
 	int L = 5;
@@ -16,6 +16,7 @@ void ListData<T>::initHammingManagement(Conf* myConf, ifstream& inputFile, doubl
 	int queryCounter = 1;
 	int minBruteDistance = 9999;
 	int minLSHDistance = 9999;
+	int tableSize = (*dataLength) / 8;			// n/8
 	double elapsed_secs_lsh, elapsed_secs_brute;
 	double elapsed_secs_hashing, elapsed_secs_query;
 	double Radius = 0;
@@ -88,7 +89,6 @@ void ListData<T>::initHammingManagement(Conf* myConf, ifstream& inputFile, doubl
 
 	for (int l = 0; l < L; l++) 	//every hash table
 	{
-		hashTableList[l].initHash(k, metric_space);
 		int* miniHashIndex = new int[k];		
 		//which mini-hashing functions should I choose?
 		for (int i=0; i < k; i++)
@@ -103,7 +103,8 @@ void ListData<T>::initHammingManagement(Conf* myConf, ifstream& inputFile, doubl
 
 	if (*hashCreationDone == 0) {
 		for (int l = 0; l < L; l++) 	//every hash table
-		{
+		{	//new hash table list
+			hashTableList[l].initHash(tableSize);
 			//itemNo = 0;
 			listNode = header;
 			while(listNode != NULL)
@@ -117,7 +118,7 @@ void ListData<T>::initHammingManagement(Conf* myConf, ifstream& inputFile, doubl
 				hashTableList[l].Insert(hashResult, genericStr, hashResult, itemNo, itemName);
 				listNode = listNode->getNext();
 			}
-			while (!inputFile.eof())
+			/*while (!inputFile.eof())
 		    {
 		        itemNo++;
 		        if (turn)
@@ -143,13 +144,14 @@ void ListData<T>::initHammingManagement(Conf* myConf, ifstream& inputFile, doubl
 			        hashTableList[l].Insert(hashResult, genericStr, hashResult, itemNo, itemName);
 			        hashResult = 0;
 		    	}
-		    }
+		    }*/
 		    //hashTableList[l].printHash();
 
-		    inputFile.clear();
+		    /*inputFile.clear();
 		    inputFile.seekg(0, ios::beg);   //Data file back from start
 		    inputFile >> genericStr;		//Item etc
 		    inputFile >> genericStr;		//Data we want to store
+		*/
 		}
 		*hashCreationDone = 1;
 	}
@@ -211,6 +213,206 @@ void ListData<T>::initHammingManagement(Conf* myConf, ifstream& inputFile, doubl
 	elapsed_secs_hashing = (double) (end_lsh_hashing - begin_lsh_hashing) / CLOCKS_PER_SEC;
 
 	//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+/*	for (int o = 0; o < L; ++o) //re-initialize hashTable //for every hash table
+	{
+		for (int bucket = 0; bucket < tableSize; bucket++)	//for every bucket of the hash table
+		{
+			nodePtr = hashTableList[o].getHashTable()[bucket].getBucket();
+			while (nodePtr != NULL)
+			{
+				nodePtr->setFlagForAssignment(0);
+				nodePtr->setFlagAsAssigned(0);
+				nodePtr->setDistanceFromCentroid(INT_MAX);
+				nodePtr->setCentroid(-1);
+				nodePtr->setSecondBestCentroid(-1);
+				nodePtr->setSecondBestDistance(INT_MAX);
+				nodePtr = nodePtr->getNext();
+			}
+		}
+
+	}*/
+	for (int o = 0; o < L; ++o) //re-initialize hashTable //for every hash table
+    {
+    	hashTableList[o].ReInitializeHashTable(L, tableSize);
+    }
+
+
+	Radius = FindRadiusForAssignment(myConf, distanceMatrix, centroids);
+	cout << "Radius AFTER min distances : " << Radius << endl; 
+	nodePtr = NULL;
+	minimumNode = NULL; 
+	//standard assignment
+	for (int o = 0; o < L; ++o) 	//for every hashtable
+	{
+		cout << "For hash table " << o << " : " << endl;
+		//REMERMBER TO clear current hashtable off assignments
+		hashResult = 0;
+		do
+		{
+			assigned_in_this_radius = false;
+			for (int q = 0; q < myConf->number_of_clusters; q++) 	//for every centroid
+			{
+				cout << "For centroid : " << q << " : " << endl;
+				hashResult = 0;
+
+
+				//hamming hashing
+				for (int i=0; i < k; i++)
+				{
+					//Current index regarding the Hamming string - using the miniHash that was used before
+					currentIndex = miniHashIndexList[l][i];        
+					hashResult += pow (2, i) * (queryCode[currentIndex] - '0');    //Creates the binary as an int
+				}
+				//cout << "------->  Hash result : " << hashResult <<endl;
+				listNode = hashTableList[l].getHashTable()[hashResult].getBucket();
+				listBucketTable[l] = listNode;
+
+
+				cout << "The hash result : " << hashResult << endl;
+				nodePtr = hashTableList[o].getHashTable()[hashResult].getBucket();
+				if (nodePtr == NULL)
+				{
+					cout << "nodePtr after hashing is NULL";
+					//exit(15);
+				}
+				while (nodePtr != NULL && nodePtr->getFlagAsAssigned() != 1)
+				{
+					// cdis =  point[nodePtr->getItemNo()];       
+					//             if ((cdis <= Radius) && (Radius > 0 )) {
+					//                 outputFile << "--"<<nodePtr->getItemName() <<endl;
+					// }
+					// if ((cdis < minLSHDistance) && (cdis != 0))
+					// {
+					//  minLSHDistance = cdis;
+					//  minimumNode = nodePtr;
+					// }
+					distance_bucketpoint_from_centroid = DistanceMatrixDistance(distanceMatrix, nodePtr->getItemNo(), centroids[q]);
+					cout << "Distance bucket from centroid : " << distance_bucketpoint_from_centroid << endl;
+					cout << "Radius : " << Radius << endl;
+					if (distance_bucketpoint_from_centroid <= Radius)       //if inside radius
+					{
+						// if(point_to_centroid_assignment[nodePtr->getItemNo()] != -1)        //case that current point has been assigned on ANOTHER HASHTABLE but not yet on this one
+						// {	
+						cout << "It's better than Radius" << endl;
+						if (distance_bucketpoint_from_centroid < nodePtr->getDistanceFromCentroid()) 		//getDistance initialized as INT_MAX
+						{
+							cout << "It goes in for this centroid" << endl;
+							assigned_in_this_radius = true;
+							nodePtr->setSecondBestCentroid(nodePtr->getCentroid());
+							nodePtr->setSecondBestDistance(nodePtr->getDistanceFromCentroid());
+							nodePtr->setFlagForAssignment(1);
+							nodePtr->setCentroid(centroids[q]);
+							nodePtr->setDistanceFromCentroid(distance_bucketpoint_from_centroid);
+						}
+						cout << "Updated!" << endl;
+						// }
+					}
+					nodePtr = nodePtr->getNext();
+				}
+
+			}
+			for (int hash_bucket = 0; hash_bucket < tableSize; hash_bucket++)	//from assign in hashtable to legit assigned
+			{
+				cout << "++++++++++++++++++++++++++++++++++++++++" <<endl;
+				cout << "This hash bucket : " << hash_bucket << endl;
+				nodePtr = hashTableList[o].getHashTable()[hash_bucket].getBucket();
+				while(nodePtr != NULL)
+				{
+					if (nodePtr->getFlagForAssignment() == 1) 
+					{
+						//cout << "will try to get past movetoback" <<endl;
+
+						nodePtr->setFlagAsAssigned(1);
+						hashTableList[o].MoveToBack(nodePtr->getItemNo(), hash_bucket);
+						cout << "Moved to back successfully!" << endl;
+						if(point_to_centroid_assignment[nodePtr->getItemNo()][0] == -1)
+						{
+							cout << "It was -1 (centroid - distance) and now updated to our local array : old :" << point_to_centroid_assignment[nodePtr->getItemNo()][0] << " : " << point_to_centroid_assignment[nodePtr->getItemNo()][1] << endl;
+							point_to_centroid_assignment[nodePtr->getItemNo()][0] = nodePtr->getCentroid();
+							point_to_centroid_assignment[nodePtr->getItemNo()][1] = nodePtr->getDistanceFromCentroid();
+							cout << "It was -1 (centroid - distance) and now updated to our local array : new :" << point_to_centroid_assignment[nodePtr->getItemNo()][0] << " : " << point_to_centroid_assignment[nodePtr->getItemNo()][1] << endl;
+						}
+						else 
+						{
+							cout << "We have a previous assignment in our local array" <<endl;
+							if(point_to_centroid_assignment[nodePtr->getItemNo()][1] > nodePtr->getDistanceFromCentroid())
+							{
+								cout << "It had values before (centroid - distance) and now updated to our local array : old " << point_to_centroid_assignment[nodePtr->getItemNo()][0] << " : " << point_to_centroid_assignment[nodePtr->getItemNo()][1] << endl;
+								point_to_centroid_assignment[nodePtr->getItemNo()][0] = nodePtr->getCentroid();
+								point_to_centroid_assignment[nodePtr->getItemNo()][1] = nodePtr->getDistanceFromCentroid();
+								if (point_to_centroid_assignment[nodePtr->getItemNo()][3] > nodePtr->getSecondBestDistance())
+								{
+									point_to_centroid_assignment[nodePtr->getItemNo()][2] = nodePtr->getSecondBestCentroid();
+									point_to_centroid_assignment[nodePtr->getItemNo()][3] = nodePtr->getSecondBestDistance();
+								}
+								cout << "It had values before (centroid - distance) and now updated to our local array : new " << point_to_centroid_assignment[nodePtr->getItemNo()][0] << " : " << point_to_centroid_assignment[nodePtr->getItemNo()][1] << endl;
+							}
+						}
+						//cout << "assign out of assign ifs" <<endl;
+					}
+					//cout << "assign out of fat if" <<endl;
+					nodePtr = nodePtr->getNext();
+					//cout << "got next" <<endl;
+				}
+				cout << "Finished assignment on matrix for bucket" <<endl;
+				cout << "++++++++++++++++++++++++++++++++++++++++" <<endl;
+			}
+			cout << "Multiplying Radius" <<endl;
+			Radius = Radius * 2;
+		}while(assigned_in_this_radius);
+	}
+	for (int point_iter = 0; point_iter < *dataLength; point_iter++)	//leftover assignment
+	{
+		cout << "Leftover : " << point_iter << endl;
+		minimumDistance = numeric_limits<double>::max() ; 		//make it DOUBLE
+		minimumCentroid = -1;
+		if (point_to_centroid_assignment[point_iter][0] == -1 || point_to_centroid_assignment[point_iter][1] == -1)
+		{
+			for (int centroid_iter = 0; centroid_iter < myConf->number_of_clusters; centroid_iter++)
+			{
+				cout << "Centroid : " << centroid_iter << endl;
+				// distance_bucketpoint_from_centroid = DistanceMatrixDistance(distanceMatrix, nodePtr->getItemNo(), centroids[centroid_iter]);
+				distance_bucketpoint_from_centroid = DistanceMatrixDistance(distanceMatrix, point_iter, centroids[centroid_iter]);
+				if (distance_bucketpoint_from_centroid < minimumDistance)
+				{
+					secondBestCentroid = minimumCentroid;
+					secondBestDistance = minimumDistance;
+					minimumDistance = distance_bucketpoint_from_centroid;
+					minimumCentroid = centroids[centroid_iter];
+				}
+			}
+/*					nodePtr->setFlagForAssignment(1);		//assignment on hashtable list
+			nodePtr->setCentroid(minimumCentroid);		//assignment data on node
+			nodePtr->setDistanceFromCentroid(minimumDistance);
+
+			nodePtr->setFlagAsAssigned(1);*/
+			//hashTableList[o].MoveToBack(nodePtr->getItemNo(), hashResult);    SHOULD BE DONE WITH HASHING
+			// point_to_centroid_assignment[nodePtr->getItemNo()][0] = nodePtr->getCentroid();
+			// point_to_centroid_assignment[nodePtr->getItemNo()][1] = nodePtr->getDistanceFromCentroid();
+			point_to_centroid_assignment[point_iter][0] = minimumCentroid;
+			point_to_centroid_assignment[point_iter][1] = minDistance;
+			point_to_centroid_assignment[point_iter][2] = secondBestCentroid;
+			point_to_centroid_assignment[point_iter][3] = secondBestDistance;
+		}
+		cout << "Leftover updated" << endl;
+	}
+	cout << "Exiting..." << endl;
+	for (int point_iter = 0; point_iter < *dataLength; point_iter++)	
+	{
+		cout << "On point " <<point_iter <<endl;
+		cout << "changing to best : " << point_to_centroid_assignment[point_iter][0] <<endl;
+		clusterAssign[point_iter][2] = point_to_centroid_assignment[point_iter][0];		//give best centroid chosen
+		cout << "changing to 2nd best : " << point_to_centroid_assignment[point_iter][2] <<endl;
+		if (point_to_centroid_assignment[point_iter][2] == -1) 
+		{
+			clusterAssign[point_iter][1] = clusterAssign[point_iter][2];
+		}
+		else
+		{
+			clusterAssign[point_iter][1] = point_to_centroid_assignment[point_iter][2];		//give 2nd best centroid
+		}
+		
+	}
 	do 
 	{
 		queryFile.clear();      		//Restart

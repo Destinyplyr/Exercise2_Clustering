@@ -190,21 +190,7 @@ void ListData<T>::initDBHManagement(Conf* myConf, ifstream& inputFile, double** 
 	}
 	for (int o = 0; o < L; ++o) //re-initialize hashTable //for every hash table
 	{
-		for (int bucket = 0; bucket < tableSize; bucket++)	//for every bucket of the hash table
-		{
-			nodePtr = hashTableList[o].getHashTable()[bucket].getBucket();
-			while (nodePtr != NULL)
-			{
-				nodePtr->setFlagForAssignment(0);
-				nodePtr->setFlagAsAssigned(0);
-				nodePtr->setDistanceFromCentroid(INT_MAX);
-				nodePtr->setCentroid(-1);
-				nodePtr->setSecondBestCentroid(-1);
-				nodePtr->setSecondBestDistance(INT_MAX);
-				nodePtr = nodePtr->getNext();
-			}
-		}
-
+		hashTableList[o].ReInitializeHashTable(L, tableSize);
 	}
 	  	//end_lsh_hashing = clock();
 
@@ -218,7 +204,13 @@ void ListData<T>::initDBHManagement(Conf* myConf, ifstream& inputFile, double** 
 		  	// queryFile >> genericStr;     //Read itemno
 		 	//    outputFile << "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$  QUERY NUMBER " << queryCounter << " - " << genericStr << " $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$" << endl << endl;
 		  	//while(getline(queryFile, genericStr)) {
-			minDistance = INT_MAX;
+
+
+
+
+
+			Radius = FindRadiusForAssignment(myConf, distanceMatrix, centroids);
+			/*minDistance = INT_MAX;
 			for (int centroid_iter = 0; centroid_iter < myConf->number_of_clusters; centroid_iter++)
 			{
 				cout << "Centroid : " << centroids[centroid_iter] << endl;
@@ -234,7 +226,7 @@ void ListData<T>::initDBHManagement(Conf* myConf, ifstream& inputFile, double** 
 					}
 				}
 			}
-			Radius = minDistance / 2;
+			Radius = minDistance / 2;*/
 			cout << "Radius AFTER min distances : " << Radius << endl; 
 			nodePtr = NULL;
 			minimumNode = NULL; 	
@@ -242,12 +234,13 @@ void ListData<T>::initDBHManagement(Conf* myConf, ifstream& inputFile, double** 
 			{
 				cout << "For hash table " << o << " : " << endl;
 				//REMERMBER TO clear current hashtable off assignments
-				hashResult = 0;
+				//hashResult = 0;
 				do
 				{
 					assigned_in_this_radius = false;
 					for (int q = 0; q < myConf->number_of_clusters; q++) 	//for every centroid
 					{
+						hashResult = 0;		//was up : caution!
 						cout << "For centroid : " << q << " : " << endl;
 						for (int i=0; i < k; i++) 
 						{      //for evry h
@@ -388,7 +381,7 @@ void ListData<T>::initDBHManagement(Conf* myConf, ifstream& inputFile, double** 
 				cout << "Leftover updated" << endl;
 			}
 			cout << "Exiting..." << endl;
-			for (int point_iter = 0; point_iter < *dataLength; point_iter++)	
+			for (int point_iter = 0; point_iter < *dataLength; point_iter++)		//moving changes to clusterAssign	
 			{
 				cout << "On point " <<point_iter <<endl;
 				cout << "changing to best : " << point_to_centroid_assignment[point_iter][0] <<endl;

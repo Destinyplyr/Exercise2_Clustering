@@ -246,6 +246,27 @@ Hash<T>::~Hash()
     }
 }
 
+template <typename T>
+void Hash<T>::ReInitializeHashTable(int L, int tableSize)
+{
+    Node<T>* nodePtr;
+
+    for (int bucket = 0; bucket < tableSize; bucket++)  //for every bucket of the hash table
+    {
+        nodePtr = hashTable[bucket].getBucket();
+        while (nodePtr != NULL)
+        {
+            nodePtr->setFlagForAssignment(0);
+            nodePtr->setFlagAsAssigned(0);
+            nodePtr->setDistanceFromCentroid(INT_MAX);
+            nodePtr->setCentroid(-1);
+            nodePtr->setSecondBestCentroid(-1);
+            nodePtr->setSecondBestDistance(INT_MAX);
+            nodePtr = nodePtr->getNext();
+        }
+    }
+}
+
 
 template <typename T>
 void Hash<T>::printHash() {
