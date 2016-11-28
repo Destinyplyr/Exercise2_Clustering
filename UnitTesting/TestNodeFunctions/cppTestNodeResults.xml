@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding='ISO-8859-1' standalone='yes' ?>
+<TestRun>
+  <FailedTests></FailedTests>
+  <SuccessfulTests>
+    <Test id="1">
+      <Name>TestNode&lt;int&gt;::testNodeCon0</Name>
+    </Test>
+    <Test id="2">
+      <Name>TestNode&lt;int&gt;::testNodeCon1</Name>
+    </Test>
+    <Test id="3">
+      <Name>TestNode&lt;int&gt;::testNodeCon2</Name>
+    </Test>
+    <Test id="4">
+      <Name>TestNode&lt;int&gt;::testsetNext</Name>
+    </Test>
+    <Test id="5">
+      <Name>TestNode&lt;int&gt;::testsetKey</Name>
+    </Test>
+    <Test id="6">
+      <Name>TestNode&lt;int&gt;::testsetG</Name>
+    </Test>
+    <Test id="7">
+      <Name>TestNode&lt;int&gt;::testsetItemName</Name>
+    </Test>
+    <Test id="8">
+      <Name>TestNode&lt;int&gt;::testgetG</Name>
+    </Test>
+    <Test id="9">
+      <Name>TestNode&lt;int&gt;::testsetCentroid</Name>
+    </Test>
+  </SuccessfulTests>
+  <Statistics>
+    <Tests>9</Tests>
+    <FailuresTotal>0</FailuresTotal>
+    <Errors>0</Errors>
+    <Failures>0</Failures>
+  </Statistics>
+</TestRun>
