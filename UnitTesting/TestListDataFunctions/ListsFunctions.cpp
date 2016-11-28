@@ -58,7 +58,7 @@ void ListData<T>::PrintData()
 
 
 template <typename T>
-void ListData<T>::Insert(T newItem, int itemno, string itemName)
+void ListData<T>::Insert(T newItem, int itemno, string itemName)		//add on back
 {
  	Node<T>* node = new Node<T>(newItem, 0, itemno, itemName);
 	if (header == NULL)
@@ -211,3 +211,8 @@ bool ListData<T>::Exists(int itemno, Node<T>* header_out)
 	}
 	return false;
 }
+
+
+
+
+

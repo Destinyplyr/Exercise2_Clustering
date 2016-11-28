@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding='ISO-8859-1' standalone='yes' ?>
+<TestRun>
+  <FailedTests>
+    <FailedTest id="5">
+      <Name>TestListData&lt;int&gt;::testCosineDistance</Name>
+      <FailureType>Assertion</FailureType>
+      <Location>
+        <File>TestListData.cpp</File>
+        <Line>195</Line>
+      </Location>
+      <Message>equality assertion failed
+- Expected: 0.106587
+- Actual  : 0.106586974101953
+</Message>
+    </FailedTest>
+  </FailedTests>
+  <SuccessfulTests>
+    <Test id="1">
+      <Name>TestListData&lt;int&gt;::testListDataCon0</Name>
+    </Test>
+    <Test id="2">
+      <Name>TestListData&lt;int&gt;::testExistsOnce</Name>
+    </Test>
+    <Test id="3">
+      <Name>TestListData&lt;int&gt;::testInsert</Name>
+    </Test>
+    <Test id="4">
+      <Name>TestListData&lt;int&gt;::testDistance</Name>
+    </Test>
+    <Test id="6">
+      <Name>TestListData&lt;int&gt;::testHammingDuplicate</Name>
+    </Test>
+    <Test id="7">
+      <Name>TestListData&lt;int&gt;::testHammingB2BDuplicate</Name>
+    </Test>
+    <Test id="8">
+      <Name>TestListData&lt;int&gt;::testEuclideanDuplicate</Name>
+    </Test>
+    <Test id="9">
+      <Name>TestListData&lt;int&gt;::testDistanceB2BHamming</Name>
+    </Test>
+  </SuccessfulTests>
+  <Statistics>
+    <Tests>9</Tests>
+    <FailuresTotal>1</FailuresTotal>
+    <Errors>0</Errors>
+    <Failures>1</Failures>
+  </Statistics>
+</TestRun>

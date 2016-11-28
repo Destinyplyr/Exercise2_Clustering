@@ -5,7 +5,7 @@ SRCM= NodeFunctions.cpp
 OBJM = $(SRCM:.cpp=.o)
 LINKFLAGS= -lcppunit
 
-testbasicmath: TestNode.cpp NodeFunctions.cpp $(OBJM)
+tesnode: TestNode.cpp NodeFunctions.cpp $(OBJM)
 	$(CXX) $(CXXFLAGS) -o $@ TestNode.cpp $(OBJM) $(LINKFLAGS) $(LINKFLAGSLOG4) $(LIBLOG)
 
 # Default compile
