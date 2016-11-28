@@ -29,6 +29,7 @@ class headHashNode
 		void setBucket(Node<T>* bucket);
 		int Insert(int hashResult, Node<T>* newItem);
 		int Insert(int hashResult, Node<T>* newItem, int g);
+		bool Duplicate(T item);
 		int getBucketKey();
 
 	private:

@@ -211,3 +211,29 @@ bool ListData<T>::Exists(int itemno, Node<T>* header_out)
 	}
 	return false;
 }
+
+template <typename T>
+string* ListData<T>::ItemNamesFromItemNos(int* items_in_cluster_itemNo, int size_of_cluster)
+{
+	Node<T>* currentNode;
+	string* items_in_cluster_itemName = new string[size_of_cluster+1];
+	for (int items_in_cluster_iter = 0; items_in_cluster_iter <= size_of_cluster; items_in_cluster_iter++)
+	{
+		currentNode = this->ReturnHead();
+		while (currentNode != NULL) 
+		{
+			//cout << "currentNode->getItemNo()" << currentNode->getItemNo() << " items_in_cluster_itemNo[items_in_cluster_iter] " <<items_in_cluster_itemNo[items_in_cluster_iter] <<endl; 
+			if (currentNode->getItemNo() == items_in_cluster_itemNo[items_in_cluster_iter])
+			{
+				//cout << "problem in if" <<endl;
+				//cout << "currentNode->getItemName() " << currentNode->getItemName() <<endl;
+				items_in_cluster_itemName[items_in_cluster_iter] = currentNode->getItemName();
+			}
+			currentNode = currentNode->getNext();
+			//cout << "stuck on you" <<endl;
+		}
+		//cout << "and managed to get out" <<endl;
+	}
+	return items_in_cluster_itemName;
+}
+

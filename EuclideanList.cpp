@@ -181,7 +181,7 @@ void ListData<T>::initEuclideanList(Conf* myConf, ifstream& inputFile, double** 
 				for (int j = 0; j < k; ++j)		//For every h
 				{
 					//cout << "dot product :key:" << nodePtr->getKey()[0] << " voj: " << v[o][j][0] <<endl;
-					cout << "toj: " << t[o][j] <<endl;
+					//cout << "toj: " << t[o][j] <<endl;
  					h =  (int)floor((dot_product(nodePtr->getKey(), v[o][j], *dataLength) + t[o][j]) / w);
 					//cout << "h :" << h << endl;
 					ID += (r_k[o][j] * h) % M;
@@ -230,7 +230,7 @@ void ListData<T>::initEuclideanList(Conf* myConf, ifstream& inputFile, double** 
 
 	for (int o = 0; o < L; ++o) 	//for every hashtable
 	{
-		cout << "For hash table " << o << " : " << endl;
+		//cout << "For hash table " << o << " : " << endl;
 		//REMERMBER TO clear current hashtable off assignments
 		hashResult = 0;
 		do
@@ -238,7 +238,7 @@ void ListData<T>::initEuclideanList(Conf* myConf, ifstream& inputFile, double** 
 			assigned_in_this_radius = false;
 			for (int q = 0; q < myConf->number_of_clusters; q++) 	//for every centroid 
 			{
-				cout << "For centroid : " << q << " : " << endl;
+				//cout << "For centroid : " << q << " : " << endl;
 				hashResult = 0;
 
 				nodePtr = this->getNode();		//nodePtr holds current centroid
@@ -277,13 +277,13 @@ void ListData<T>::initEuclideanList(Conf* myConf, ifstream& inputFile, double** 
 				//listBucketTable[l] = listNode;
 
 
-				cout << "The hash result : " << phi << endl;
+				//cout << "The hash result : " << phi << endl;
 
 				centroidPtr = nodePtr;		//centroidPtr now holds the centroid
 				nodePtr = hashTableList[o].getHashTable()[(int)phi].getBucket();		//nodePtr holds bucket items now
 				if (nodePtr == NULL)
 				{
-					cout << "nodePtr after hashing centroid is NULL";
+					//cout << "nodePtr after hashing centroid is NULL";
 					//exit(15);
 				}
 				while (nodePtr != NULL && nodePtr->getFlagAsAssigned() != 1)
@@ -300,16 +300,16 @@ void ListData<T>::initEuclideanList(Conf* myConf, ifstream& inputFile, double** 
 					if (nodePtr->getG() == phi) 		//g is ID - use points only with the same ID
 					{
 						distance_bucketpoint_from_centroid = DistanceMatrixDistance(distanceMatrix, nodePtr->getItemNo(), centroids[q]);
-						cout << "Distance bucket from centroid : " << distance_bucketpoint_from_centroid << endl;
-						cout << "Radius : " << Radius << endl;
+						//cout << "Distance bucket from centroid : " << distance_bucketpoint_from_centroid << endl;
+						//cout << "Radius : " << Radius << endl;
 						if (distance_bucketpoint_from_centroid <= Radius)       //if inside radius
 						{
 							// if(point_to_centroid_assignment[nodePtr->getItemNo()] != -1)        //case that current point has been assigned on ANOTHER HASHTABLE but not yet on this one
 							// {	
-							cout << "It's better than Radius" << endl;
+							//cout << "It's better than Radius" << endl;
 							if (distance_bucketpoint_from_centroid < nodePtr->getDistanceFromCentroid()) 		//getDistance initialized as INT_MAX
 							{
-								cout << "It goes in for this centroid" << endl;
+								//cout << "It goes in for this centroid" << endl;
 								assigned_in_this_radius = true;
 								nodePtr->setSecondBestCentroid(nodePtr->getCentroid());
 								nodePtr->setSecondBestDistance(nodePtr->getDistanceFromCentroid());
@@ -317,7 +317,7 @@ void ListData<T>::initEuclideanList(Conf* myConf, ifstream& inputFile, double** 
 								nodePtr->setCentroid(centroids[q]);
 								nodePtr->setDistanceFromCentroid(distance_bucketpoint_from_centroid);
 							}
-							cout << "Updated!" << endl;
+							//cout << "Updated!" << endl;
 							// }
 						}
 					}
@@ -327,8 +327,8 @@ void ListData<T>::initEuclideanList(Conf* myConf, ifstream& inputFile, double** 
 			}
 			for (int hash_bucket = 0; hash_bucket < tableSize; hash_bucket++)	//from assign in hashtable to legit assigned
 			{
-				cout << "++++++++++++++++++++++++++++++++++++++++" <<endl;
-				cout << "This hash bucket : " << hash_bucket << endl;
+				//cout << "++++++++++++++++++++++++++++++++++++++++" <<endl;
+				//cout << "This hash bucket : " << hash_bucket << endl;
 				nodePtr = hashTableList[o].getHashTable()[hash_bucket].getBucket();		//nodePtr now holds current bucket
 				while(nodePtr != NULL)
 				{
@@ -338,21 +338,21 @@ void ListData<T>::initEuclideanList(Conf* myConf, ifstream& inputFile, double** 
 
 						nodePtr->setFlagAsAssigned(1);
 						hashTableList[o].MoveToBack(nodePtr->getItemNo(), hash_bucket);
-						cout << "Moved to back successfully!" << endl;
-						cout << "nodePtr->getItemNo() : " << nodePtr->getItemNo() << endl;
+						//cout << "Moved to back successfully!" << endl;
+						//cout << "nodePtr->getItemNo() : " << nodePtr->getItemNo() << endl;
 						if(point_to_centroid_assignment[nodePtr->getItemNo()][0] == -1)
 						{
-							cout << "It was -1 (centroid - distance) and now updated to our local array : old :" << point_to_centroid_assignment[nodePtr->getItemNo()][0] << " : " << point_to_centroid_assignment[nodePtr->getItemNo()][1] << endl;
+							//cout << "It was -1 (centroid - distance) and now updated to our local array : old :" << point_to_centroid_assignment[nodePtr->getItemNo()][0] << " : " << point_to_centroid_assignment[nodePtr->getItemNo()][1] << endl;
 							point_to_centroid_assignment[nodePtr->getItemNo()][0] = nodePtr->getCentroid();
 							point_to_centroid_assignment[nodePtr->getItemNo()][1] = nodePtr->getDistanceFromCentroid();
-							cout << "It was -1 (centroid - distance) and now updated to our local array : new :" << point_to_centroid_assignment[nodePtr->getItemNo()][0] << " : " << point_to_centroid_assignment[nodePtr->getItemNo()][1] << endl;
+							//cout << "It was -1 (centroid - distance) and now updated to our local array : new :" << point_to_centroid_assignment[nodePtr->getItemNo()][0] << " : " << point_to_centroid_assignment[nodePtr->getItemNo()][1] << endl;
 						}
 						else 
 						{
-							cout << "We have a previous assignment in our local array" <<endl;
+							//cout << "We have a previous assignment in our local array" <<endl;
 							if(point_to_centroid_assignment[nodePtr->getItemNo()][1] > nodePtr->getDistanceFromCentroid())
 							{
-								cout << "It had values before (centroid - distance) and now updated to our local array : old " << point_to_centroid_assignment[nodePtr->getItemNo()][0] << " : " << point_to_centroid_assignment[nodePtr->getItemNo()][1] << endl;
+								//cout << "It had values before (centroid - distance) and now updated to our local array : old " << point_to_centroid_assignment[nodePtr->getItemNo()][0] << " : " << point_to_centroid_assignment[nodePtr->getItemNo()][1] << endl;
 								point_to_centroid_assignment[nodePtr->getItemNo()][0] = nodePtr->getCentroid();
 								point_to_centroid_assignment[nodePtr->getItemNo()][1] = nodePtr->getDistanceFromCentroid();
 								if (point_to_centroid_assignment[nodePtr->getItemNo()][3] > nodePtr->getSecondBestDistance())
@@ -360,7 +360,7 @@ void ListData<T>::initEuclideanList(Conf* myConf, ifstream& inputFile, double** 
 									point_to_centroid_assignment[nodePtr->getItemNo()][2] = nodePtr->getSecondBestCentroid();
 									point_to_centroid_assignment[nodePtr->getItemNo()][3] = nodePtr->getSecondBestDistance();
 								}
-								cout << "It had values before (centroid - distance) and now updated to our local array : new " << point_to_centroid_assignment[nodePtr->getItemNo()][0] << " : " << point_to_centroid_assignment[nodePtr->getItemNo()][1] << endl;
+								//cout << "It had values before (centroid - distance) and now updated to our local array : new " << point_to_centroid_assignment[nodePtr->getItemNo()][0] << " : " << point_to_centroid_assignment[nodePtr->getItemNo()][1] << endl;
 							}
 						}
 						//cout << "assign out of assign ifs" <<endl;
@@ -369,23 +369,23 @@ void ListData<T>::initEuclideanList(Conf* myConf, ifstream& inputFile, double** 
 					nodePtr = nodePtr->getNext();
 					//cout << "got next" <<endl;
 				}
-				cout << "Finished assignment on matrix for bucket" <<endl;
-				cout << "++++++++++++++++++++++++++++++++++++++++" <<endl;
+				//cout << "Finished assignment on matrix for bucket" <<endl;
+				//cout << "++++++++++++++++++++++++++++++++++++++++" <<endl;
 			}
-			cout << "Multiplying Radius" <<endl;
+			//cout << "Multiplying Radius" <<endl;
 			Radius = Radius * 2;
 		}while(assigned_in_this_radius);
 	}
 	for (int point_iter = 0; point_iter < *dataLengthPointNumber; point_iter++)	//leftover assignment
 	{
-		cout << "Leftover : " << point_iter << endl;
+		//cout << "Leftover : " << point_iter << endl;
 		minimumDistance = numeric_limits<double>::max() ; 		//make it DOUBLE
 		minimumCentroid = -1;
 		if (point_to_centroid_assignment[point_iter][0] == -1 || point_to_centroid_assignment[point_iter][1] == -1)
 		{
 			for (int centroid_iter = 0; centroid_iter < myConf->number_of_clusters; centroid_iter++)
 			{
-				cout << "Centroid : " << centroid_iter << endl;
+				//cout << "Centroid : " << centroid_iter << endl;
 				// distance_bucketpoint_from_centroid = DistanceMatrixDistance(distanceMatrix, nodePtr->getItemNo(), centroids[centroid_iter]);
 				distance_bucketpoint_from_centroid = DistanceMatrixDistance(distanceMatrix, point_iter, centroids[centroid_iter]);
 				if (distance_bucketpoint_from_centroid < minimumDistance)
@@ -409,15 +409,15 @@ void ListData<T>::initEuclideanList(Conf* myConf, ifstream& inputFile, double** 
 			point_to_centroid_assignment[point_iter][2] = secondBestCentroid;
 			point_to_centroid_assignment[point_iter][3] = secondBestDistance;
 		}
-		cout << "Leftover updated" << endl;
+		//cout << "Leftover updated" << endl;
 	}
-	cout << "Exiting..." << endl;
+	//cout << "Exiting..." << endl;
 	for (int point_iter = 0; point_iter < *dataLengthPointNumber; point_iter++)	
 	{
-		cout << "On point " <<point_iter <<endl;
-		cout << "changing to best : " << point_to_centroid_assignment[point_iter][0] <<endl;
+		//cout << "On point " <<point_iter <<endl;
+		//cout << "changing to best : " << point_to_centroid_assignment[point_iter][0] <<endl;
 		clusterAssign[point_iter][2] = point_to_centroid_assignment[point_iter][0];		//give best centroid chosen
-		cout << "changing to 2nd best : " << point_to_centroid_assignment[point_iter][2] <<endl;
+		//cout << "changing to 2nd best : " << point_to_centroid_assignment[point_iter][2] <<endl;
 		if (point_to_centroid_assignment[point_iter][2] == -1) 
 		{
 			clusterAssign[point_iter][1] = clusterAssign[point_iter][2];

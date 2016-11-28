@@ -78,6 +78,16 @@ void headHashNode<T>::InsertTrick(int g, TrickList<T>* trickList, int L) {
         currentNode = currentNode->getNext();
     }
 }
+/*
+template <typename T>
+void headHashNode<T>::Duplicate(T item)
+ {
+    Node<T> *currentNode = bucket;
+    while (currentNode != NULL)
+    {
+        if (currentNode->getKey() )
+    }
+}*/
 
 
 template <typename T>
@@ -146,8 +156,9 @@ void Hash<T>::Insert(int hashResult, T newItem, int g, int itemno, string itemNa
     }
 
     Node<T>* newNode = new Node<T>(newItem, g, itemno, itemName);
+
     this->hashTable[hashResult].Insert(hashResult, newNode, g);
-    cout << "Printing in Hash<T>::Insert just insert: " << hashTable[hashResult].getBucket()->getItemNo()<<endl;
+    //cout << "Printing in Hash<T>::Insert just insert: " << hashTable[hashResult].getBucket()->getItemNo()<<endl;
 }
 
 template <typename T>
@@ -159,7 +170,7 @@ void Hash<T>::MoveToBack(int item_no, int cluster_no)
     Node<T> *list2 = currentNode;
     if (currentNode != NULL) 
     {
-        cout << "cluster_no" << cluster_no <<endl;
+        //cout << "cluster_no" << cluster_no <<endl;
 /*        while (list2 != NULL)
         {
             cout << "we have a friend here - 809 - all points in cluster" << list2->getItemNo() <<endl;
@@ -218,7 +229,7 @@ void Hash<T>::MoveToBack(int item_no, int cluster_no)
         //cout << "sett prev" <<endl;
     }
     cout << "added on back" <<endl;
-    list = hashTable[cluster_no].getBucket();
+    //list = hashTable[cluster_no].getBucket();
 /*    while (list != NULL)
     {
         cout << "we have a friend here - 906 - all points in bucket: added back " << list->getItemNo() <<endl;

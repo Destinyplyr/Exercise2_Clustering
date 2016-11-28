@@ -17,7 +17,7 @@ bool ALaLoyds(Conf* myConf, Metrics* myMetric, double** distanceMatrix, int* cen
 	for (int i = 0; i < myConf->number_of_clusters; ++i)
 	{
 		newMedoid = clusterTable->ClusterDistance(myMetric, distanceMatrix, i, clusterAssign);
-		cout << "newmedoid is: " <<newMedoid <<endl;
+		//cout << "newmedoid is: " <<newMedoid <<endl;
 		if (newMedoid == -1) {
 			cout << "There was a serious problem in the previous assignment - Aborting" <<endl;
 			exit(-1);
@@ -37,7 +37,7 @@ bool ALaLoyds(Conf* myConf, Metrics* myMetric, double** distanceMatrix, int* cen
 				}
 			}
 			centroids[i] = newMedoid;
-			cout << "changed centroid - "<< centroids[i] <<endl;
+			//cout << "changed centroid - "<< centroids[i] <<endl;
 		}
 	}
 	cout << "==================" << endl << "PRINTING CLUSTERS AFTER ALaLoyds (within) : " <<endl;

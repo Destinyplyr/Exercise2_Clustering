@@ -28,7 +28,7 @@ void Concentrate(Conf* myConf, Metrics* myMetric, double** distanceMatrix, int* 
 		}
 	}
 
-	cout << "before for" <<endl;
+	//cout << "before for" <<endl;
 
 
 	for (int i =0; i <myMetric->point_number; ++i ) {
@@ -69,7 +69,7 @@ void Concentrate(Conf* myConf, Metrics* myMetric, double** distanceMatrix, int* 
     }*/
     for (int i = 0; i < myConf->number_of_clusters; i ++) {
         centroids[i] = V_s[i][1];
-        cout << "centroid " << i << " - " << centroids[i] << endl;
+        //cout << "centroid " << i << " - " << centroids[i] << endl;
     }
 }
 

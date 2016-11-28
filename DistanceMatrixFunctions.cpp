@@ -58,16 +58,16 @@ double FindRadiusForAssignment(Conf* myConf,double** distanceMatrix, int* centro
     double minDistance = INT_MAX;
     for (int centroid_iter = 0; centroid_iter < myConf->number_of_clusters; centroid_iter++)
     {
-        cout << "Centroid : " << centroids[centroid_iter] << endl;
+        //cout << "Centroid : " << centroids[centroid_iter] << endl;
         for (int second_centroid = centroid_iter+1; second_centroid < myConf->number_of_clusters; second_centroid++)
         {
-            cout << "Second centrod : " << centroids[second_centroid] << endl;
-            cout << "Distace Matrix Distace : " << DistanceMatrixDistance(distanceMatrix, centroids[centroid_iter], centroids[second_centroid]) << endl;
-            cout << "Min distance before calculations : " << minDistance << endl;
+            //cout << "Second centrod : " << centroids[second_centroid] << endl;
+            //cout << "Distace Matrix Distace : " << DistanceMatrixDistance(distanceMatrix, centroids[centroid_iter], centroids[second_centroid]) << endl;
+            //cout << "Min distance before calculations : " << minDistance << endl;
             if(DistanceMatrixDistance(distanceMatrix, centroids[centroid_iter], centroids[second_centroid]) < minDistance)
             {
                 minDistance = DistanceMatrixDistance(distanceMatrix, centroids[centroid_iter], centroids[second_centroid]);
-                cout << "New min distance : " << minDistance << endl;
+                //cout << "New min distance : " << minDistance << endl;
             }
         }
     }

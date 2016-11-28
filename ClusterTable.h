@@ -27,10 +27,13 @@ class ClusterTable
 		double ClusterDistanceFromCentroid(double** distanceMatrix, int cluster_no, int centroid);
 		double ClusterSilhouette(Conf* myConf, double** distanceMatrix, int* centroids,  int cluster_no, int** clusterAssign);
 		void Init_Tables(double*** distanceMatrix, Metrics* myMetric, Conf* myConf, int** centroids, ClusterTable** clusterTable, int*** clusterAssign);
-		double PrintingSilhouette(Conf* myConf, double** distanceMatrix, int* centroids, int** clusterAssign);
+		double PrintingSilhouette(ofstream& outputFile, Conf* myConf, double** distanceMatrix, int* centroids, int** clusterAssign);
 		int ReturnClusterSize(int cluster_no);
-		void PrintCluster(int cluster_no);
+		int* PrintClusterDataForList(int cluster_no, int* size_of_cluster);
 		int CreateClusterTableFromClusterAssign(Conf* myConf, Metrics* myMetric,int** clusterAssign, int* centroids);
+		void PrintClusterUsingNames(ofstream& outputFile, string* items_in_cluster_itemName, int size_of_cluster, int cluster_no);
+		void PrintClusterNo(int cluster_no);
+		bool ClusterDuplicate(int point_no,int cluster_no);
 		// void PrintData();;
 		// void Insert(T item, int itemno, std::string itemName);;
 		// void initEuclideanList(std::ifstream& inputFile, std::ifstream& queryFile, int k, int L, std::ofstream& outputfile, int* dataLength);;

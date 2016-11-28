@@ -1,6 +1,6 @@
 #include "mainSample.h"
 
-void CLI(ifstream& inputFile, ofstream& outputFile, Conf* myConf, Metrics* myMetric)
+/*void CLI(ifstream& inputFile, ofstream& outputFile, Conf* myConf, Metrics* myMetric)
 {
 
 	int initChoice, assignChoice, updateChoice;
@@ -10,7 +10,7 @@ void CLI(ifstream& inputFile, ofstream& outputFile, Conf* myConf, Metrics* myMet
 	cout << "Metric : " << myMetric->metric_space << endl;
 
 	//INTERFACE FOR CHOOSING FILES (?)
-	/*do
+	do
 	{
 		//If input file is given from command line.
 		if (inParameter) 
@@ -83,7 +83,7 @@ void CLI(ifstream& inputFile, ofstream& outputFile, Conf* myConf, Metrics* myMet
 
 
 	}while...
-*/
+
 
 	cout << "Please type an algorithm for Initialization : " << endl;
 	cout << "1. K-medoids++" << endl;
@@ -123,7 +123,7 @@ void CLI(ifstream& inputFile, ofstream& outputFile, Conf* myConf, Metrics* myMet
 	{
 
 	}
-}
+}*/
 
 
 template <typename T>

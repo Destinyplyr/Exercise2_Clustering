@@ -62,5 +62,5 @@ void EuclideanManagement()
 
 
 
-	cout << "IN the manager" << endl;
+	//cout << "IN the manager" << endl;
 }

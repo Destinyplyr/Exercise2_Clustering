@@ -6,6 +6,7 @@
 
 bool CLARANS(Conf* myConf, Metrics* myMetric, double** distanceMatrix, int* centroids,  ClusterTable* clusterTable, int** clusterAssign)
 {
+	//string GARBAGE;
 	int newMedoid;
 	bool changeflag = false;
 	int cluster;
@@ -22,14 +23,19 @@ bool CLARANS(Conf* myConf, Metrics* myMetric, double** distanceMatrix, int* cent
 	{
 		changeflag = false;
 		maximumSubtraction = INT_MIN;
-		cout << "Clarans iteration number : " << i << endl;
+		//cout << "Clarans iteration number : " << i << endl;
 		if (i > 0) {
 			//cout << "oeoeo" << clusterTable->getArray()[2]->getItemNo() <<endl;
 		}
 		PAM(myConf, myMetric, distanceMatrix, centroids, clusterTable, clusterAssign);
+		for (int cluster_iter = 0; cluster_iter < myConf->number_of_clusters; cluster_iter++)
+		{
+			clusterTable->PrintClusterNo(cluster_iter);
+		}
+		//cin >> GARBAGE;
 		//cout << "oeoeo" << clusterTable->getArray()[2]->getItemNo() <<endl;
 		for (int j = 0; j < myConf->clarans_set_fraction; j ++) {
-			cout << "Clarans set fraction number : " << j << endl;
+			//cout << "Clarans set fraction number : " << j << endl;
 			randomCentroid = (int)(((double)rand() / (double) RAND_MAX)*(myConf->number_of_clusters));
 			//cout << "randomCentroid : " << randomCentroid << endl;
 			if (randomCentroid == myConf->number_of_clusters) 
@@ -39,7 +45,7 @@ bool CLARANS(Conf* myConf, Metrics* myMetric, double** distanceMatrix, int* cent
 			do 
 			{
 				randomNonCentroid = (int)(((double)rand() / (double) RAND_MAX)*(myMetric->point_number));
-				cout << "randomNonCentroid : " << randomNonCentroid << endl;
+				//cout << "randomNonCentroid : " << randomNonCentroid << endl;
 				if (randomNonCentroid == myMetric->point_number) 
 				{
 					randomCentroid--;
@@ -51,15 +57,15 @@ bool CLARANS(Conf* myConf, Metrics* myMetric, double** distanceMatrix, int* cent
 			//cout << "cluster : " << cluster << endl;
 			//if noncentroid better
 			currentSubtraction = clusterTable->ClusterDistanceFromCentroid(distanceMatrix, cluster, centroids[randomCentroid]) - clusterTable->ClusterDistanceFromCentroid(distanceMatrix, cluster, randomNonCentroid);
-			cout << "currentSubtraction: " << currentSubtraction <<endl;
+			//cout << "currentSubtraction: " << currentSubtraction <<endl;
 			if (currentSubtraction > 0)
 			{
-				cout << "centroid is good " << endl;
+				//cout << "centroid is good " << endl;
 				//if change is the best we have
 				if (currentSubtraction > maximumSubtraction)
 				{
 					maximumSubtraction = currentSubtraction;
-					cout << "chan is the best we have - maximumSubtraction is  : " << maximumSubtraction << endl;
+					//cout << "chan is the best we have - maximumSubtraction is  : " << maximumSubtraction << endl;
 					minimumCentroid = randomCentroid;
 					//cout << "minimumCentroid : " << minimumCentroid << endl;
 					minimumNonCentroid = randomNonCentroid;
@@ -83,22 +89,22 @@ bool CLARANS(Conf* myConf, Metrics* myMetric, double** distanceMatrix, int* cent
 		//cout << "swapping CLARANS : " << centroids[cluster] <<endl;
 		cluster = minimumCentroid;//= ReturnCluster(myConf, centroids, minimumCentroid);
 		//cout << "cluster after swapping : " << minimumNonCentroid << endl;
-		cout << "Changing " << centroids[minimumCentroid] <<" with " << minimumNonCentroid <<endl;
+		//cout << "Changing " << centroids[minimumCentroid] <<" with " << minimumNonCentroid <<endl;
 		for (int j = 0; j < myMetric->point_number; ++j)		//updating clusterAssign
 		{
-			cout << "current minimum centroid " << j << " "  << " - " << clusterAssign[j][0] <<endl;
+			//cout << "current minimum centroid " << j << " "  << " - " << clusterAssign[j][0] <<endl;
 			if(clusterAssign[j][0] == centroids[minimumCentroid]) {
-				cout << "changed0" <<endl;
+				//cout << "changed0" <<endl;
 				clusterAssign[j][0] = minimumNonCentroid;
 			}
-			cout << "current minimum centroid " << j << " "  << " - " << clusterAssign[j][1] <<endl;
+			//cout << "current minimum centroid " << j << " "  << " - " << clusterAssign[j][1] <<endl;
 			if(clusterAssign[j][1] == centroids[minimumCentroid]) {
-				cout << "changed1" <<endl;
+				//cout << "changed1" <<endl;
 				clusterAssign[j][1] = minimumNonCentroid;
 			}
-			cout << "current minimum centroid " << j << " "  << " - " << clusterAssign[j][2] <<endl;
+			//cout << "current minimum centroid " << j << " "  << " - " << clusterAssign[j][2] <<endl;
 			if(clusterAssign[j][2] == centroids[minimumCentroid]) {
-				cout << "changed2" <<endl;
+				//cout << "changed2" <<endl;
 				clusterAssign[j][2] = minimumNonCentroid;
 			}
 		}
@@ -108,7 +114,7 @@ bool CLARANS(Conf* myConf, Metrics* myMetric, double** distanceMatrix, int* cent
 		// for (int w = 0; w <myConf->number_of_clusters; w++) {
 		// 	cout << centroids[w] << " ";
 		// }
-		cout << "Clarans completed!" << endl;
+		//cout << "Clarans completed!" << endl;
 
 		
 		// newMedoid = clusterTable->ClusterDistance(distanceMatrix, i);

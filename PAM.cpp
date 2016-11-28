@@ -12,9 +12,9 @@ void FullPAM(Conf* myConf, double** distanceMatrix, int* centroids,  ClusterTabl
     int* best_centroids;
     int cluster = 0;
     int cluster_no = 0;
-    double minDistance;
+    double minDistance, minDistanceSecond;
     double secondBest;
-	cout << "IN PAM" << endl;
+	//cout << "IN PAM" << endl;
 	int column, row, j;
 
 	for (int i = 0; i < myConf->number_of_clusters; ++i)
@@ -31,7 +31,7 @@ void FullPAM(Conf* myConf, double** distanceMatrix, int* centroids,  ClusterTabl
 		for (int k = 0; k < myConf->number_of_clusters; ++k)
 		{
 			j = centroids[k];
-			cout << "THE CENTRO " << j << endl;
+			//cout << "THE CENTRO " << j << endl;
 			if (j != current_point)
 			{
 				if (j < current_point)
@@ -48,13 +48,24 @@ void FullPAM(Conf* myConf, double** distanceMatrix, int* centroids,  ClusterTabl
 				if (distanceMatrix[row][column] < minDistance)
 				{
 					secondBest = minDistance;
-					cout << "secondBest -----> " << secondBest << endl;
+					//cout << "secondBest -----> " << secondBest << endl;
 					clusterAssign[i][1] = clusterAssign[i][0];
 					//cout << "secondBest done change" << endl;
 					minDistance = distanceMatrix[row][column];
-					cout << "actual min -----> " << minDistance << endl;
+					//cout << "actual min -----> " << minDistance << endl;
 					clusterAssign[i][0] = j;
 					//cout << "minDistance done change" << endl;
+					if (clusterAssign[i][1] == -1)
+					{
+						minDistanceSecond = INT_MAX;
+						for (int remain_cluster = k+1; remain_cluster < myConf->number_of_clusters; ++remain_cluster)
+						{
+							if (DistanceMatrixDistance(distanceMatrix, i, remain_cluster) < minDistanceSecond)
+							{
+								clusterAssign[i][1] = centroids[remain_cluster];
+							}
+						}
+					}
 				}
 			}
 		}
@@ -64,7 +75,7 @@ void FullPAM(Conf* myConf, double** distanceMatrix, int* centroids,  ClusterTabl
 		if (clusterAssign[i][2] != clusterAssign[i][0]) 
 		{
 			if (clusterAssign[i][2] != -1) {
-				cluster_no = ReturnCluster(myConf, centroids, clusterAssign[i][0]);
+				cluster_no = ReturnCluster(myConf, centroids, clusterAssign[i][2]);
 			}
 			clusterTable->Remove(current_point, cluster_no);
 			cout << "Remove DONE!!!!!!!!!!!!!!! " << endl;
@@ -72,7 +83,10 @@ void FullPAM(Conf* myConf, double** distanceMatrix, int* centroids,  ClusterTabl
 				if (centroids[k] == clusterAssign[i][0]) 
 				{
 					cout << "centroid before instert : " << centroids[k] << endl;
-					clusterTable->InsertAtCluster(current_point, k);
+					if(!clusterTable->ClusterDuplicate(current_point, k))
+					{
+						clusterTable->InsertAtCluster(current_point, k);
+					}
 					break;
 				}
 			}
@@ -97,26 +111,26 @@ void FullPAM(Conf* myConf, double** distanceMatrix, int* centroids,  ClusterTabl
 				currentSubtraction = clusterTable->ClusterDistanceFromCentroid(distanceMatrix, cluster, centroids[cluster]) - clusterTable->ClusterDistanceFromCentroid(distanceMatrix, cluster, current_sample[j]);
 				if (currentSubtraction > 0)
 				{
-					cout << "centroid is better " << endl;
+					//cout << "centroid is better " << endl;
 					//if change is the best we have
 					if (currentSubtraction > maximumSubtraction)
 					{
 						maximumSubtraction = currentSubtraction;
-						cout << "chan is the best we have - maximumSubtraction is  : " << maximumSubtraction << endl;
+						//cout << "chan is the best we have - maximumSubtraction is  : " << maximumSubtraction << endl;
 						minimumCentroid = cluster;						//MINIMUM CENTROID IS CLUSTER - index			
-						cout << "minimumCentroid : " << minimumCentroid << endl;
+						//cout << "minimumCentroid : " << minimumCentroid << endl;
 						minimumNonCentroid = current_sample[j];			//MINIMUM NON CENTROID IS ITEM
-						cout << "minimumNonCentroid : " << minimumNonCentroid << endl;
+						//cout << "minimumNonCentroid : " << minimumNonCentroid << endl;
 					}
 				}
 			}
 		}
-		cout << "going for the swap" << endl;
+		//cout << "going for the swap" << endl;
 		//swapping
 		cluster = minimumCentroid;//= ReturnCluster(myConf, centroids, minimumCentroid);
-		cout << "cluster after swapping : " << cluster << endl;
+		//cout << "cluster after swapping : " << cluster << endl;
 		if (centroids[cluster] == minimumNonCentroid) {
-			cout << "finished Full PAM" <<endl;
+			//cout << "finished Full PAM" <<endl;
 			break;
 		}
 		

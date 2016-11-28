@@ -11,6 +11,7 @@ Node<T>::Node()
 	this->centroid = -1;
 	this->itemno = -1;
     this->next = NULL;
+    this->itemName = "empty";
 	//cout << "Node created successfully!" << endl;
 }
 
@@ -25,6 +26,7 @@ Node<T>::Node(T key)
 	this->itemno = -1;
 	this->key = key;		//Works for both Hamming (T = string) and Vector (T = double*)
 	this->next = NULL;
+	this->itemName = "empty";
 	//cout << "Node created successfully!" << endl;
 }
 

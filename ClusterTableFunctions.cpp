@@ -12,7 +12,7 @@ ClusterTable::ClusterTable(int number_of_clusters)
 {
 	this->number_of_clusters = number_of_clusters;
 	this->clusterTable = new ClusterNode*[number_of_clusters];
-    cout << "list actuel: " << clusterTable << endl;
+    //cout << "list actuel: " << clusterTable << endl;
 	for (int i = 0; i < number_of_clusters; ++i)
 	{
 		this->clusterTable[i] = NULL;
@@ -84,7 +84,7 @@ void ClusterTable::Remove(int item_no, int cluster_no)
 
 	if (cluster_no == -1)
 	{
-        cout << "I have not yet been added -909" <<endl;
+        //cout << "I have not yet been added -909" <<endl;
 		return;
 	}
     if (clusterTable[cluster_no] != NULL) 
@@ -129,7 +129,7 @@ void ClusterTable::Remove(int item_no, int cluster_no)
 void ClusterTable::InsertAtCluster(int item_no, int cluster_no) 
 {
     if (cluster_no == -1) {
-        cout << "This should not happen - 908" <<endl;
+        //cout << "This should not happen - 908" <<endl;
         return;
     }
 	ClusterNode* prev = NULL;
@@ -253,7 +253,7 @@ void ClusterTable::Init_Tables(double*** distance_matrix, Metrics* myMetric, Con
     //cout << "ekana to insertion" << endl;
 
     (*clusterTable) = new ClusterTable(myConf->number_of_clusters);
-    cout << "list: " << (*clusterTable)->getArray() <<endl;
+    //cout << "list: " << (*clusterTable)->getArray() <<endl;
     (*clusterAssign)= new int*[myMetric->point_number];
     for (int i = 0; i < myMetric->point_number; ++i)
     {
@@ -266,13 +266,17 @@ void ClusterTable::Init_Tables(double*** distance_matrix, Metrics* myMetric, Con
 
 int ClusterTable::ReturnClusterSize(int cluster_no)
 {
-    ClusterNode* currentNode;
-    currentNode = clusterTable[cluster_no];
-        
+    ClusterNode* currentNode = clusterTable[cluster_no];
+    cout << "clusterno is manmu: " <<cluster_no <<endl;
     if (currentNode == NULL)
     {
         cout << "einAI NULL o currentNode in ReturnClusterSize " << endl;
         cout << "exiting..." << endl;
+        for (int cluster_iter = 0; cluster_iter < 4; cluster_iter++)
+        {
+            PrintClusterNo(cluster_iter);
+        }
+        //return 0;//
         exit(1);
     }
 
@@ -286,24 +290,129 @@ int ClusterTable::ReturnClusterSize(int cluster_no)
 }
 
 
-void ClusterTable::PrintCluster(int cluster_no)
+int* ClusterTable::PrintClusterDataForList(int cluster_no, int* size_of_cluster)      //sends a list of item numbers to be processed on ListData
 {
+    int index = 0;
+    *size_of_cluster = 0;
     ClusterNode* currentNode = clusterTable[cluster_no];
-        
-    if (currentNode == NULL)
+    int* items_in_cluster;
+    while (currentNode != NULL)
     {
-        cout << "einAI NULL o currentNode in PrintCluster " << endl;
-        cout << "exiting..." << endl;
-        exit(1);
-    }
-
-    while(currentNode != NULL)
-    {
-        cout << "Printing Cluster : " << currentNode->getItemNo() << endl;
-        //count_items++;
+        (*size_of_cluster) = (*size_of_cluster) + 1;
         currentNode = currentNode->getNext();
     }
+    if ((*size_of_cluster) == 0) 
+    {
+        return NULL;
+    }
+    items_in_cluster = new int[*size_of_cluster];
+
+    currentNode = clusterTable[cluster_no];
+    while (currentNode != NULL)
+    {
+        items_in_cluster[index] = currentNode->getItemNo();
+        currentNode = currentNode->getNext();
+        index++;
+    }
+    return items_in_cluster;
+
+    /*if (currentNode == NULL)
+    {
+        //cout << "einAI NULL o currentNode in PrintCluster " << endl;
+        //cout << "exiting..." << endl;
+        exit(1);
+    }
+    cout << "CLUSTER-" << cluster_no +1 << " {";
+    while(currentNode != NULL)
+    {
+        cout << currentNode->getItemName();
+        //count_items++;
+        currentNode = currentNode->getNext();
+        if (currentNode == NULL) 
+        {
+            break;
+        }
+        cout << ", ";
+    }
+    cout << "}" <<endl;*/
 }
+
+void ClusterTable::PrintClusterUsingNames(ofstream& outputFile, string* items_in_cluster_itemName, int size_of_cluster, int cluster_no)      //sends a list of item numbers to be processed on ListData
+{
+    /*while (currentNode != NULL)
+    {
+        size_of_cluster++;
+        currentNode = currentNode->getNext();
+    }
+    items_in_cluster = new int[*size_of_cluster];
+
+    currentNode = clusterTable[cluster_no];
+    while (currentNode != NULL)
+    {
+        items_in_cluster[index] = currentNode->getItemNo();
+        currentNode = currentNode->getNext();
+        index++;
+    }
+    return items_in_cluster;*/
+
+    /*if (currentNode == NULL)
+    {
+        //cout << "einAI NULL o currentNode in PrintCluster " << endl;
+        //cout << "exiting..." << endl;
+        exit(1);
+    }*/
+    outputFile << "CLUSTER-" << cluster_no +1 << " {";
+    for (int item_iter = 0; item_iter <= size_of_cluster; item_iter++)
+    {
+        outputFile << items_in_cluster_itemName[item_iter];
+        if (item_iter == size_of_cluster)
+        {
+            break;
+        }
+        outputFile << ", ";
+    }
+    outputFile << "}" <<endl;
+
+    /*while(currentNode != NULL)
+    {
+        cout << currentNode->getItemName();
+        //count_items++;
+        currentNode = currentNode->getNext();
+        if (currentNode == NULL) 
+        {
+            break;
+        }
+        cout << ", ";
+    }
+    cout << "}" <<endl;*/
+}
+
+
+void ClusterTable::PrintClusterNo(int cluster_no)
+{
+    ClusterNode* currentNode = clusterTable[cluster_no];
+    if (currentNode == NULL)
+    {
+        //cout << "einAI NULL o currentNode in PrintCluster " << endl;
+        //cout << "exiting..." << endl;
+        //exit(1);
+        return;
+    }
+    cout << "CLUSTER-" << cluster_no +1 << " {";
+    while(currentNode != NULL)
+    {
+        cout << currentNode->getItemNo();
+        //count_items++;
+        currentNode = currentNode->getNext();
+        if (currentNode == NULL) 
+        {
+            break;
+        }
+        cout << ", ";
+    }
+    cout << "}" <<endl;
+}
+
 
 
 double ClusterTable::ClusterSilhouette(Conf* myConf, double** distanceMatrix, int* centroids,  int cluster_no, int** clusterAssign)
@@ -315,23 +424,37 @@ double ClusterTable::ClusterSilhouette(Conf* myConf, double** distanceMatrix, in
     int number_of_scnd_cluster;         //index for second best cluster in clusterTable
     ClusterNode* currentNode = clusterTable[cluster_no];
     int times = 0;
+    string GARBAGE;
 
     if (currentNode == NULL)
     {
-        cout << "einAI NULL o currentNode ston silhouette ypologismo " << endl;
-        cout << "exiting..." << endl;
+        //cout << "einAI NULL o currentNode ston silhouette ypologismo " << endl;
+        //cout << "exiting..." << endl;
     }
 
     ClusterNode* secondNode = NULL;
-    //cout << "PRINTIG CLUSTER NUMBER " << cluster_no << endl;
+    cout << "PRINTIG CLUSTER NUMBER " << cluster_no << endl;
+    for (int cluster_iter = 0; cluster_iter < myConf->number_of_clusters; cluster_iter++)
+    {
+        PrintClusterNo(cluster_iter);
+    }
     number_in_cluster = ReturnClusterSize(cluster_no);
-    cout << "current cluster size: " << number_in_cluster <<endl;
-    currentNode = clusterTable[cluster_no];
+    //cout << "current cluster size: " << number_in_cluster <<endl;
+    if(number_in_cluster > 0)
+    {
+        currentNode = clusterTable[cluster_no];
+    }
+    //currentNode = clusterTable[cluster_no];
     while (currentNode != NULL) {
         ++times;
-        // cout << "THIS TIME : " << times << endl;
+         //cout << "THIS TIME : " << times << endl;
         number_of_scnd_cluster = ReturnCluster(myConf, centroids, clusterAssign[currentNode->getItemNo()][1]);
-        //cout << "THIS CENTROID : " << clusterAssign[currentNode->getItemNo()][1] << endl;
+        cout << "THIS CENTROID : " << clusterAssign[currentNode->getItemNo()][1] << endl;
+            cout << "==================" << endl << "PRINTING CLUSTERS IN PrintingSilhouette fucntion : " <<endl;
+            for (int w = 0; w <myConf->number_of_clusters; w++) {
+                cout << centroids[w] << " ";
+            }
+            cout << endl;
         //cout << "number_of_scnd_cluster : " << number_of_scnd_cluster << endl;
         // if (number_of_scnd_cluster == cluster_no)
         // {
@@ -340,6 +463,7 @@ double ClusterTable::ClusterSilhouette(Conf* myConf, double** distanceMatrix, in
         //     //exit(7);
         // }
         secondNode = clusterTable[number_of_scnd_cluster];
+        cout << "it was down here " <<  number_of_scnd_cluster <<endl;
         number_in_scnd_cluster = ReturnClusterSize(number_of_scnd_cluster);
         a_i = (double)ClusterDistanceFromCentroid(distanceMatrix, cluster_no, currentNode->getItemNo()) / (double) number_in_cluster;
         cout << "   ----> Silhouette: a_i of " << currentNode->getItemNo() << " : " << a_i <<endl;
@@ -364,26 +488,26 @@ double ClusterTable::ClusterSilhouette(Conf* myConf, double** distanceMatrix, in
 }
 
 
-double ClusterTable::PrintingSilhouette(Conf* myConf, double** distanceMatrix, int* centroids, int** clusterAssign)
+double ClusterTable::PrintingSilhouette(ofstream& outputFile, Conf* myConf, double** distanceMatrix, int* centroids, int** clusterAssign)
 {
     double* s_i = new double[myConf->number_of_clusters];
     double s_total = 0;
     
-    cout << "==================" << endl << "PRINTING CLUSTERS IN PrintingSilhouette fucntion : " <<endl;
+/*    cout << "==================" << endl << "PRINTING CLUSTERS IN PrintingSilhouette fucntion : " <<endl;
     for (int w = 0; w <myConf->number_of_clusters; w++) {
         cout << centroids[w] << " ";
     }
-    cout << endl;
+    cout << endl;*/
 
-    cout << "Silhouette: [";
+    outputFile << "Silhouette: [";
     for (int i = 0; i < myConf->number_of_clusters; ++i)
     {
         s_i[i] = this->ClusterSilhouette(myConf, distanceMatrix, centroids,  i, clusterAssign);
-        cout << s_i[i] << ", ";
+        outputFile << s_i[i] << ", ";
         s_total += s_i[i];
     }
     //cout << "after for loop in PrintingSilhouette " << endl;
-    cout << "TOTAL : " << s_total / myConf->number_of_clusters << "]" <<endl;
+    outputFile << s_total / myConf->number_of_clusters << "]" <<endl;
 }
 
 int ClusterTable::CreateClusterTableFromClusterAssign(Conf* myConf, Metrics* myMetric,int** clusterAssign, int* centroids)
@@ -391,7 +515,7 @@ int ClusterTable::CreateClusterTableFromClusterAssign(Conf* myConf, Metrics* myM
     int cluster_no;
     for (int point_iter = 0; point_iter < myMetric->point_number; point_iter++)
     {
-        cout << "Creating clustertable - checking args: clusterAssign[point_iter][2]: " << clusterAssign[point_iter][2] <<endl;
+        //cout << "Creating clustertable - checking args: clusterAssign[point_iter][2]: " << clusterAssign[point_iter][2] <<endl;
         for (int centroid_iter = 0; centroid_iter < myConf->number_of_clusters; centroid_iter++)    //find centroid index
         {
             if (centroids[centroid_iter] == clusterAssign[point_iter][2]) 
@@ -407,7 +531,24 @@ int ClusterTable::CreateClusterTableFromClusterAssign(Conf* myConf, Metrics* myM
         {
             cout << "Attempting to add on NONEMPTY cluster" <<endl;
         }
-        this->InsertAtCluster(point_iter, cluster_no);        //insert point on the cluster it was assigned to
+        if (!ClusterDuplicate(point_iter, cluster_no))
+        {
+            this->InsertAtCluster(point_iter, cluster_no);        //insert point on the cluster it was assigned to
+        }
     }
+}
+
+bool ClusterTable::ClusterDuplicate(int point_no,int cluster_no)    //returns true if duplicate exists
+{
+    ClusterNode* currentNode = clusterTable[cluster_no];
+    while (currentNode != NULL)
+    {
+        if (currentNode->getItemNo() == point_no)
+        {
+            return true;
+        }
+        currentNode = currentNode->getNext();
+    }
+    return false;
 }
 

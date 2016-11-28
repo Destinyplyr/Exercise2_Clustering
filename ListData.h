@@ -35,6 +35,7 @@ class ListData
 		void ListInsertionHamming(std::ifstream& inputFile, Metrics* myMetric);
 		double DistanceB2BHamming(T item1, T item2);
 		void DistanceMatrixComputationHamming(Metrics* myMetric, double** distance_matrix);
+		string* ItemNamesFromItemNos(int* items_in_cluster_itemNo, int size_of_cluster);
 		
 	private:
 		Node<T>* header;

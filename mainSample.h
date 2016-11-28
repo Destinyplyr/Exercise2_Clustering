@@ -12,5 +12,11 @@
 #include "UtilsH.h"
 #include "Algorithms.h"
 
-void CLI(ifstream& inputFile, ofstream& outputFile, Conf* myConf, Metrics* myMetric);
+//below declared on MainFunctions.cpp
+//void CLI(ifstream& inputFile, ofstream& outputFile, Conf* myConf, Metrics* myMetric);
+
+//below declared on CLI.cpp
+void CLI(ifstream& inputFile, ofstream& outputFile, Conf* myConf, Metrics* myMetric, ClusterTable* clusterTable, double** distance_matrix, int* centroids, int** clusterAssign, int L, int k, bool complete_printing);
+
+//below declared on MainFunctions.cpp
 void ReadFiles(ifstream& inputFile, Metrics* myMetric, int* N, double** distanceMatrix);
