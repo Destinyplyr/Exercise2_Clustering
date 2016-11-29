@@ -6,8 +6,8 @@
 void FullPAM(Conf* myConf, double** distanceMatrix, int* centroids,  ClusterTable* clusterTable, int** clusterAssign, int* current_sample, int n_sample_size)
 {
 	int current_point;
-	int maximumSubtraction, minimumNonCentroid;
-	int currentSubtraction, minimumCentroid;
+	int minimumCentroid, minimumNonCentroid;
+	double currentSubtraction,maximumSubtraction;
     int* new_centroids;
     int* best_centroids;
     int cluster = 0;
@@ -94,7 +94,7 @@ void FullPAM(Conf* myConf, double** distanceMatrix, int* centroids,  ClusterTabl
 			//THIS IS SO WROOOOOOOOOOOOOOOOOOOOOOOOOOOOOOONG!!!!!!!!!!!!!!!!!!!!!!!!!!
 			clusterAssign[i][2] = clusterAssign[i][0]; 
 			cout << "change after InsertAtCluster DON!!!!" << endl;
-			cout <<  "NEAREST CENTRO IN FULL PAM : ^^^^^^^^^^^^^^^^^^^^^^^^" << clusterAssign[i][2] << endl;
+			cout <<  "NEAREST CENTRO for" << i << "IN FULL PAM : ^^^^^^^^^^^^^^^^^^^^^^^^" << clusterAssign[i][2] << endl;
 		}
 		
 	}
@@ -108,29 +108,32 @@ void FullPAM(Conf* myConf, double** distanceMatrix, int* centroids,  ClusterTabl
 			cluster = i;
 			for (int j = 0; j < n_sample_size; ++j)			//j is current item
 			{
+				cout << "clusterTable->ClusterDistanceFromCentroid(distanceMatrix, cluster, centroids[cluster]): " << clusterTable->ClusterDistanceFromCentroid(distanceMatrix, cluster, centroids[cluster]) << endl;
+				cout << "clusterTable->ClusterDistanceFromCentroid(distanceMatrix, cluster, current_sample[j]): " << clusterTable->ClusterDistanceFromCentroid(distanceMatrix, cluster, current_sample[j]) << endl;
 				currentSubtraction = clusterTable->ClusterDistanceFromCentroid(distanceMatrix, cluster, centroids[cluster]) - clusterTable->ClusterDistanceFromCentroid(distanceMatrix, cluster, current_sample[j]);
+				cout << "cur sub: " << currentSubtraction <<endl;
 				if (currentSubtraction > 0)
 				{
-					//cout << "centroid is better " << endl;
+					cout << "centroid is better " << endl;
 					//if change is the best we have
 					if (currentSubtraction > maximumSubtraction)
 					{
 						maximumSubtraction = currentSubtraction;
-						//cout << "chan is the best we have - maximumSubtraction is  : " << maximumSubtraction << endl;
+						cout << "chan is the best we have - maximumSubtraction is  : " << maximumSubtraction << endl;
 						minimumCentroid = cluster;						//MINIMUM CENTROID IS CLUSTER - index			
-						//cout << "minimumCentroid : " << minimumCentroid << endl;
+						cout << "minimumCentroid : " << minimumCentroid << endl;
 						minimumNonCentroid = current_sample[j];			//MINIMUM NON CENTROID IS ITEM
-						//cout << "minimumNonCentroid : " << minimumNonCentroid << endl;
+						cout << "minimumNonCentroid : " << minimumNonCentroid << endl;
 					}
 				}
 			}
 		}
-		//cout << "going for the swap" << endl;
+		cout << "going for the swap" << endl;
 		//swapping
 		cluster = minimumCentroid;//= ReturnCluster(myConf, centroids, minimumCentroid);
-		//cout << "cluster after swapping : " << cluster << endl;
+		cout << "cluster after swapping : " << cluster << endl;
 		if (centroids[cluster] == minimumNonCentroid) {
-			//cout << "finished Full PAM" <<endl;
+			cout << "finished Full PAM" <<endl;
 			break;
 		}
 		

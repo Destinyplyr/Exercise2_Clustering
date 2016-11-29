@@ -5,8 +5,9 @@
 
 void CLARA(Conf* myConf, Metrics* myMetric, double** distanceMatrix, int* centroids,  ClusterTable* clusterTable, int** clusterAssign)
 {
+	int total, size_of_cluster = 0;
 	int n_sample_size = 40 + 2* myConf->number_of_clusters;		//n'
-	int s =5; 			//best experimental result
+	int s =myConf->clarans_iterations; 			//best experimental result
 	int new_item = -1;
 	int position;
     int* new_centroids;
@@ -57,6 +58,21 @@ void CLARA(Conf* myConf, Metrics* myMetric, double** distanceMatrix, int* centro
 			fullPAMclusterAssign[j][1] = -1;
 			fullPAMclusterAssign[j][2] = -1;
 		}
+
+
+
+		int** CLARAclusterAssign= new int*[myMetric->point_number];
+		for (int r = 0; r < myMetric->point_number; ++r)
+		{
+		    CLARAclusterAssign[r] = new int[3];
+		    CLARAclusterAssign[r][0] = -1;
+		    CLARAclusterAssign[r][1] = -1;
+		    CLARAclusterAssign[r][2] = -1;
+		}
+
+
+
+
 		fullPAMclusterTable= new ClusterTable(myConf->number_of_clusters);
 		min_cost = INT_MAX;
 		for (int j = 0; j < n_sample_size; j++) 
@@ -66,8 +82,20 @@ void CLARA(Conf* myConf, Metrics* myMetric, double** distanceMatrix, int* centro
 			}while (Exists(current_sample, n_sample_size, new_item)); 
 			current_sample[j] = new_item;
 		}
+		cout << "WTF" <<endl;
+		//cin >> GARBAGE;
 		//apply custom FULL PAM
 		FullPAM(myConf, distanceMatrix, fullPAMcentroids, fullPAMclusterTable, fullPAMclusterAssign, current_sample, n_sample_size);
+		cout << "total on clara after fullPAM " <<i <<endl;
+		total = 0;
+		for (int cluster_iter = 0; cluster_iter < myConf->number_of_clusters; cluster_iter++)
+		{
+			fullPAMclusterTable->PrintClusterDataForList(cluster_iter, &size_of_cluster);		//used to get size
+			cout << "CLUSTER-" << cluster_iter << " {" << size_of_cluster << ", " << fullPAMclusterTable->ClusterDistance( myMetric, distanceMatrix, cluster_iter, clusterAssign) <<"}" <<endl;
+			total += size_of_cluster;
+		}
+		cout << "total on clusters: " <<total<<endl;
+		cout << "wtf" <<endl;
 		//moving fullPAMassign to assign
 		//cout << "again parampampam" <<endl;
 		//cin >> GARBAGE;
@@ -86,12 +114,37 @@ void CLARA(Conf* myConf, Metrics* myMetric, double** distanceMatrix, int* centro
 			}
 		}
 		PAM( myConf,  myMetric, distanceMatrix, fullPAMcentroids, fullPAMclusterTable, CLARAclusterAssign);
+		cout << "total on clara clustering " <<i <<endl;
+		total = 0;
+		for (int cluster_iter = 0; cluster_iter < myConf->number_of_clusters; cluster_iter++)
+		{
+			fullPAMclusterTable->PrintClusterDataForList(cluster_iter, &size_of_cluster);		//used to get size
+			cout << "CLUSTER-" << cluster_iter << " {" << size_of_cluster << ", " << fullPAMclusterTable->ClusterDistance( myMetric, distanceMatrix, cluster_iter, clusterAssign) <<"}" <<endl;
+			total += size_of_cluster;
+		}
+		cout << "total on clusters: " <<total<<endl;
 		//cin >> GARBAGE;
 		current_cost = ObjectiveCost(CLARAclusterAssign, distanceMatrix, myMetric);
 		if (current_cost < min_cost)
 		{
 			//cout << "904 - mincost clara: " << current_cost <<endl;
 			min_cost = current_cost;
+			//DELETE minfullPAMclusterAssign before next command!!!!!
+			if (minfullPAMclusterAssign != NULL) 
+			{
+				for (int u = 0; u < myMetric->point_number; u++)
+				{
+					//delete[] minfullPAMclusterAssign[u];
+				}
+				//delete[] minfullPAMclusterAssign;
+				minfullPAMclusterAssign = NULL;
+			}
+			//DELETE minfullPAMclusterTable before next command
+			if (minfullPAMclusterTable != NULL) 
+			{
+				//delete minfullPAMclusterTable;
+				minfullPAMclusterTable = NULL;
+			}
 			minfullPAMclusterAssign = CLARAclusterAssign;
 			minfullPAMclusterTable = fullPAMclusterTable;
 			for (int w = 0; w < myConf->number_of_clusters; ++w)
@@ -112,22 +165,6 @@ void CLARA(Conf* myConf, Metrics* myMetric, double** distanceMatrix, int* centro
 				cout << min_centroids[w] << " " ;
 			}
 			cout << endl;
-			//DELETE minfullPAMclusterAssign before next command!!!!!
-			if (minfullPAMclusterAssign != NULL) 
-			{
-				for (int u = 0; u < myMetric->point_number; u++)
-				{
-					//delete[] minfullPAMclusterAssign[u];
-				}
-				//delete[] minfullPAMclusterAssign;
-				minfullPAMclusterAssign = NULL;
-			}
-			//DELETE minfullPAMclusterTable before next command
-			if (minfullPAMclusterTable != NULL) 
-			{
-				//delete minfullPAMclusterTable;
-				minfullPAMclusterTable = NULL;
-			}
 
 			//minfullPAMclusterAssign = CLARAclusterAssign;
 			//minfullPAMclusterTable = fullPAMclusterTable;
@@ -143,7 +180,17 @@ void CLARA(Conf* myConf, Metrics* myMetric, double** distanceMatrix, int* centro
 			//delete fullPAMclusterTable;
 			fullPAMclusterTable = NULL;
 		}
+		cout << "total on clara clustering after ObjectiveCost " <<i <<endl;
+		total = 0;
+		for (int cluster_iter = 0; cluster_iter < myConf->number_of_clusters; cluster_iter++)
+		{
+			fullPAMclusterTable->PrintClusterDataForList(cluster_iter, &size_of_cluster);		//used to get size
+			cout << "CLUSTER-" << cluster_iter << " {" << size_of_cluster << ", " << fullPAMclusterTable->ClusterDistance( myMetric, distanceMatrix, cluster_iter, clusterAssign) <<"}" <<endl;
+			total += size_of_cluster;
+		}
+		cout << "total on clusters: " <<total<<endl;
 	}
+	cout << "woohooooo" <<endl;
 	cout <<"CLARA SENDS ITS REGARDS" <<endl;
 	for (int w = 0; w < myConf->number_of_clusters; ++w)
 	{

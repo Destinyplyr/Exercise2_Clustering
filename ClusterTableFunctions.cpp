@@ -365,11 +365,15 @@ void ClusterTable::PrintClusterUsingNames(ofstream& outputFile, string* items_in
     for (int item_iter = 0; item_iter <= size_of_cluster; item_iter++)
     {
         outputFile << items_in_cluster_itemName[item_iter];
-        if (item_iter == size_of_cluster)
+        if (item_iter == size_of_cluster || items_in_cluster_itemName[item_iter].compare("") == 0)
         {
             break;
         }
-        outputFile << ", ";
+        if (item_iter < size_of_cluster && items_in_cluster_itemName[item_iter+1].compare("") != 0) 
+        {
+            outputFile << ", ";
+        }
+        
     }
     outputFile << "}" <<endl;
 
