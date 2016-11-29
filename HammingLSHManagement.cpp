@@ -617,5 +617,16 @@ void ListData<T>::initHammingLSHManagement(Conf* myConf, ifstream& inputFile, do
 		cout << "Command not recognised. Exiting... You lost your chance..." <<endl;
 		exit(-1);
 	}*/
+	for (int i = 0; i < *dataLength; ++i)
+	{
+		delete point_to_centroid_assignment[i];
+	}
+	delete[] point_to_centroid_assignment;
+	
+	for (int i = 0; i < L; ++i)
+	{
+		delete miniHashIndexList[i];
+	}
+	delete[] miniHashIndexList;
 	return;
 }

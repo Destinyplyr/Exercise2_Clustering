@@ -260,6 +260,45 @@ void CLARA(Conf* myConf, Metrics* myMetric, double** distanceMatrix, int* centro
 		}
 	}*/
 
+    /*int** CLARAclusterAssign= new int*[myMetric->point_number];
+    for (int i = 0; i < myMetric->point_number; ++i)
+    {
+        CLARAclusterAssign[i] = new int[3];
+        CLARAclusterAssign[i][0] = -1;
+        CLARAclusterAssign[i][1] = -1;
+        CLARAclusterAssign[i][2] = -1;
+    }*/
+	for (int i = 0; i < myMetric->point_number; ++i)
+	{
+	    delete[] CLARAclusterAssign[i];
+	}
+    delete[] CLARAclusterAssign;
+
+
+	// int* fullPAMcentroids = new int[myConf->number_of_clusters];
+	// int* min_centroids = new int[myConf->number_of_clusters];
+	delete[] fullPAMcentroids;
+	delete[] min_centroids;
+
+	/*for (int j = 0; j < n_sample_size; ++j)
+	{
+		fullPAMclusterAssign[j] = new int[3];
+	}
+	int** fullPAMclusterAssign;	*/
+	for (int j = 0; j < n_sample_size; ++j)
+	{
+		delete[] fullPAMclusterAssign[j];
+	}
+	delete[] fullPAMclusterAssign;
+	
+	//ClusterTable* fullPAMclusterTable;		DONT DELETE
+
+	/*int* current_sample = new int[n_sample_size];		//holds the items of the sample
+	for (int i = 0; i < n_sample_size; ++i)
+	{
+		current_sample[i] = -1;
+	}*/
+	delete[] current_sample;		//holds the items of the sample
 
 	return;
 

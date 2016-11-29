@@ -464,6 +464,22 @@ void ListData<T>::initCosineList(Conf* myConf, ifstream& inputFile, double** dis
 		}
 		
 	}
+	for (int o = 0; o < L; ++o)
+	{
+		for (int j = 0; j < k; j++) {
+			delete[] h[o][j];
+		}
+		delete[] h[o];
+	}
+	delete h;
+	
+	delete dataLength;
+
+	for (int i = 0; i < *dataLength; ++i)
+	{
+		delete point_to_centroid_assignment[i];
+	}
+	delete[] point_to_centroid_assignment;
 	return;
 
 		/*string genericStr;
@@ -793,4 +809,5 @@ void ListData<T>::initCosineList(Conf* myConf, ifstream& inputFile, double** dis
 		delete cosineList;
 		delete[] hashTableList;
 		exit(1);*/
+
 }

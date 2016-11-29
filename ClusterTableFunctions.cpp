@@ -511,6 +511,7 @@ double ClusterTable::PrintingSilhouette(ofstream& outputFile, Conf* myConf, doub
         s_total += s_i[i];
     }
     //cout << "after for loop in PrintingSilhouette " << endl;
+    delete[] s_i;
     outputFile << s_total / myConf->number_of_clusters << "]" <<endl;
 }
 

@@ -6,7 +6,7 @@
       <FailureType>Assertion</FailureType>
       <Location>
         <File>TestListData.cpp</File>
-        <Line>195</Line>
+        <Line>176</Line>
       </Location>
       <Message>equality assertion failed
 - Expected: 0.106587

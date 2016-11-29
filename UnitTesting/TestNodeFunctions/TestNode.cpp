@@ -146,6 +146,7 @@ template <typename T>
 void TestNode<T>::testNodeCon1(void)
 {
 	int i = 5;
+	delete mTestObj;
 	mTestObj = new Node<int>(i);
 	CPPUNIT_ASSERT(-1 == mTestObj->getFlagForAssignment());
 	CPPUNIT_ASSERT(-1 == mTestObj->getFlagAsAssigned());
@@ -163,6 +164,7 @@ void TestNode<T>::testNodeCon2(void)
 	int g = 7;                      //g
 	int itemno = 567;				//itemno
 	string itemName = "item568";	//itemname
+	delete mTestObj;
 	mTestObj = new Node<int>(i, g, itemno, itemName);
 	CPPUNIT_ASSERT(-1 == mTestObj->getFlagForAssignment());
 	CPPUNIT_ASSERT(-1 == mTestObj->getFlagAsAssigned());
@@ -179,9 +181,11 @@ void TestNode<T>::testNodeCon2(void)
 template <typename T>
 void TestNode<T>::testsetNext(void)
 {
-	Node<T> *newNode = new Node<T>;
+	Node<T>* newNode = new Node<T>;
 	mTestObj->setNext(newNode);
 	CPPUNIT_ASSERT(newNode == mTestObj->getNext());
+	delete newNode;
+	mTestObj->setNext(NULL);
 }
 
 template <typename T>

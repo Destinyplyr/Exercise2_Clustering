@@ -428,6 +428,55 @@ void ListData<T>::initEuclideanList(Conf* myConf, ifstream& inputFile, double** 
 		}
 		
 	}
+
+	/*// v = new double**[L];
+	// t = new double*[L];
+	// r_k = new int*[L];
+	// for (int o = 0; o < L; ++o)
+	// {
+	// 	v[o] = new double*[k];
+	// 	t[o] = new double[k];
+	// 	r_k[o] = new int[k];
+	// 	for (int j = 0; j < k; j++) {
+	// 		v[o][j] = new double[*dataLength];
+	// 	}
+	// }
+
+
+	for (int o = 0; o < L; ++o)
+	{
+		for (int j = 0; j < k; j++) {
+			delete[] v[o][j];
+		}
+		delete[] v[o];
+		delete t[o];
+		delete r_k[o];
+
+	}
+	delete[] v;
+	delete t;
+	delete r_k;*/
+	/*for (int o = 0; o < L; ++o)
+	{
+		for (int j = 0; j < k; j++) {
+			delete[] v[o][j];
+		}
+
+		delete v[o];
+		delete t[o];
+		delete r_k[o];
+	}*/
+	//delete v;
+	//delete t;
+	//delete r_k;
+	delete dataLength;
+
+	for (int i = 0; i < *dataLength; ++i)
+	{
+		delete point_to_centroid_assignment[i];
+	}
+	delete[] point_to_centroid_assignment;
+
 	return;
 
 	/*do {
@@ -592,4 +641,5 @@ void ListData<T>::initEuclideanList(Conf* myConf, ifstream& inputFile, double** 
 	delete[] hashTableList;
 	delete trickList;
 	exit(1);*/
+
 }

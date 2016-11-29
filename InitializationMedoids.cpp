@@ -111,4 +111,6 @@ void KMedoidsPP(Conf* myConf, Metrics* myMetric, double** distanceMatrix, int* c
 		//cout << "Next chosen : " << chosenCentroid << endl;
 		//cin >> GARBAGE;
 	}
+	delete[] probabilities;
+	delete[] minDistances;
 }

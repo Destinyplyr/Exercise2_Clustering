@@ -431,6 +431,21 @@ void ListData<T>::initDBHManagement(Conf* myConf, ifstream& inputFile, double** 
 					nodePtr->getNext();
 				}
 			}*/
+			delete[] itemName;
+			for (int o = 0; o < L; ++o)
+			{
+				for (int j = 0; j < k; j++) {
+					delete[] h[o][j];
+				}
+				delete[] h[o];
+			}
+			delete[] h;
+			delete[] h_x1_x2;
+			for (int i = 0; i < *dataLength; ++i)
+			{
+				delete point_to_centroid_assignment[i];
+			}
+			delete[] point_to_centroid_assignment;
 			return;
 
 			/*for (int q = 0; q < myConf->number_of_clusters; q++)        //for every centroid  

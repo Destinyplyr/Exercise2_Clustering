@@ -43,7 +43,7 @@ Node<T>* ListData<T>::getNode()
 template <typename T>
 void ListData<T>::PrintData()
 {
-	Node<T>* node = new Node<T>();
+	Node<T>* node;
 	node = header;
 	int counter = 1;
 	while (node->getNext() != NULL)
@@ -406,6 +406,11 @@ void ListData<T>::Printer(ifstream& inputFile, ofstream& outputFile, Conf* myCon
 						delete[] items_in_cluster_itemName;		//initilaized inside ItemNamesFromItemNos
 					}
 				}
+/*				for (int delete_iter = 0; delete_iter < L; delete_iter++)
+				{
+					delete hashTableList[delete_iter];
+				}*/
+				delete[] hashTableList;
 				cout << "finished lsh - alaloyds" <<endl;
 			}
 			
@@ -417,7 +422,11 @@ void ListData<T>::Printer(ifstream& inputFile, ofstream& outputFile, Conf* myCon
 			
 		}
 		Assign_Update_start = clock();
-		delete clusterAssign;
+		for (int i = 0; i < myMetric->point_number; ++i)
+		{
+			delete clusterAssign[i];
+		}
+		delete[] clusterAssign;
 		clusterAssign= new int*[myMetric->point_number];
 		for (int i = 0; i < myMetric->point_number; ++i)
 		{
@@ -462,11 +471,22 @@ void ListData<T>::Printer(ifstream& inputFile, ofstream& outputFile, Conf* myCon
 				delete[] items_in_cluster_itemName;		//initilaized inside ItemNamesFromItemNos
 			}
 		}
+		for (int i = 0; i < myMetric->point_number; ++i)
+		{
+		    //clusterAssign[i] = new int[3];
+		    clusterAssign[i][0] = -1;
+		    clusterAssign[i][1] = -1;
+		    clusterAssign[i][2] = -1;
+		}
 		//clusterTable->PrintingSilhouette(outputFile, myConf, distance_matrix, centroids, clusterAssign);
 		cout << "finished CLARANS" <<endl;
 	}
 	CLARA_start = clock();
-	delete clusterAssign;
+	for (int i = 0; i < myMetric->point_number; ++i)
+	{
+		delete clusterAssign[i];
+	}
+	delete[] clusterAssign;
 	clusterAssign= new int*[myMetric->point_number];
 	for (int i = 0; i < myMetric->point_number; ++i)
 	{
@@ -515,5 +535,11 @@ void ListData<T>::Printer(ifstream& inputFile, ofstream& outputFile, Conf* myCon
 		}
 	}
 	cout << "finished CLARA" <<endl;
+	delete clusterTable;
+	for (int i = 0; i < myMetric->point_number; ++i)
+	{
+		delete clusterAssign[i];
+	}
+	delete[] clusterAssign;
 }
 

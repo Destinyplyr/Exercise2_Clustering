@@ -71,6 +71,13 @@ void Concentrate(Conf* myConf, Metrics* myMetric, double** distanceMatrix, int* 
         centroids[i] = V_s[i][1];
         //cout << "centroid " << i << " - " << centroids[i] << endl;
     }
+    for (int i = 0; i < myMetric->point_number; ++i)		//init
+    {
+       delete V_s[i];
+    }
+    delete[] V_s;     //V_s[i][0] -> holds V for i centroid [1] holds which point is this centroid
+
+    delete divisor;
 }
 
 void swap_twolist(double& a, double& b){

@@ -18,7 +18,8 @@ ClusterNode::ClusterNode(int item_no, ClusterNode* next)
 
 ClusterNode::~ClusterNode()
 {
-/*	cout << "mesa ston destructor tou ClusterNode" << endl;
+/*
+	cout << "mesa ston destructor tou ClusterNode" << endl;
 	if (next != NULL)
 	{
 		delete next;

@@ -106,25 +106,6 @@ private:
 	ListData<T> *mTestObj;
 };
 
-/*class TestBasicMath2 : public CppUnit::TestFixture
-{
-	CPPUNIT_TEST_SUITE(TestBasicMath2);
-	CPPUNIT_TEST(testAddition);
-	CPPUNIT_TEST(testMultiply);
-	CPPUNIT_TEST_SUITE_END();
-
-public:
-	void setUp(void);
-	void tearDown(void);
-
-protected:
-	void testAddition(void);
-	void testMultiply(void);
-
-private:
-
-	CBasicMath2 *mTestObj;
-};*/
 
 //-----------------------------------------------------------------------------
 
@@ -205,6 +186,7 @@ void TestListData<T>::testHammingDuplicate(void)
 	string Hamming2 = "0011";
 	newListData->Insert(Hamming1, 657, "test");
 	CPPUNIT_ASSERT(true == newListData->HammingDuplicate(Hamming2));
+	delete newListData;
 }
 
 template <typename T>
@@ -215,6 +197,7 @@ void TestListData<T>::testHammingB2BDuplicate(void)
 	bitset<64> bitset2(string("0011"));
 	newListData->Insert(bitset1, 1, "item1");
 	CPPUNIT_ASSERT(true == newListData->HammingB2BDuplicate(bitset2));
+	delete newListData;
 }
 
 template <typename T>
@@ -225,6 +208,7 @@ void TestListData<T>::testEuclideanDuplicate(void)
 	double item2[3] = {3, 4, 1.5};
 	newListData->Insert(item1, 657, "test");
 	CPPUNIT_ASSERT(true == newListData->EuclideanDuplicate(item2, 3));
+	delete newListData;
 }
 
 template <typename T>
@@ -234,6 +218,7 @@ void TestListData<T>::testDistanceB2BHamming(void)
 	bitset<64> bitset1(string("0011"));
 	bitset<64> bitset2(string("0101"));
 	CPPUNIT_ASSERT(2 == newListData->DistanceB2BHamming(bitset1, bitset2));
+	delete newListData;
 }
 
 /*void
