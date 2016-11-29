@@ -6,7 +6,7 @@ using namespace std;
 
 
 template <typename T>                                                                                           //dataLength is number of points
-void ListData<T>::initDBHManagement(Conf* myConf, ifstream& inputFile, double** distanceMatrix, int k, int L, int* dataLength, int* hashCreationDone, Hash<double>* hashTableList, int* centroids, int** clusterAssign) 
+void ListData<T>::initDBHManagement(Conf* myConf, ifstream& inputFile, double** distanceMatrix, int k, int L, int* dataLength, int* hashCreationDone, Hash<T>* hashTableList, int* centroids, int** clusterAssign) 
 {
 	string genericStr;
 	string line;
@@ -41,8 +41,8 @@ void ListData<T>::initDBHManagement(Conf* myConf, ifstream& inputFile, double** 
 	int tableSize;
 	int minimumCentroid;
 	int secondBestCentroid;
-	Node<double>* nodePtr;
-	Node<double>* minimumNode = NULL;
+	Node<T>* nodePtr;
+	Node<T>* minimumNode = NULL;
 
 	bool assigned_in_this_radius = false;
 
@@ -160,8 +160,10 @@ void ListData<T>::initDBHManagement(Conf* myConf, ifstream& inputFile, double** 
 	end_h_creation = clock();
   	begin_lsh_hashing = clock();
 	//PERASE HASHTABLELIST kai FLAG hashcreationdone
+	//double* convertor = new double;
 	if (*hashCreationDone == 0)
 	{
+		nodePtr = this->ReturnHead();
 		for (int o = 0; o < L; ++o)
 		{
 			//hashTableList[o].initHash(k, metric_space);
@@ -182,9 +184,11 @@ void ListData<T>::initDBHManagement(Conf* myConf, ifstream& inputFile, double** 
 					}
 				}//int hashResult, T newItem, int g, int itemno, string itemName
 				//cout << "Point " << u << " Hashtable "<< o <<" Building hashTable: Inserting in bucket: " <<hashResult <<endl;
-				hashTableList[o].Insert(hashResult, u, hashResult, u, itemName[u]);
+				//*convertor = u;
+				hashTableList[o].Insert(hashResult, nodePtr->getKey(), hashResult, u, itemName[u]);
 				//cout << " ----> Checking insert: " << hashTableList[o].getHashTable()[hashResult].getBucket()->getItemNo() <<endl;
 			}
+			nodePtr = nodePtr->getNext();
 		}
 		*hashCreationDone = 1;
 	}

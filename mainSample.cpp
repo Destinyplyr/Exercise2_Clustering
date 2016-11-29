@@ -292,7 +292,8 @@ int main(int argc, char **argv)
 	cout << myConf->number_of_hash_tables << endl;
 	cout << myConf->clarans_set_fraction << endl;
 	cout << myConf->clarans_iterations << endl ;*/
-
+	delete myMetric;
+	delete myConf;
 	return 0;
 }
 

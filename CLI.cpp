@@ -355,7 +355,7 @@ void CLI(ifstream& inputFile, ofstream& outputFile, Conf* myConf, Metrics* myMet
 
 	if (strcmp(myMetric->metric_space.c_str(), "matrix") == 0)
 	{
-		ListData<double>* DBHList = new ListData<double>();
+		ListData<double*>* DBHList = new ListData<double*>();
 		DBHList->ListInsertionDB(inputFile, myMetric);
 
 		cout << "********************************************************" << endl;
@@ -364,7 +364,8 @@ void CLI(ifstream& inputFile, ofstream& outputFile, Conf* myConf, Metrics* myMet
 		cout << "********************************************************" << endl;
 
 		DBHList->DistanceMatrixComputationDB(inputFile, myMetric, distance_matrix);
-		Concentrate(myConf, myMetric, distance_matrix, centroids);
+		DBHList->Printer( inputFile, outputFile, myConf, myMetric, clusterTable, distance_matrix, centroids, clusterAssign, L,  k, complete_printing);
+		/*Concentrate(myConf, myMetric, distance_matrix, centroids);
 		//KMedoidsPP(myConf, myMetric, distance_matrix, centroids);
 		// PAM(myConf, myMetric, distance_matrix, centroids, clusterTable, clusterAssign);
 		Hash<double>* hashTableList = new Hash<double>[L]();      //Na min orizetai se kathe iteration tou update, giati xanaorizetai
@@ -386,8 +387,8 @@ void CLI(ifstream& inputFile, ofstream& outputFile, Conf* myConf, Metrics* myMet
 		//cout << "paei na kanei to print" << endl;
 		//clusterTable->PrintCluster(0);
 		//cout << "EKANE TO PRINT" << endl;
-		clusterTable->PrintingSilhouette(outputFile, myConf, distance_matrix, centroids, clusterAssign);
-		delete clusterTable; //DELETE CLUSTER TABLE (case lsh/dbh)
+		clusterTable->PrintingSilhouette(outputFile, myConf, distance_matrix, centroids, clusterAssign);*/
+		//delete clusterTable; //DELETE CLUSTER TABLE (case lsh/dbh)
 		
 
 		

@@ -247,16 +247,29 @@ void ListData<T>::Printer(ifstream& inputFile, ofstream& outputFile, Conf* myCon
 	string*	items_in_cluster_itemName;
 	bool first_time_lsh = 1; 	
 	int hashCreationDone = 0;
+	clock_t KMPP_start, KMPP_finish;
+	clock_t Concentrate_start, Concentrate_finish;
+	double Initialization_elapsed;
+	clock_t Assign_Update_start, Assign_Update_finish;
+	double Assign_Update_elapsed;
+	clock_t CLARA_start, CLARA_finish;
+	double CLARA_elapsed;
 
 	for(int init_iter = 0; init_iter < 2; init_iter++)
 	{
 		if (init_iter == 0) //case KMedoids++
 		{
+			KMPP_start = clock();
 			KMedoidsPP(myConf, myMetric, distance_matrix, centroids);
+			KMPP_finish = clock();
+			Initialization_elapsed = (double)(KMPP_finish - KMPP_start)/CLOCKS_PER_SEC;
 		}
 		else if (init_iter == 1)//case Concentrate
 		{
+			Concentrate_start = clock();
 			Concentrate(myConf, myMetric, distance_matrix, centroids);
+			Concentrate_finish = clock();
+			Initialization_elapsed = (double)(Concentrate_finish - Concentrate_start)/CLOCKS_PER_SEC;
 		}
 		/*cout << "==================" << endl << "PRINTING CLUSTERS IN mainSample BEFORE CLARANS : " <<endl;
 		for (int w = 0; w <myConf->number_of_clusters; w++) {
@@ -272,6 +285,7 @@ void ListData<T>::Printer(ifstream& inputFile, ofstream& outputFile, Conf* myCon
 				delete clusterTable;
 				clusterTable = new ClusterTable(myConf->number_of_clusters);
 				cout << "starting pam - alaloyds" <<endl;
+				Assign_Update_start = clock();
 				for (int assign_update_times =0; assign_update_times < 5; assign_update_times++)
 				{
 					PAM(myConf, myMetric, distance_matrix, centroids, clusterTable, clusterAssign);		//assignment
@@ -279,6 +293,8 @@ void ListData<T>::Printer(ifstream& inputFile, ofstream& outputFile, Conf* myCon
 					 	//cout << "done!" << endl;
 					}	
 				}
+				Assign_Update_finish = clock();
+				Assign_Update_elapsed = (double)(Assign_Update_finish - Assign_Update_start)/CLOCKS_PER_SEC;
 				/*for (int cluster_iter = 0; cluster_iter < myConf->number_of_clusters; cluster_iter++)
 				{
 					clusterTable->PrintClusterNo(cluster_iter);
@@ -291,6 +307,7 @@ void ListData<T>::Printer(ifstream& inputFile, ofstream& outputFile, Conf* myCon
 					clusterTable->PrintClusterDataForList(cluster_iter, &size_of_cluster);		//used to get size
 					outputFile << "CLUSTER-" << cluster_iter << " {"<<size_of_cluster << ", " << clusterTable->ClusterDistance( myMetric, distance_matrix, cluster_iter, clusterAssign) <<"}" <<endl;
 				}
+				outputFile << "Clustering Time: " << Assign_Update_elapsed + Initialization_elapsed <<endl;
 				clusterTable->PrintingSilhouette(outputFile, myConf, distance_matrix, centroids, clusterAssign);		//printing Silhouette
 				//cin >> GARBAGE;
 				if (complete_printing == 1)
@@ -319,6 +336,7 @@ void ListData<T>::Printer(ifstream& inputFile, ofstream& outputFile, Conf* myCon
 			{
 				cout << "starting lsh - alaloyds" <<endl;
 				Hash<T>* hashTableList = new Hash<T>[L]();      //Na min orizetai se kathe iteration tou update, giati xanaorizetai
+				Assign_Update_start = clock();
 				for (int assign_update_times =0; assign_update_times < 5; assign_update_times++)
 				{
 					if (first_time_lsh == true) 
@@ -328,7 +346,7 @@ void ListData<T>::Printer(ifstream& inputFile, ofstream& outputFile, Conf* myCon
 						point_number = myMetric->point_number;							//assignment
 						if (strcmp(myMetric->metric_space.c_str(), "hamming") == 0)
 						{
-							this->initHammingLSHManagement(myConf, inputFile, distance_matrix, k , L, &(point_number), &hashCreationDone, hashTableList, centroids, clusterAssign);
+							initHammingLSHManagement(myConf, inputFile, distance_matrix, k , L, &(point_number), &hashCreationDone, hashTableList, centroids, clusterAssign);
 						}
 						if (strcmp(myMetric->metric_space.c_str(), "vector") == 0)
 						{
@@ -344,8 +362,7 @@ void ListData<T>::Printer(ifstream& inputFile, ofstream& outputFile, Conf* myCon
 						}
 						if (strcmp(myMetric->metric_space.c_str(), "matrix") == 0)
 						{
-
-
+							initDBHManagement(myConf, inputFile, distance_matrix, k , L, &(point_number), &hashCreationDone, hashTableList, centroids, clusterAssign);
 						}
 					}
 					delete clusterTable;
@@ -357,6 +374,8 @@ void ListData<T>::Printer(ifstream& inputFile, ofstream& outputFile, Conf* myCon
 					//delete clusterTable; //DELETE CLUSTER TABLE (case lsh/dbh)
 					//clusterTable->PrintingSilhouette(outputFile, myConf, distance_matrix, centroids, clusterAssign);
 				}
+				Assign_Update_finish = clock();
+				Assign_Update_elapsed = (double)(Assign_Update_finish - Assign_Update_start)/CLOCKS_PER_SEC;
 
 				//PRINTING SEGMENT
 				outputFile << "Algorithm: I" << init_iter+1 << "x" << assign_iter+1 << "x" << 1 <<endl;
@@ -365,6 +384,7 @@ void ListData<T>::Printer(ifstream& inputFile, ofstream& outputFile, Conf* myCon
 					clusterTable->PrintClusterDataForList(cluster_iter, &size_of_cluster);		//used to get size
 					outputFile << "CLUSTER-" << cluster_iter << " {"<<size_of_cluster << ", " << clusterTable->ClusterDistance( myMetric, distance_matrix, cluster_iter, clusterAssign) <<"}" <<endl;
 				}
+				outputFile << "Clustering Time: " << Assign_Update_elapsed + Initialization_elapsed <<endl;
 				clusterTable->PrintingSilhouette(outputFile, myConf, distance_matrix, centroids, clusterAssign);		//printing Silhouette
 				//cin >> GARBAGE;
 				if (complete_printing == 1)
@@ -396,6 +416,7 @@ void ListData<T>::Printer(ifstream& inputFile, ofstream& outputFile, Conf* myCon
 			cout <<endl;*/
 			
 		}
+		Assign_Update_start = clock();
 		delete clusterAssign;
 		clusterAssign= new int*[myMetric->point_number];
 		for (int i = 0; i < myMetric->point_number; ++i)
@@ -410,12 +431,16 @@ void ListData<T>::Printer(ifstream& inputFile, ofstream& outputFile, Conf* myCon
 		clusterTable = new ClusterTable(myConf->number_of_clusters);
 		cout << "starting CLARANS" << endl;
 		CLARANS(myConf, myMetric, distance_matrix, centroids, clusterTable, clusterAssign);		//full CLARANS algorithm uses only PAM
+		Assign_Update_finish = clock();
+		Assign_Update_elapsed = (double)(Assign_Update_finish - Assign_Update_start)/CLOCKS_PER_SEC;
+
 		outputFile << "Algorithm: I" << init_iter+1 << "x" << 1 << "x" << 2 <<endl;
 		for (int cluster_iter = 0; cluster_iter < myConf->number_of_clusters; cluster_iter++)
 		{
 			clusterTable->PrintClusterDataForList(cluster_iter, &size_of_cluster);		//used to get size
 			outputFile << "CLUSTER-" << cluster_iter << " {"<<size_of_cluster << ", " << clusterTable->ClusterDistance( myMetric, distance_matrix, cluster_iter, clusterAssign) <<"}" <<endl;
 		}
+		outputFile << "Clustering Time: " << Assign_Update_elapsed + Initialization_elapsed <<endl;
 		clusterTable->PrintingSilhouette(outputFile, myConf, distance_matrix, centroids, clusterAssign);		//printing Silhouette
 		//cin >> GARBAGE;
 		if (complete_printing == 1)
@@ -440,6 +465,7 @@ void ListData<T>::Printer(ifstream& inputFile, ofstream& outputFile, Conf* myCon
 		//clusterTable->PrintingSilhouette(outputFile, myConf, distance_matrix, centroids, clusterAssign);
 		cout << "finished CLARANS" <<endl;
 	}
+	CLARA_start = clock();
 	delete clusterAssign;
 	clusterAssign= new int*[myMetric->point_number];
 	for (int i = 0; i < myMetric->point_number; ++i)
@@ -453,7 +479,8 @@ void ListData<T>::Printer(ifstream& inputFile, ofstream& outputFile, Conf* myCon
 	clusterTable = new ClusterTable(myConf->number_of_clusters);
 	cout << "starting CLARA" <<endl;
 	CLARA( myConf,  myMetric, distance_matrix, centroids, clusterTable, clusterAssign);
-
+	CLARA_finish = clock();
+	CLARA_elapsed = (double)(CLARA_finish - CLARA_start)/CLOCKS_PER_SEC;
 	//PRINTING SEGMENT
 	//outputFile << "Algorithm: I" << init_iter+1 << "x" << assign_iter+1 << "x" << 1 <<endl;
 	outputFile << "CLARA" <<endl;
@@ -465,6 +492,7 @@ void ListData<T>::Printer(ifstream& inputFile, ofstream& outputFile, Conf* myCon
 		total += size_of_cluster;
 	}
 	outputFile << "total on clusters: " <<total<<endl;
+	outputFile << "Clustering Time: " << CLARA_elapsed <<endl;
 	clusterTable->PrintingSilhouette(outputFile, myConf, distance_matrix, centroids, clusterAssign);		//printing Silhouette
 	//cin >> GARBAGE;
 	if (complete_printing == 1)
