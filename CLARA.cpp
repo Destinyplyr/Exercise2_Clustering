@@ -92,8 +92,22 @@ void CLARA(Conf* myConf, Metrics* myMetric, double** distanceMatrix, int* centro
 		{
 			//cout << "904 - mincost clara: " << current_cost <<endl;
 			min_cost = current_cost;
+			minfullPAMclusterAssign = CLARAclusterAssign;
+			minfullPAMclusterTable = fullPAMclusterTable;
 			for (int w = 0; w < myConf->number_of_clusters; ++w)
 			{ 
+				for (int j = 0; j < myMetric->point_number; ++j)		//updating clusterAssign
+				{
+					if(minfullPAMclusterAssign[j][0] == min_centroids[w]) {
+						minfullPAMclusterAssign[j][0] = fullPAMcentroids[w];
+					}
+					if(minfullPAMclusterAssign[j][1] == min_centroids[w]) {
+						minfullPAMclusterAssign[j][1] = fullPAMcentroids[w];
+					}
+					if(minfullPAMclusterAssign[j][2] == min_centroids[w]) {
+						minfullPAMclusterAssign[j][2] = fullPAMcentroids[w];
+					}
+				}
 				min_centroids[w] = fullPAMcentroids[w];
 				cout << min_centroids[w] << " " ;
 			}
@@ -115,8 +129,8 @@ void CLARA(Conf* myConf, Metrics* myMetric, double** distanceMatrix, int* centro
 				minfullPAMclusterTable = NULL;
 			}
 
-			minfullPAMclusterAssign = CLARAclusterAssign;
-			minfullPAMclusterTable = fullPAMclusterTable;
+			//minfullPAMclusterAssign = CLARAclusterAssign;
+			//minfullPAMclusterTable = fullPAMclusterTable;
 		}
 		else
 		{
@@ -133,8 +147,21 @@ void CLARA(Conf* myConf, Metrics* myMetric, double** distanceMatrix, int* centro
 	cout <<"CLARA SENDS ITS REGARDS" <<endl;
 	for (int w = 0; w < myConf->number_of_clusters; ++w)
 	{
+		/*cout << "fullPAMcentroids[" <<w<<"]: " << fullPAMcentroids[w] << " centroids[" <<w<<"]: " << centroids[w]<< " min_centroids[" <<w<<"]: " << min_centroids[w] <<endl;
+		for (int j = 0; j < myMetric->point_number; ++j)		//updating clusterAssign
+		{
+			if(minfullPAMclusterAssign[j][0] == fullPAMcentroids[w]) {
+				minfullPAMclusterAssign[j][0] = min_centroids[w];
+			}
+			if(minfullPAMclusterAssign[j][1] == fullPAMcentroids[w]) {
+				minfullPAMclusterAssign[j][1] = min_centroids[w];
+			}
+			if(minfullPAMclusterAssign[j][2] == fullPAMcentroids[w]) {
+				minfullPAMclusterAssign[j][2] = min_centroids[w];
+			}
+		}*/
 		centroids[w] = min_centroids[w];
-		cout << min_centroids[w] << " " ;
+		//cout << min_centroids[w] << " " ;
 		/*for (int j = 0; j < myMetric->point_number; ++j)		//updating clusterAssign
 		{
 			if(clusterAssign[j][0] == centroids[w]) {
@@ -163,12 +190,12 @@ void CLARA(Conf* myConf, Metrics* myMetric, double** distanceMatrix, int* centro
 	for (int j = 0; j < myMetric->point_number; ++j)
 	{
 		cout << "point : " << j <<endl;
-		clusterAssign[j][0] = CLARAclusterAssign[j][0];		
-		clusterAssign[j][1] = CLARAclusterAssign[j][1];
-		clusterAssign[j][2] = CLARAclusterAssign[j][2];
+		clusterAssign[j][0] = minfullPAMclusterAssign[j][0];		
+		clusterAssign[j][1] = minfullPAMclusterAssign[j][1];
+		clusterAssign[j][2] = minfullPAMclusterAssign[j][2];
 		cout << "clusterAssign[j][0] " << clusterAssign[j][0] << " clusterAssign[j][1] " << clusterAssign[j][1] << " clusterAssign[j][2] " << clusterAssign[j][2] <<endl;
 	}
-	for (int w = 0; w < myConf->number_of_clusters; ++w)
+	/*for (int w = 0; w < myConf->number_of_clusters; ++w)
 	{
 		//centroids[w] = min_centroids[w];
 		//cout << min_centroids[w] << " " ;
@@ -184,7 +211,7 @@ void CLARA(Conf* myConf, Metrics* myMetric, double** distanceMatrix, int* centro
 				clusterAssign[j][2] = centroids[w];
 			}
 		}
-	}
+	}*/
 
 
 	return;

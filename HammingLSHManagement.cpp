@@ -3,9 +3,9 @@
 #include "DistanceMatrixFunctions.h"
 
 using namespace std;
-
+//Hash<bitset<64> >* hashTableList
 template <typename T>                                                                                           //dataLength is number of points
-void ListData<T>::initHammingLSHManagement(Conf* myConf, ifstream& inputFile, double** distanceMatrix, int k, int L, int* dataLength, int* hashCreationDone, Hash<bitset<64> >* hashTableList, int* centroids, int** clusterAssign)
+void ListData<T>::initHammingLSHManagement(Conf* myConf, ifstream& inputFile, double** distanceMatrix, int k, int L, int* dataLength, int* hashCreationDone, Hash<T>* hashTableList, int* centroids, int** clusterAssign)
 {
 	int hammingSize = 0;     //Used for hamming size, or number of vector attributes
 	int itemNo = 0;         //How many items we have?
@@ -38,8 +38,8 @@ void ListData<T>::initHammingLSHManagement(Conf* myConf, ifstream& inputFile, do
 	clock_t begin, begin_brute, end_brute, end_List_creation;
 	clock_t begin_lsh_hashing, end_lsh_hashing;
 	clock_t begin_lsh_query, end_lsh_query;
-	Node<bitset<64> >* minimumNode;
-	Node<bitset<64> >* listNode; //=  new Node<string>();
+	Node<T>* minimumNode;
+	Node<T>* listNode; //=  new Node<string>();
 
 	std::cout.setf(std::ios_base::fixed, std::ios_base::floatfield);
 	std::cout.precision(20);

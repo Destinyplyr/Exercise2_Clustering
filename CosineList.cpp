@@ -7,7 +7,7 @@ using namespace std;
 
 
 template <typename T>
-void ListData<T>::initCosineList(Conf* myConf, ifstream& inputFile, double** distanceMatrix, int k, int L, int* dataLengthPointNumber, int* hashCreationDone, Hash<double* >* hashTableList, int* centroids, int** clusterAssign)
+void ListData<T>::initCosineList(Conf* myConf, ifstream& inputFile, double** distanceMatrix, int k, int L, int* dataLengthPointNumber, int* hashCreationDone, Hash<T>* hashTableList, int* centroids, int** clusterAssign)
 {
 	string genericStr;
 	string itemNos;

@@ -1,7 +1,9 @@
 #include "MathFunctions.h"
 using namespace std;
 
-double dot_product(double* vector1, double* vector2, int vector_size) {
+//double dot_product(double* vector1, double* vector2, int vector_size) {     //T will always be double*
+template <typename T>
+double dot_product(T vector1, double* vector2, int vector_size) {
     string garbage;
     //cout << "starting dot product" <<endl;
 	double dot_product = 0;
@@ -14,15 +16,18 @@ double dot_product(double* vector1, double* vector2, int vector_size) {
 	return dot_product;
 }
 
-double euclid_norm(double* vector1, int vector_size) {
+//double euclid_norm(double* vector1, int vector_size) {        //actually this
+template <typename T>
+double euclid_norm(T vector1, int vector_size) {
     double norm = 0;
     for (int i = 0; i < vector_size; i++) {
         norm += (pow(vector1[i], 2));
     }
     return sqrt(norm);
 }
-
-bool SameArray(double* array1, double* array2, int size) {
+//bool SameArray(double* array1, double* array2, int size) {    //actually this 
+template <typename T>
+bool SameArray(T array1, T array2, int size) {
     for (int i = 0; i < size; i++) {
         //cout << array1[i]<< "-" << array2[i] <<endl;
         if (array1[i] != array2[i]) {
@@ -33,7 +38,10 @@ bool SameArray(double* array1, double* array2, int size) {
 }
 
 
-double DistanceEuclid(double item1[], double item2[], int size)
+/*double DistanceEuclid(double item1[], double item2[], int size)   //actually this
+{*/
+template <typename T>
+double DistanceEuclid(T item1[], T item2[], int size)
 {
     double sum = 0.0f, square;
     double x, y;

@@ -1,3 +1,6 @@
+#ifndef CLUSTER_TABLE
+#define CLUSTER_TABLE
+
 #include "DistanceMatrixFunctions.h"
 #include "ClusterNode.h"
 #include "UtilsH.h"
@@ -52,3 +55,5 @@ class ClusterTable
 		int number_of_clusters;
 		ClusterNode** clusterTable;
 };
+
+#endif //!CLUSTER_TABLE

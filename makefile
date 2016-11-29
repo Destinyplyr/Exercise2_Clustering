@@ -1,7 +1,7 @@
 # In order to execute this "makefile" just type "make"
 
-OBJS 	=  mainSample.o Utilities.o MainFunctions.o MathFunctions.o DistanceMatrixFunctions.o InitializationMedoids.o InitializationConcentrate.o ClusterNodeFunctions.o ClusterTableFunctions.o AssignmentPAM.o UpdateALaLoyds.o UpdateCLARANS.o CLARA.o PAM.o CLI.o
-SOURCE	=  mainSample.cpp Utilities.cpp MainFunctions.cpp MathFunctions.cpp DistanceMatrixFunctions.cpp InitializationMedoids.cpp InitializationConcentrate.cpp ClusterNodeFunctions.cpp ClusterTableFunctions.cpp AssignmentPAM.cpp UpdateALaLoyds.cpp UpdateCLARANS.cpp CLARA.cpp PAM.cpp CLI.cpp
+OBJS 	=  mainSample.o Utilities.o MainFunctions.o  DistanceMatrixFunctions.o InitializationMedoids.o InitializationConcentrate.o ClusterNodeFunctions.o ClusterTableFunctions.o AssignmentPAM.o UpdateALaLoyds.o UpdateCLARANS.o CLARA.o PAM.o CLI.o
+SOURCE	=  mainSample.cpp Utilities.cpp MainFunctions.cpp DistanceMatrixFunctions.cpp InitializationMedoids.cpp InitializationConcentrate.cpp ClusterNodeFunctions.cpp ClusterTableFunctions.cpp AssignmentPAM.cpp UpdateALaLoyds.cpp UpdateCLARANS.cpp CLARA.cpp PAM.cpp CLI.cpp
 HEADER  = mainSample.h UtilsH.h Headers.h Returns.h MathFunctions.h DistanceMatrixFunctions.h Algorithms.h ClusterNode.h ClusterTable.h  
 OUT  	= medoids
 CC	= g++
@@ -15,7 +15,7 @@ all: $(OBJS)
 # create/compile the individual files
 
 
-mainSample.o: mainSample.cpp Node.h ListData.h Hash.h ListsFunctions.cpp NodeFunctions.cpp VectorHammingListManagement.cpp DBListManagement.cpp HammingListManagement.cpp DBHManagement.cpp HashFunctions.cpp HammingLSHManagement.cpp EuclideanList.cpp TrickFunctions.cpp CosineList.cpp
+mainSample.o: mainSample.cpp Node.h ListData.h Hash.h ListsFunctions.cpp NodeFunctions.cpp VectorHammingListManagement.cpp DBListManagement.cpp HammingListManagement.cpp DBHManagement.cpp HashFunctions.cpp HammingLSHManagement.cpp EuclideanList.cpp TrickFunctions.cpp CosineList.cpp MathFunctions.cpp
 	$(CC) $(FLAGS) mainSample.cpp			
 
 Utilities.o: Utilities.cpp
@@ -24,8 +24,8 @@ Utilities.o: Utilities.cpp
 MainFunctions.o: MainFunctions.cpp
 	$(CC) $(FLAGS) MainFunctions.cpp
 
-MathFunctions.o: MathFunctions.cpp
-	$(CC) $(FLAGS) MathFunctions.cpp
+# MathFunctions.o: MathFunctions.cpp
+	# $(CC) $(FLAGS) MathFunctions.cpp
 
 DistanceMatrixFunctions.o: DistanceMatrixFunctions.cpp
 	$(CC) $(FLAGS) DistanceMatrixFunctions.cpp
